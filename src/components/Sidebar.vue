@@ -113,8 +113,8 @@ export default {
   },
   data() {
     return {
-      menuOption: []
-    }
+      menuOption: [],
+    };
   },
   setup() {
     return {

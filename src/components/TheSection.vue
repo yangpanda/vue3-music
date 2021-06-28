@@ -6,7 +6,10 @@
       </span>
       <svg-icon iconName="#icon-arrow-right" size="14" iconColor="#303133" />
     </div>
-    <div class="cards-wrapper" :style="{gridTemplateColumns: gridTemplateColumns}">
+    <div
+      class="cards-wrapper"
+      :style="{ gridTemplateColumns: gridTemplateColumns }"
+    >
       <slot name="cards"></slot>
     </div>
   </section>
@@ -20,14 +23,14 @@ export default {
       type: String,
     },
     columns: {
-      type: [Number, String]
-    }
+      type: [Number, String],
+    },
   },
   data() {
     return {
-      gridTemplateColumns: `repeat(${this.columns}, 1fr)`
-    }
-  }
+      gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+    };
+  },
 };
 </script>
 

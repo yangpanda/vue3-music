@@ -2,26 +2,12 @@
   <div class="discovery">
     <div class="nav">
       <div class="wrapper">
-        <router-link
-          class="personal-recommend router"
-          to="/discovery/personal-recommend"
-          >个性推荐</router-link
-        >
-        <router-link class="playlist router" to="/discovery/playlist"
-          >歌单</router-link
-        >
-        <router-link class="anchor router" to="/discovery/anchor"
-          >主播电台</router-link
-        >
-        <router-link class="ranking router" to="/discovery/ranking"
-          >排行榜</router-link
-        >
-        <router-link class="artist router" to="/discovery/artist"
-          >歌手</router-link
-        >
-        <router-link class="newest-music router" to="/discovery/newest-music"
-          >最新音乐</router-link
-        >
+        <router-link class="personal-recommend router" to="/discovery/personal-recommend">个性推荐</router-link>
+        <router-link class="playlist router" to="/discovery/playlist">歌单</router-link>
+        <router-link class="anchor router" to="/discovery/anchor">主播电台</router-link>
+        <router-link class="ranking router" to="/discovery/ranking">排行榜</router-link>
+        <router-link class="artist router" to="/discovery/artist">歌手</router-link>
+        <router-link class="newest-music router" to="/discovery/newest-music">最新音乐</router-link>
       </div>
     </div>
     <div class="content">
@@ -34,12 +20,13 @@
 export default {
   name: "Discovery",
 };
+
 </script>
 
 <style lang="scss" scoped>
 .discovery {
   margin: 20px;
-  
+
   .nav {
     font-size: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -72,4 +59,5 @@ export default {
     margin: 0 auto;
   }
 }
+
 </style>

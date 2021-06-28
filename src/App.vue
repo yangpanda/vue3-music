@@ -17,9 +17,7 @@
         <n-layout-sider bordered :native-scrollbar="false">
           <sidebar></sidebar>
         </n-layout-sider>
-        <n-layout-content
-          :native-scrollbar="false"
-        >
+        <n-layout-content :native-scrollbar="false">
           <router-view :key="$route.fullPath"></router-view>
         </n-layout-content>
       </n-layout>

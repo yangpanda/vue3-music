@@ -30,11 +30,11 @@
           <div><span>签到</span></div>
         </div>
         <div class="info-setting list-item">
-          <svg-icon iconName="#icon-user-info" size="20"/>
+          <svg-icon iconName="#icon-user-info" size="20" />
           <span>个人信息设置</span>
         </div>
         <div class="logo-out list-item">
-          <svg-icon iconName="#icon-log-out" size="20"/>
+          <svg-icon iconName="#icon-log-out" size="20" />
           <span>退出登录</span>
         </div>
       </div>
@@ -117,6 +117,7 @@ export default {
       align-items: center;
       cursor: pointer;
     }
+
     .user-info-drop-list {
       position: absolute;
       top: var(--header-height);
@@ -152,6 +153,7 @@ export default {
           background-color: #0000;
           transition: background-color 0.3s;
         }
+
         &:hover::before {
           background-color: rgba(0, 0, 0, 0.06);
         }

@@ -17,8 +17,6 @@ export default createStore({
       state.playlists = playlists
     }
   },
-  actions: {
-  },
-  modules: {
-  }
+  actions: {},
+  modules: {}
 })

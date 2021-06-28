@@ -40,7 +40,7 @@ export default {
   height: 1em;
   width: 1em;
   line-height: 1em;
-  fill: currentColor
+  fill: currentColor;
 }
 
 svg {

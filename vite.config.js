@@ -1,10 +1,8 @@
-import { defineConfig } from 'vite'
-
-import vue from '@vitejs/plugin-vue'
-
-import viteSvgIcons from 'vite-plugin-svg-icons'
-
 import path from 'path'
+
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import viteSvgIcons from 'vite-plugin-svg-icons'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -32,18 +30,18 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      {find: 'components', replacement: resolve('src/components')},
-      {find: 'model', replacement: resolve('src/model')},
-      {find: 'views', replacement: resolve('src/views')},
-      {find: 'styles', replacement: resolve('src/styles')},
-      {find: 'assets', replacement: resolve('src/assets')},
-      {find: 'api', replacement: resolve('src/api')}
+      { find: 'components', replacement: resolve('src/components') },
+      { find: 'model', replacement: resolve('src/model') },
+      { find: 'views', replacement: resolve('src/views') },
+      { find: 'styles', replacement: resolve('src/styles') },
+      { find: 'assets', replacement: resolve('src/assets') },
+      { find: 'api', replacement: resolve('src/api') }
     ]
   },
   css: {
     preprocessorOptions: {
       scss: {
-        
+
       }
     }
   }

@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      collapsed: true
+      collapsed: true,
     };
   },
 };
@@ -39,7 +39,7 @@ export default {
     height: 36px;
     padding: 0 20px;
     display: grid;
-    grid-template-areas: 'icon content arrow';
+    grid-template-areas: "icon content arrow";
     grid-template-columns: auto 1fr auto;
     align-items: center;
     cursor: pointer;
