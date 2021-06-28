@@ -2,9 +2,18 @@
   <div class="card-song flex-vertical-center clearfix" @click="play(song)">
     <div class="wrapper shadow">
       <div class="play-button-container round light-shadow">
-        <svg-icon iconName="#icon-play" iconColor="#ec4141" size="18" class="play" />
+        <svg-icon
+          iconName="#icon-play"
+          iconColor="#ec4141"
+          size="18"
+          class="play"
+        />
       </div>
-      <the-image class="pic light-shadow" :src="song.picUrl + '?param=100y100'" radius="4px" />
+      <the-image
+        class="pic"
+        :src="song.picUrl + '?param=100y100'"
+        radius="4px"
+      />
     </div>
     <div class="info flex">
       <div class="title">{{ song.name }}</div>

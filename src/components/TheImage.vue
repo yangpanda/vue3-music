@@ -2,12 +2,12 @@
   <div
     class="image-wrapper shadow"
     :style="{
-      paddingTop: ratioHeight,
       borderRadius: borderRadius,
       width: imageWidth,
     }"
   >
     <img class="image" v-lazy="src" alt="..." />
+    <div class="after" :style="{ paddingTop: paddingHeight }"></div>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
     },
     ratio: {
       type: String,
-      default: "1 * 1",
+      default: "1 / 1",
     },
     radius: {
       type: String,
@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      ratioHeight: `calc(100% / ${this.ratio})`,
+      paddingHeight: `calc(100% / ${this.ratio})`,
       borderRadius: `${this.radius}`,
       imageWidth: `${this.width}`,
     };
@@ -42,18 +42,19 @@ export default {
 
 <style lang="scss" scoped>
 .image-wrapper {
-  position: relative;
+  display: flex;
   overflow: hidden;
   width: 100%;
-  border-radius: 8px;
   background-color: #cecbcb;
 
   .image {
-    position: absolute;
-    left: 0;
-    top: 0;
     display: block;
     width: 100%;
+  }
+
+  .after {
+    width: 100%;
+    height: 0;
   }
 }
 </style>

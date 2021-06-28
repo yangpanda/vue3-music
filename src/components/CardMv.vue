@@ -1,7 +1,7 @@
 <template>
   <div class="card-mv">
     <div class="wrapper">
-      <the-image :src="mv.picUrl" ratio="958 * 539" />
+      <the-image :src="mv.picUrl" ratio="958 / 539" />
     </div>
     <div class="title">{{ mv.name }}</div>
   </div>

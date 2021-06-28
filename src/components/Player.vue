@@ -7,7 +7,10 @@
           radius="4px"
           width="50px"
         />
-        <div class="toggle-playing-page" @click="showPlayingPage = !showPlayingPage">
+        <div
+          class="toggle-playing-page"
+          @click="showPlayingPage = !showPlayingPage"
+        >
           <svg-icon iconName="#icon-arrow-up" iconColor="#f3f3f3"></svg-icon>
         </div>
       </div>
@@ -203,6 +206,7 @@ export default {
         font-size: 16px;
         cursor: default;
       }
+
       .artist {
         font-size: 13px;
         cursor: pointer;

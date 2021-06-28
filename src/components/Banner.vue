@@ -1,7 +1,7 @@
 <template>
   <el-carousel class="banner" :interval="3000" type="card" height="200px">
     <el-carousel-item v-for="(banner, index) in banners" :key="index">
-      <the-image :src="banner.pic" ratio="18 * 7"></the-image>
+      <the-image :src="banner.pic" ratio="18 / 7" />
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -9,12 +9,12 @@
 <script>
 import { ref } from "vue";
 import { fetchBanners } from "api/methods.js";
-import TheImage from 'components/TheImage.vue'
+import TheImage from "components/TheImage.vue";
 
 export default {
   name: "Banner",
   components: {
-    TheImage
+    TheImage,
   },
   data() {
     return {};
@@ -38,6 +38,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.banner {
-}
 </style>

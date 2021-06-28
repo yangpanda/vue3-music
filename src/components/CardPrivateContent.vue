@@ -2,13 +2,18 @@
   <div class="card-private-content">
     <div class="wrapper">
       <div class="play-button-container round light-shadow">
-        <svg-icon iconName="#icon-play" iconColor="#fff" class="play" size="18" />
+        <svg-icon
+          iconName="#icon-play"
+          iconColor="#fff"
+          class="play"
+          size="18"
+        />
       </div>
       <the-image
         class="pic"
         :src="privateContent.sPicUrl"
-        ratio="16 * 9"
-      ></the-image>
+        ratio="16 / 9"
+      />
     </div>
     <div class="title">{{ privateContent.name }}</div>
   </div>

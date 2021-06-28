@@ -28,7 +28,10 @@
           />
         </div>
       </transition>
-      <the-image class="pic" :src="playlist.imgUrl + '?param=400y400'"></the-image>
+      <the-image
+        class="pic"
+        :src="playlist.imgUrl + '?param=400y400'"
+      />
     </div>
     <div class="title">{{ playlist.name }}</div>
   </div>
@@ -60,11 +63,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s ease;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -84,7 +89,7 @@ export default {
       z-index: 1;
 
       .count {
-        color: #C0C4CC;
+        color: #c0c4cc;
       }
     }
 
