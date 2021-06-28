@@ -13,7 +13,7 @@ class Playlist {
   }
 
   get imgUrl() {
-    return this.__picUrl ? ? this.__coverImgUrl
+    return this.__picUrl ?? this.__coverImgUrl
   }
   get name() {
     return this.__name
