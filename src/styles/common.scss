@@ -1,0 +1,44 @@
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden
+}
+
+.ellipsis {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
+.shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+
+.light-shadow {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
+}
+
+.round {
+  border-radius: 50%
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute
+}
