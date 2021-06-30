@@ -1,28 +1,34 @@
 <template>
-  <div class="card-private-content">
-    <div class="wrapper">
-      <div class="play-button-container round light-shadow">
-        <svg-icon
-          iconName="#icon-play"
-          iconColor="#fff"
-          class="play"
-          size="18"
+  <card-base class="card" :title="privateContent.name">
+    <template #image>
+      <div class="wrapper">
+        <div class="icon-container round">
+          <svg-icon
+            class="icon-play"
+            iconName="#icon-play"
+            iconColor="#fff"
+            size="18"
+          />
+        </div>
+        <the-image
+          class="pic"
+          :src="privateContent.sPicUrl"
+          ratio="16 / 9"
+          radius="6px"
         />
       </div>
-      <the-image
-        class="pic"
-        :src="privateContent.sPicUrl"
-        ratio="16 / 9"
-      />
-    </div>
-    <div class="title">{{ privateContent.name }}</div>
-  </div>
+    </template>
+  </card-base>
 </template>
 
 <script>
+import CardBase from "components/CardBase.vue";
+
 export default {
   name: "CardPrivateContent",
-  components: {},
+  components: {
+    CardBase,
+  },
   props: {
     privateContent: {
       type: Object,
@@ -32,26 +38,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-private-content {
-  position: relative;
-  cursor: pointer;
-  flex-basis: 32%;
-
+.card {
   .wrapper {
-    width: 100%;
     position: relative;
 
-    .play-button-container {
+    .icon-container {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 1;
+      top: 8px;
+      left: 8px;
       width: 24px;
       height: 24px;
       background-color: rgba(0, 0, 0, 0.3);
       border: 1px solid #c2c4cc;
 
-      .play {
+      .icon-play {
         position: absolute;
         left: 50%;
         top: 50%;

@@ -17,7 +17,7 @@
     </div>
     <div class="info flex">
       <div class="title">{{ song.name }}</div>
-      <div class="artist">老狼</div>
+      <div class="artist">{{ artist(song.song.artists) }}</div>
     </div>
   </div>
 </template>
@@ -38,6 +38,13 @@ export default {
       song.url = res.data[0].url;
       this.$store.commit("setCurrentSong", song);
     },
+    artist(artists) {
+      const artist = []
+      artists.forEach(e => {
+        artist.push(e.name)
+      })
+      return artist.length > 1 ? artist.join(' & ') : artist[0]
+    }
   },
 };
 </script>

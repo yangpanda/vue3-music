@@ -4,10 +4,11 @@
     :style="{
       borderRadius: borderRadius,
       width: imageWidth,
+      height: imageHeight,
     }"
   >
     <img class="image" v-lazy="src" alt="..." />
-    <div class="after" :style="{ paddingTop: paddingHeight }"></div>
+    <div v-if="!height" class="after" :style="{ paddingTop: paddingHeight }"></div>
   </div>
 </template>
 
@@ -24,17 +25,21 @@ export default {
     },
     radius: {
       type: String,
-      default: "8px",
+      default: "4px",
     },
     width: {
       type: String,
     },
+    height: {
+      type: String,
+    }
   },
   data() {
     return {
-      paddingHeight: `calc(100% / ${this.ratio})`,
+      paddingHeight: `calc(100% / (${this.ratio}))`,
       borderRadius: `${this.radius}`,
       imageWidth: `${this.width}`,
+      imageHeight: `${this.height}`,
     };
   },
 };
@@ -50,6 +55,7 @@ export default {
   .image {
     display: block;
     width: 100%;
+    height: 100%;
   }
 
   .after {

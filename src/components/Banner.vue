@@ -1,9 +1,21 @@
 <template>
-  <el-carousel class="banner" :interval="3000" type="card" height="200px">
-    <el-carousel-item v-for="(banner, index) in banners" :key="index">
-      <the-image :src="banner.pic" ratio="18 / 7" />
-    </el-carousel-item>
-  </el-carousel>
+  <div class="swiper">
+    <div class="wrapper">
+      <the-image
+        class="image"
+        v-for="(banner, index) in banners"
+        :key="index"
+        :src="banner.pic + '?param=540y200'"
+        ratio="27 / 10"
+        radius="6px"
+        width="540px"
+        height="200px"
+      />
+      <button class="button pre">pre</button>
+      <button class="button next">next</button>
+    </div>
+    <div class="navigation"></div>
+  </div>
 </template>
 
 <script>
@@ -38,4 +50,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.swiper {
+  .wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+
+    .button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .pre {
+      left: 0;
+    }
+    .next {
+      right: 0;
+    }
+
+    .image {
+      position: absolute;
+      display: inline-block;
+      // position: absolute;
+      // left: 0;
+      // top: 0;
+    }
+  }
+}
 </style>

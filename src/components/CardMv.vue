@@ -1,15 +1,23 @@
 <template>
-  <div class="card-mv">
-    <div class="wrapper">
-      <the-image :src="mv.picUrl" ratio="958 / 539" />
-    </div>
-    <div class="title">{{ mv.name }}</div>
-  </div>
+  <card-base :title="mv.name">
+    <template #image>
+      <the-image
+        :src="mv.picUrl + '?param=640y360'"
+        ratio="16 / 9"
+        radius="6px"
+      />
+    </template>
+  </card-base>
 </template>
 
 <script>
+import CardBase from "components/CardBase.vue";
+
 export default {
   name: "CardMv",
+  components: {
+    CardBase,
+  },
   props: {
     mv: {
       type: Object,
@@ -19,18 +27,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-mv {
-  cursor: pointer;
-  flex-basis: 32%;
-
-  .wrapper {
-    position: relative;
-  }
-
-  .title {
-    margin: 5px 0 10px 5px;
-    font-size: var(--font-size-16);
-    color: #606266;
-  }
-}
 </style>

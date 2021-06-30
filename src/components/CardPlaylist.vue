@@ -1,49 +1,45 @@
 <template>
-  <div class="card-playlist" @click="toPlaylist(playlist.id)">
-    <div
-      class="wrapper"
-      @mouseenter="showPlayBtn = !showPlayBtn"
-      @mouseleave="showPlayBtn = !showPlayBtn"
-    >
-      <div class="play-count-container absolute">
-        <svg-icon
-          iconName="#icon-play-outline"
-          iconColor="#C0C4CC"
-          width="16"
-          height="16"
+  <card-base
+    class="card"
+    :title="playlist.name"
+    @click="toPlaylist(playlist.id)"
+  >
+    <template #image>
+      <div
+        class="wrapper"
+        @mouseenter="showPlayBtn = !showPlayBtn"
+        @mouseleave="showPlayBtn = !showPlayBtn"
+      >
+        <transition name="fade">
+          <div
+            class="icon-container shadow"
+            v-if="showPlayBtn"
+          >
+            <svg-icon
+              class="icon-play"
+              iconName="#icon-play"
+              iconColor="#ec4141"
+              size="24"
+              @click.stop="playAll"
+            />
+          </div>
+        </transition>
+        <the-image
+          :src="playlist.imgUrl + '?param=400y400'"
+          radius="8px"
         />
-        <span class="count">{{ playlist.playCount }}</span>
       </div>
-      <transition name="fade">
-        <div
-          class="play-button-container round light-shadow"
-          v-if="showPlayBtn"
-        >
-          <svg-icon
-            iconName="#icon-play"
-            iconColor="#ec4141"
-            size="24"
-            class="play"
-            @click.stop="playAll"
-          />
-        </div>
-      </transition>
-      <the-image
-        class="pic"
-        :src="playlist.imgUrl + '?param=400y400'"
-      />
-    </div>
-    <div class="title">{{ playlist.name }}</div>
-  </div>
+    </template>
+  </card-base>
 </template>
 
 <script>
-import TheImage from "components/TheImage.vue";
+import CardBase from "components/CardBase.vue";
 
 export default {
   name: "CardPlaylist",
   components: {
-    TheImage,
+    CardBase,
   },
   data() {
     return {
@@ -73,27 +69,11 @@ export default {
   opacity: 0;
 }
 
-.card-playlist {
-  cursor: pointer;
-  flex-basis: 18%;
-  position: relative;
-
+.card {
   .wrapper {
-    width: 100%;
-    padding-top: 100%;
     position: relative;
 
-    .play-count-container {
-      top: 5px;
-      right: 5px;
-      z-index: 1;
-
-      .count {
-        color: #c0c4cc;
-      }
-    }
-
-    .play-button-container {
+    .icon-container {
       position: absolute;
       bottom: 10px;
       right: 10px;
@@ -101,27 +81,15 @@ export default {
       width: 36px;
       height: 36px;
       background-color: #fff;
+      border-radius: 50%;
 
-      .play {
+      .icon-play {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translateX(-40%) translateY(-50%);
       }
     }
-
-    .pic {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-  }
-
-  .title {
-    font-size: var(--font-size-16);
-    margin: 5px;
-    color: #606266;
   }
 }
 </style>
