@@ -1,5 +1,5 @@
 <template>
-  <div class="card-song flex-vertical-center clearfix" @click="play(song)">
+  <div class="card-song flex-vertical-center clearfix">
     <div class="wrapper shadow">
       <div class="play-button-container round light-shadow">
         <svg-icon
@@ -7,24 +7,23 @@
           iconColor="#ec4141"
           size="18"
           class="play"
+          @click="play(song)"
         />
       </div>
       <the-image
         class="pic"
-        :src="song.picUrl + '?param=100y100'"
+        :src="song.image + '?param=100y100'"
         radius="4px"
       />
     </div>
     <div class="info flex">
       <div class="title">{{ song.name }}</div>
-      <div class="artist">{{ artist(song.song.artists) }}</div>
+      <div class="artist">{{ song.singer.join(" & ") }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import { fetchSongsUrl } from "api/methods.js";
-
 export default {
   name: "CardSong",
   props: {
@@ -34,17 +33,8 @@ export default {
   },
   methods: {
     async play(song) {
-      const res = await fetchSongsUrl(song.id);
-      song.url = res.data[0].url;
       this.$store.commit("setCurrentSong", song);
     },
-    artist(artists) {
-      const artist = []
-      artists.forEach(e => {
-        artist.push(e.name)
-      })
-      return artist.length > 1 ? artist.join(' & ') : artist[0]
-    }
   },
 };
 </script>

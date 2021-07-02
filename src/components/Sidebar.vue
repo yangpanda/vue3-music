@@ -126,10 +126,6 @@ export default {
     };
   },
   created() {
-    // this.$watch(
-    //   () => this.$store.state.accountId,
-    //   this.getFavoredPlaylists
-    // )
     this.getFavoredPlaylists();
   },
   watch: {

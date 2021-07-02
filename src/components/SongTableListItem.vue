@@ -8,15 +8,13 @@
       </div>
     </div>
     <div class="name ellipsis">{{ song.name }}</div>
-    <div class="artist ellipsis">{{ song.artist }}</div>
+    <div class="artist ellipsis">{{ song.singer.join(' / ') }}</div>
     <div class="album ellipsis">{{ song.album }}</div>
     <div class="duration">{{ song.duration }}</div>
   </div>
 </template>
 
 <script>
-import { fetchSongsUrl } from "api/methods.js";
-
 export default {
   name: "SongTableListItem",
   props: {
@@ -29,8 +27,6 @@ export default {
   },
   methods: {
     async play(song) {
-      const res = await fetchSongsUrl(song.id);
-      song.url = res.data[0].url;
       this.$store.commit("setCurrentSong", song);
     },
   },

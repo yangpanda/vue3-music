@@ -103,9 +103,11 @@
 
 <script>
 import TheImage from "./TheImage.vue";
+import PlayingPage from "components/PlayingPage.vue";
+
 export default {
   name: "Player",
-  components: { TheImage },
+  components: { TheImage, PlayingPage },
   data() {
     return {
       showPlayingPage: false,
@@ -125,12 +127,12 @@ export default {
     albumImg() {
       return this.$store.state.currentSong === null
         ? ""
-        : this.$store.state.currentSong.picUrl;
+        : this.$store.state.currentSong.image;
     },
     songArtist() {
       return this.$store.state.currentSong === null
         ? ""
-        : this.$store.state.currentSong.artist;
+        : this.$store.state.currentSong.singer.join(" / ");
     },
   },
 };
