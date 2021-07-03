@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="center">
-      <div class="control-tools">
+      <!-- <div class="control-tools">
         <div class="play-mode clearfix">
           <svg-icon
             class="order-mode"
@@ -87,13 +87,15 @@
           </div>
         </div>
         <span class="left-time">01:11</span>
-      </div>
+      </div> -->
+
+      <audio-player></audio-player>
     </div>
     <div class="right">
       <div class="volum"></div>
       <div class="song-list"></div>
     </div>
-    <audio :src="songURL" autoplay></audio>
+    <!-- <audio :src="songURL" autoplay></audio> -->
     <playing-page
       class="playing-page"
       :class="{ 'show-playing-page': showPlayingPage }"
@@ -103,11 +105,16 @@
 
 <script>
 import TheImage from "./TheImage.vue";
-import PlayingPage from "components/PlayingPage.vue";
+import PlayingPage from "@/components/PlayingPage.vue";
+import AudioPlayer from "@/components/AudioPlayer.vue";
 
 export default {
   name: "Player",
-  components: { TheImage, PlayingPage },
+  components: {
+    TheImage,
+    PlayingPage,
+    AudioPlayer,
+  },
   data() {
     return {
       showPlayingPage: false,

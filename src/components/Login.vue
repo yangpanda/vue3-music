@@ -80,7 +80,6 @@ export default {
     },
     async getLoginStatus() {
       const res = await user.getLoginStatus();
-      console.log(res);
       if (res.data.code === 200) {
         if (res.data.account) {
           this.logined = true;

@@ -14,6 +14,7 @@
           <div
             class="icon-container shadow"
             v-if="showPlayBtn"
+            @click="playAll()"
           >
             <svg-icon
               class="icon-play"
@@ -24,10 +25,7 @@
             />
           </div>
         </transition>
-        <the-image
-          :src="playlist.imgUrl + '?param=400y400'"
-          radius="8px"
-        />
+        <the-image :src="playlist.imgUrl + '?param=400y400'" radius="8px" />
       </div>
     </template>
   </card-base>
@@ -35,6 +33,7 @@
 
 <script>
 import CardBase from "components/CardBase.vue";
+import { getSongDetail, getPlaylistDetail } from "@/composables/usePlaylist";
 
 export default {
   name: "CardPlaylist",
@@ -53,7 +52,15 @@ export default {
     toPlaylist(id) {
       this.$router.push(`/playlist-detail/${id}`);
     },
-    playAll() {},
+    async playAll() {
+      const ids = [];
+      const playlistDetail = await getPlaylistDetail(this.playlist.id)
+      playlistDetail.trackIds.map((item) => ids.push(item.id))
+
+      const songs = await getSongDetail(ids)
+      this.$store.state.playlists = songs;
+      this.$store.state.currentSong = this.$store.state.playlists[0]
+    },
   },
 };
 </script>
