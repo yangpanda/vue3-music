@@ -2,7 +2,7 @@
   <div class="menu-item">
     <div class="menu-item-content">
       <div v-if="iconName" class="menu-item-content-icon">
-        <svg-icon :iconName="'#icon-' + iconName" size="24"></svg-icon>
+        <svg-icon :iconName="'#icon-' + iconName" size="22"></svg-icon>
       </div>
       <div class="menu-item-content-header">
         {{ label }}
