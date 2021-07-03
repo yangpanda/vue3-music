@@ -18,29 +18,6 @@
           />
           <span>{{ playlistDetail.creatorName }}</span>
         </div>
-        <!-- <div class="buttons">
-          <n-button-group size="small" style="margin-right: 10px">
-            <n-button round color="#cc3232">
-              <template #icon>
-                <n-icon color="#fff"><play-icon /></n-icon>
-              </template>
-              播放全部
-            </n-button>
-            <n-button round color="#cc3232">
-              <template #icon>
-                <n-icon color="#fff"><add-icon /></n-icon>
-              </template>
-            </n-button>
-          </n-button-group>
-          <n-button round size="small">
-            <template #icon>
-              <n-icon>
-                <collection-icon />
-              </n-icon>
-            </template>
-            收藏
-          </n-button>
-        </div> -->
         <div class="tags">
           <span>标签： </span>
           <span>{{ playlistDetail.tags }}</span>
@@ -59,14 +36,7 @@
 import SongTableList from "components/SongTableList.vue";
 import TheImage from "components/TheImage.vue";
 
-import { fetchPlaylistDetail, fetchSongsDetail } from "api/methods.js";
-import { ref, watch } from "vue";
-
-import Song from "model/Song.js";
-import Playlist from "model/Playlist.js";
-
-// import { Play as PlayIcon, AddSharp as AddIcon } from "@vicons/ionicons5";
-// import { Collections20Regular as CollectionIcon } from "@vicons/fluent";
+import { usePlaylistGetDetail } from '@/composables/usePlaylist.js'
 
 export default {
   name: "PlaylistDetail",
@@ -76,44 +46,17 @@ export default {
   components: {
     SongTableList,
     TheImage,
-    // PlayIcon,
-    // CollectionIcon,
-    // AddIcon,
   },
   setup(props) {
-    const playlistDetail = ref({});
-    const songs = ref([]);
-
-    const getPlaylistDetail = async () => {
-      const res = await fetchPlaylistDetail(props.id);
-      playlistDetail.value = new Playlist(res.playlist);
-    };
-
-    const getSongs = async () => {
-      const songsId = [];
-      playlistDetail.value.trackIds.forEach((item) => {
-        songsId.push(item.id);
-      });
-
-      const res = await fetchSongsDetail(songsId);
-      res.songs.forEach((item) => {
-        songs.value.push(new Song(item));
-      });
-    };
-
-    watch(playlistDetail, getSongs);
+    const {
+      playlistDetail,
+      songs
+    } = usePlaylistGetDetail(props.id)
 
     return {
       playlistDetail,
       songs,
-      getPlaylistDetail,
     };
-  },
-  mounted() {
-    this.getPlaylistDetail();
-  },
-  activated() {
-    this.getPlaylistDetail();
   },
 };
 </script>

@@ -20,7 +20,7 @@
 
 <script>
 import { ref } from "vue";
-import { fetchBanners } from "api/methods.js";
+import * as banner from "@/api/service/banner.js";
 import TheImage from "components/TheImage.vue";
 
 export default {
@@ -34,7 +34,7 @@ export default {
   setup() {
     const banners = ref([]);
     const getBanners = async () => {
-      const res = await fetchBanners(2);
+      const res = await banner.getBanners(2);
       banners.value = res.banners;
     };
 

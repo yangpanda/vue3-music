@@ -17,6 +17,7 @@
     "@rollup/plugin-alias": "^3.1.2",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.1.1",
+    "axios": "^0.21.1",
     "element-plus": "^1.0.2-beta.48",
     "naive-ui": "^2.12.2",
     "sass": "^1.35.1",

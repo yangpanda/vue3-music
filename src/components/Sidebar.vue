@@ -17,7 +17,15 @@
       />
     </menu-item-group>
 
-    <sub-menu :label="personalPlaylistsOption.label"></sub-menu>
+    <sub-menu :label="personalPlaylistsOption.label">
+      <menu-item
+        v-for="(item, index) in personalPlaylistsOption.children"
+        :key="index"
+        :label="item.label"
+        iconName="love"
+        @click="$router.push(item.key)"
+      />
+    </sub-menu>
     <sub-menu :label="favoredPlaylistsOption.label">
       <menu-item
         v-for="(item, index) in favoredPlaylistsOption.children"
@@ -31,7 +39,7 @@
 </template>
 
 <script>
-import { fetchFavoredPlaylists } from "api/methods.js";
+import * as playlist from "@/api/service/playlist.js";
 
 import { ref } from "vue";
 
@@ -90,11 +98,12 @@ const staticPersonalMenuOption = {
   ],
 };
 
+const createdPlaylists = ref([]);
 const personalPlaylistsOption = ref({
   label: "创建的歌单",
   key: "personal-playlists",
   iconName: "logo",
-  children: [],
+  children: createdPlaylists,
 });
 
 const favoredPlaylists = ref([]);
@@ -121,26 +130,31 @@ export default {
       staticMenuOption,
       staticPersonalMenuOption,
       personalPlaylistsOption,
+      createdPlaylists,
       favoredPlaylistsOption,
       favoredPlaylists,
     };
   },
   created() {
-    this.getFavoredPlaylists();
+    this.getUserPlaylists();
   },
   watch: {
-    "$store.state.accountId": "getFavoredPlaylists",
+    "$store.state.accountId": "getUserPlaylists",
   },
   methods: {
     toPlaylistDetail(id) {
       this.$router.push(`/playlist-detail/${id}`);
     },
-    async getFavoredPlaylists() {
+    async getUserPlaylists() {
       if (this.$store.state.accountId) {
-        let res = await fetchFavoredPlaylists(this.$store.state.accountId);
+        let res = await playlist.getUserPlaylists(this.$store.state.accountId);
         res.playlist.forEach((item) => {
           const playlist = new Playlist(item);
-          favoredPlaylists.value.push(this.CreateMenuOption(playlist));
+          if (item.userId == this.$store.state.accountId) {
+            createdPlaylists.value.push(this.CreateMenuOption(playlist))
+          } else {
+            favoredPlaylists.value.push(this.CreateMenuOption(playlist));
+          }
         });
       }
     },

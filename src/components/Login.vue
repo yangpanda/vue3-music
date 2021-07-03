@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { login, fetchLoginStatus } from "api/methods.js";
+import * as user from "@/api/service/user.js"
 
 export default {
   name: "Login",
@@ -71,8 +71,7 @@ export default {
   },
   methods: {
     async login() {
-      const res = await login(this.email, this.password);
-      console.log(res);
+      const res = await user.login(this.email, this.password);
       if (res.code === 200) {
         this.profile = res.profile;
         this.$store.commit("setAccountId", res.account.id);
@@ -80,7 +79,8 @@ export default {
       }
     },
     async getLoginStatus() {
-      const res = await fetchLoginStatus();
+      const res = await user.getLoginStatus();
+      console.log(res);
       if (res.data.code === 200) {
         if (res.data.account) {
           this.logined = true;

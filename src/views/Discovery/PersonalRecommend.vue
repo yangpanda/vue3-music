@@ -4,7 +4,7 @@
     <the-section label="推荐歌单" columns="5">
       <template #cards>
         <card-playlist
-          v-for="(item, index) in playlists"
+          v-for="(item, index) in personalized"
           :key="index"
           :playlist="item"
         />
@@ -13,7 +13,7 @@
     <the-section label="独家放送" columns="3">
       <template #cards>
         <card-private-content
-          v-for="(item, index) in privateContents"
+          v-for="(item, index) in privatecontent"
           :key="index"
           :privateContent="item"
         />
@@ -21,17 +21,13 @@
     </the-section>
     <the-section label="最新音乐" columns="3">
       <template #cards>
-        <card-song
-          v-for="(item, index) in newSongs"
-          :key="index"
-          :song="item"
-        />
+        <card-song v-for="(item, index) in newsong" :key="index" :song="item" />
       </template>
     </the-section>
     <the-section label="推荐MV" columns="3">
       <template #cards>
         <card-mv
-          v-for="(item, index) in personalizedMvs"
+          v-for="(item, index) in personalized_mv"
           :key="index"
           :mv="item"
         />
@@ -48,16 +44,9 @@ import CardSong from "components/CardSong.vue";
 import CardMv from "components/CardMv.vue";
 import TheSection from "components/TheSection.vue";
 
-import { ref, onMounted } from "vue";
-
-import {
-  fetchRecommendPlaylists,
-  fetchPrivateContents,
-  fetchNewSongs,
-  fetchPersonalizedMvs,
-} from "api/methods.js";
-
-import Playlist from "model/Playlist.js";
+import { usePlaylistGetPersonalized } from "@/composables/usePlaylist.js";
+import { useMvGetPrivatecontent, useMvGetPersonalizedMv } from "@/composables/useMv.js";
+import { useSongGetNewSongs } from "@/composables/useSong.js";
 
 export default {
   components: {
@@ -66,54 +55,20 @@ export default {
     CardPrivateContent,
     CardMv,
     CardSong,
-    TheSection,
+    TheSection
   },
   name: "PersonalRecommend",
   setup() {
-    const playlists = ref([]);
-    const privateContents = ref([]);
-    const newSongs = ref([]);
-    const personalizedMvs = ref([]);
-
-    const getRecommendPlaylists = async () => {
-      const res = await fetchRecommendPlaylists(10);
-      res.result.forEach((playlist) => {
-        playlists.value.push(new Playlist(playlist));
-      });
-    };
-
-    const getPrivatecontents = async () => {
-      const res = await fetchPrivateContents();
-      res.result.forEach((item) => {
-        privateContents.value.push(item);
-      });
-    };
-
-    const getNewSongs = async () => {
-      const res = await fetchNewSongs(15);
-      res.result.forEach((item) => {
-        newSongs.value.push(item);
-      });
-    };
-
-    const getPersonalizedMvs = async () => {
-      const res = await fetchPersonalizedMvs();
-      res.result.forEach((item) => {
-        personalizedMvs.value.push(item);
-      });
-      personalizedMvs.value = personalizedMvs.value.slice(0, 3);
-    };
-
-    onMounted(getRecommendPlaylists);
-    onMounted(getPrivatecontents);
-    onMounted(getNewSongs);
-    onMounted(getPersonalizedMvs);
+    const { personalized } = usePlaylistGetPersonalized();
+    const { privatecontent } = useMvGetPrivatecontent();
+    const { newsong } = useSongGetNewSongs();
+    const { personalized_mv } = useMvGetPersonalizedMv();
 
     return {
-      playlists,
-      privateContents,
-      newSongs,
-      personalizedMvs,
+      personalized,
+      privatecontent,
+      newsong,
+      personalized_mv,
     };
   },
   methods: {

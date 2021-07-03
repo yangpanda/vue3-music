@@ -30,6 +30,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
+      { find: '@', replacement: resolve('src')},
       { find: 'components', replacement: resolve('src/components') },
       { find: 'model', replacement: resolve('src/model') },
       { find: 'views', replacement: resolve('src/views') },

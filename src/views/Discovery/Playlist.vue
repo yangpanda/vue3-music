@@ -25,7 +25,7 @@
 <script>
 import { onMounted, ref } from "vue";
 
-import { fetchAllPlaylist } from "api/methods";
+import { getPlaylist } from "@/api/service/playlist.js";
 
 import Playlist from "model/Playlist.js";
 
@@ -48,7 +48,7 @@ export default {
     loading.value = true;
 
     const getAllPlaylist = async () => {
-      const res = await fetchAllPlaylist();
+      const res = await getPlaylist();
       res.playlists.forEach((playlist) => {
         playlists.value.push(new Playlist(playlist));
       });
