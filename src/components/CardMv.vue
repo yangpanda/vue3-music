@@ -2,7 +2,7 @@
   <card-base :title="mv.name">
     <template #image>
       <the-image
-        :src="mv.picUrl + '?param=640y360'"
+        :src="image() + '?param=640y360'"
         ratio="16 / 9"
         radius="6px"
       />
@@ -23,6 +23,11 @@ export default {
       type: Object,
     },
   },
+  methods: {
+    image() {
+      return this.mv.picUrl ?? this.mv.cover
+    }
+  }
 };
 </script>
 

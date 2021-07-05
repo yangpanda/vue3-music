@@ -29,3 +29,32 @@ export function useMvGetPersonalizedMv() {
     personalized_mv
   }
 }
+
+export function useMvGetNewMv() {
+  const newMv = ref([])
+  const getNewMv = async () => {
+    const response = await mv.getNewMv(8);
+    response.data.map(item => newMv.value.push(item));
+  };
+
+  onMounted(getNewMv);
+
+  return {
+    newMv
+  }
+}
+
+export function useMvGetNeteaseMv() {
+  const neteaseMv = ref([])
+  const getNeteaseMv = async () => {
+    const response = await mv.getNeteaseMv(8);
+    console.log(response);
+    response.data.map(item => neteaseMv.value.push(item));
+  };
+
+  onMounted(getNeteaseMv);
+
+  return {
+    neteaseMv
+  }
+}

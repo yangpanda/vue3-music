@@ -31,9 +31,11 @@ const routes = [
     component: () => import('views/FM.vue')
   },
   {
-    path: '/video',
-    name: 'Video',
-    component: () => import('views/Video.vue')
+    path: '/mv',
+    name: 'MV',
+    component: () => import('views/mv/index.vue'),
+    children: [
+    ]
   }
 ]
 

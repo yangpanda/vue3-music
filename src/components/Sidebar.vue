@@ -56,8 +56,8 @@ const staticMenuOption = [
     key: "discovery",
   },
   {
-    path: "/video",
-    label: "视频",
+    path: "/mv",
+    label: "MV",
     key: "video",
   },
   {
