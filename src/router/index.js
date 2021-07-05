@@ -33,7 +33,7 @@ const routes = [
   {
     path: '/mv',
     name: 'MV',
-    component: () => import('views/mv/index.vue'),
+    component: () => import('views/Mv/index.vue'),
     children: [
     ]
   }
