@@ -11,7 +11,9 @@ export function useSongGetNewSongs() {
     res.result.map((item) => songIds.push(item.id));
 
     const songsData = await song.getSongDetail(songIds.join(","));
-    songsData.songs.map((item) => newsong.value.push(new Song(item)));
+    songsData.songs.map((item) => {
+      newsong.value.push(new Song(item))
+    });
   }
 
   onMounted(getNewSongs)

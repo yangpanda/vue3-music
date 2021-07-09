@@ -4,7 +4,7 @@ export default class Song {
     this.name = songData.name
     this.singer = filterSinger(songData.ar)
     this.album = songData.al.name
-    this.duration = songData.dt
+    this.duration = formatDuration(songData.dt)
     this.image = songData.al.picUrl
     this.url = `https://music.163.com/song/media/outer/url?id=${songData.id}.mp3`
   }
@@ -19,4 +19,20 @@ function filterSinger(singer) {
     ret.push(item.name)
   })
   return ret
+}
+
+function addZero(num) {
+  let ret = num
+  if (String(num).length === 1) {
+    ret = '0' + num
+  }
+
+  return ret
+}
+
+function formatDuration(time) {
+  let minute = ~~(time / 1000 / 60)
+  let second = ~~((time - (minute * 60 * 1000)) / 1000)
+
+  return addZero(minute) + ':' + addZero(second)
 }
