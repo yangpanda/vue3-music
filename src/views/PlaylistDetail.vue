@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import SongTableList from "components/SongTableList.vue";
-import TheImage from "components/TheImage.vue";
+import SongTableList from "@/components/SongTableList.vue";
+import TheImage from "@/components/TheImage.vue";
 
 import { usePlaylistGetDetail } from '@/composables/usePlaylist.js'
 

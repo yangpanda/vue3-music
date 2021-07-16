@@ -13,3 +13,6 @@ export const getSongDetail = (ids) =>
 
 export const getSongsUrl = (ids) =>
   request.get(`/song/url?id=${ids}`);
+
+export const getLyric = (id) =>
+  request.get(`/lyric?id=${id}`)

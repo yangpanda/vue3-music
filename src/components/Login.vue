@@ -1,26 +1,29 @@
 <template>
   <div class="wrapper">
     <span
-      v-if="!logined"
+      v-if="!loginStatus"
       class="login-button"
       @click="showLoginPanel = !showLoginPanel"
     >
       登录
     </span>
-    <div v-if="logined" class="user-info">
+    <div v-else class="user-info">
       <n-avatar
         :size="30"
         round
-        :src="profile.avatarUrl"
+        :src="userinfo.avatar"
         style="cursor: pointer"
       />
-      <div class="user-info-drop-button">
+      <div
+        class="user-info-drop-button"
+        @click="showDropPanel = !showDropPanel"
+      >
         <span style="margin-right: 4px; color: #fff">
-          {{ profile.nickname }}
+          {{ userinfo.nickname }}
         </span>
         <svg-icon iconName="#icon-triangle-down" size="16" iconColor="#fff" />
       </div>
-      <div class="user-info-drop-list shadow">
+      <div v-if="showDropPanel" class="user-info-drop-list shadow">
         <div class="personal">
           <div>
             <div><span>动态</span></div>
@@ -33,7 +36,7 @@
           <svg-icon iconName="#icon-user-info" size="20" />
           <span>个人信息设置</span>
         </div>
-        <div class="logo-out list-item">
+        <div class="logo-out list-item" @click="logout()">
           <svg-icon iconName="#icon-log-out" size="20" />
           <span>退出登录</span>
         </div>
@@ -50,49 +53,32 @@
 </template>
 
 <script>
-import * as user from "@/api/service/user.js"
+import { useUserLogin } from "@/composables/useUser.js";
 
 export default {
   name: "Login",
-  data() {
+  setup() {
+    const {
+      email,
+      password,
+      showLoginPanel,
+      showDropPanel,
+      userinfo,
+      loginStatus,
+      login,
+      logout,
+    } = useUserLogin();
+
     return {
-      logined: false,
-      showLoginPanel: false,
-      email: "",
-      password: "",
-      profile: {},
+      email,
+      password,
+      showLoginPanel,
+      showDropPanel,
+      userinfo,
+      loginStatus,
+      login,
+      logout,
     };
-  },
-  created() {
-    this.getLoginStatus();
-  },
-  watch: {
-    logined: "handleLogined",
-  },
-  methods: {
-    async login() {
-      const res = await user.login(this.email, this.password);
-      if (res.code === 200) {
-        this.profile = res.profile;
-        this.$store.commit("setAccountId", res.account.id);
-        this.logined = true;
-      }
-    },
-    async getLoginStatus() {
-      const res = await user.getLoginStatus();
-      if (res.data.code === 200) {
-        if (res.data.account) {
-          this.logined = true;
-          this.profile = res.data.profile;
-          this.$store.commit("setAccountId", res.data.account.id);
-        } else {
-          console.log("未登录");
-        }
-      }
-    },
-    handleLogined() {
-      this.showLoginPanel = false;
-    },
   },
 };
 </script>

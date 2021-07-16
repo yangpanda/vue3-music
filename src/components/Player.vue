@@ -20,75 +20,6 @@
       </div>
     </div>
     <div class="center">
-      <!-- <div class="control-tools">
-        <div class="play-mode clearfix">
-          <svg-icon
-            class="order-mode"
-            iconName="#icon-liebiaoxunhuan"
-            width="22px"
-            height="22px"
-            fill="#f6cdcd"
-          />
-          <svg-icon
-            class="random-mode"
-            iconName="#icon-suijibofang"
-            width="22px"
-            height="22px"
-            fill="#f6cdcd"
-          />
-          <svg-icon
-            class="single-mode"
-            iconName="#icon-danquxunhuan"
-            width="22px"
-            height="22px"
-            fill="#f6cdcd"
-          />
-        </div>
-        <div class="play-control">
-          <svg-icon
-            class="pre"
-            iconName="#icon-shangyiqu"
-            width="22px"
-            height="22px"
-            fill="#f6cdcd"
-          />
-          <div class="play-pause">
-            <svg-icon
-              class="play"
-              iconName="#icon-zantingbofang"
-              width="22px"
-              height="22px"
-              fill="#f6cdcd"
-            />
-            <svg-icon
-              class="pause"
-              iconName="#icon-bofangzhong"
-              width="22px"
-              height="22px"
-              fill="#f6cdcd"
-            />
-          </div>
-          <svg-icon
-            class="next"
-            iconName="#icon-xiayiqu"
-            width="22px"
-            height="22px"
-            fill="#f6cdcd"
-          />
-        </div>
-      </div>
-      <div class="progress-bar">
-        <span class="consume-time">00:23</span>
-        <div class="bar-container">
-          <div class="bar">
-            <div class="consume-bar">
-              <div class="btn"></div>
-            </div>
-          </div>
-        </div>
-        <span class="left-time">01:11</span>
-      </div> -->
-
       <audio-player></audio-player>
     </div>
     <div class="right">
@@ -96,6 +27,7 @@
       <div class="song-list"></div>
     </div>
     <!-- <audio :src="songURL" autoplay></audio> -->
+    <div class="lyric shadow">歌词</div>
     <playing-page
       class="playing-page"
       :class="{ 'show-playing-page': showPlayingPage }"
@@ -107,6 +39,9 @@
 import TheImage from "./TheImage.vue";
 import PlayingPage from "@/components/PlayingPage.vue";
 import AudioPlayer from "@/components/AudioPlayer.vue";
+
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "Player",
@@ -120,26 +55,34 @@ export default {
       showPlayingPage: false,
     };
   },
+  setup() {
+    const store = useStore();
+    const playIndex = computed(() => store.getters.getPlayIndex);
+    const playlist = computed(() => store.getters.getPlaylist);
+
+    const setPlayIndex = (index) => store.commit("setPlayIndex", index);
+
+    return {
+      playIndex,
+      playlist,
+      setPlayIndex
+    }
+  },
   computed: {
-    songURL() {
-      return this.$store.state.currentSong === null
-        ? ""
-        : this.$store.state.currentSong.url;
-    },
     songName() {
-      return this.$store.state.currentSong === null
+      return this.playlist.length === 0
         ? ""
-        : this.$store.state.currentSong.name;
+        : this.playlist[this.playIndex].name;
     },
     albumImg() {
-      return this.$store.state.currentSong === null
+      return this.playlist.length === 0
         ? ""
-        : this.$store.state.currentSong.image;
+        : this.playlist[this.playIndex].image;
     },
     songArtist() {
-      return this.$store.state.currentSong === null
+      return this.playlist.length === 0
         ? ""
-        : this.$store.state.currentSong.singer.join(" / ");
+        : this.playlist[this.playIndex].singer.join(" / ");
     },
   },
 };
@@ -358,6 +301,18 @@ export default {
 
   .right {
     flex: 1;
+  }
+
+  .lyric {
+    position: absolute;
+    left: 272px;
+    bottom: var(--footer-height);
+    right: 0;
+    z-index: var(--max-z-index);
+    text-align: center;
+    background-color: rgba(255, 255, 255, .7);
+    font-size: 16px;
+    line-height: 2em;
   }
 
   .playing-page {

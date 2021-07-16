@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import Banner from "components/Banner.vue";
-import CardPlaylist from "components/CardPlaylist.vue";
-import CardPrivateContent from "components/CardPrivateContent.vue";
-import CardSong from "components/CardSong.vue";
-import CardMv from "components/CardMv.vue";
-import TheSection from "components/TheSection.vue";
+import Banner from "@/components/Banner.vue";
+import CardPlaylist from "@/components/CardPlaylist.vue";
+import CardPrivateContent from "@/components/CardPrivateContent.vue";
+import CardSong from "@/components/CardSong.vue";
+import CardMv from "@/components/CardMv.vue";
+import TheSection from "@/components/TheSection.vue";
 
 import { usePlaylistGetPersonalized } from "@/composables/usePlaylist.js";
 import { useMvGetPrivatecontent, useMvGetPersonalizedMv } from "@/composables/useMv.js";

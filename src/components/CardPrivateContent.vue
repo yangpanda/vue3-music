@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import CardBase from "components/CardBase.vue";
+import CardBase from "@/components/CardBase.vue";
 
 export default {
   name: "CardPrivateContent",

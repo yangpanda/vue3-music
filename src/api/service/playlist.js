@@ -26,3 +26,6 @@ export const getDailySongs = () =>
 
 export const getUserPlaylists = (uid) =>
   request.get(`/user/playlist?uid=${uid}`);
+
+export const getRankList = () =>
+  request.get("/toplist")

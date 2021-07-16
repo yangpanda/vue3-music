@@ -1,6 +1,6 @@
 import * as playlist from '@/api/service/playlist.js'
 import * as song from '@/api/service/song.js'
-import { ref, onMounted, watch, resolveComponent } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Playlist from '@/model/Playlist.js'
 import Song from '@/model/Song.js'
 
@@ -24,7 +24,10 @@ export function usePlaylistGetPersonalized() {
 export async function getSongDetail(ids) {
   const songs = []
   const response = await song.getSongDetail(ids.join(','))
-  response.songs.map(item => songs.push(new Song(item)))
+  console.log(response.songs);
+  response.songs.map(item => {
+    songs.push(new Song(item))
+  })
   return songs
 }
 

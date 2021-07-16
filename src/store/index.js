@@ -1,22 +1,11 @@
 import { createStore } from 'vuex'
 
+import getters from './getters.js'
+import mutations from './mutations.js'
+import state from './state.js'
+
 export default createStore({
-  state: {
-    playlists: [],
-    currentSong: null,
-    accountId: null,
-  },
-  mutations: {
-    setCurrentSong(state, song) {
-      state.currentSong = song
-    },
-    setAccountId(state, id) {
-      state.accountId = id
-    },
-    setPlayLists(state, playlists) {
-      state.playlists = playlists
-    }
-  },
-  actions: {},
-  modules: {}
+  state,
+  getters,
+  mutations,
 })

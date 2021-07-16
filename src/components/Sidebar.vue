@@ -41,77 +41,14 @@
 <script>
 import * as playlist from "@/api/service/playlist.js";
 
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
+import { useStore } from "vuex";
 
-import MenuItem from "components/MenuItem.vue";
-import MenuItemGroup from "components/MenuItemGroup.vue";
-import SubMenu from "components/SubMenu.vue";
+import MenuItem from "@/components/MenuItem.vue";
+import MenuItemGroup from "@/components/MenuItemGroup.vue";
+import SubMenu from "@/components/SubMenu.vue";
 
-import Playlist from "model/Playlist.js";
-
-const staticMenuOption = [
-  {
-    path: "/",
-    label: "发现音乐",
-    key: "discovery",
-  },
-  {
-    path: "/mv",
-    label: "MV",
-    key: "video",
-  },
-  {
-    path: "/friend",
-    label: "朋友",
-    key: "friend",
-  },
-  {
-    path: "/fm",
-    label: "私人FM",
-    key: "fm",
-  },
-];
-
-const staticPersonalMenuOption = {
-  label: "我的音乐",
-  type: "group",
-  key: "personal",
-  children: [
-    {
-      path: "/history",
-      label: "最近播放",
-      key: "history",
-      iconName: "history",
-    },
-    {
-      path: "/radio",
-      label: "我的电台",
-      key: "history",
-      iconName: "radio",
-    },
-    {
-      path: "/collections",
-      label: "我的收藏",
-      key: "collection",
-      iconName: "collections",
-    },
-  ],
-};
-
-const createdPlaylists = ref([]);
-const personalPlaylistsOption = ref({
-  label: "创建的歌单",
-  key: "personal-playlists",
-  iconName: "logo",
-  children: createdPlaylists,
-});
-
-const favoredPlaylists = ref([]);
-const favoredPlaylistsOption = ref({
-  label: "收藏的歌单",
-  key: "favored-playlists",
-  children: favoredPlaylists,
-});
+import Playlist from "@/model/Playlist.js";
 
 export default {
   name: "Sidebar",
@@ -126,6 +63,108 @@ export default {
     };
   },
   setup() {
+    const staticMenuOption = [
+      {
+        path: "/",
+        label: "发现音乐",
+        key: "discovery",
+      },
+      {
+        path: "/mv",
+        label: "MV",
+        key: "video",
+      },
+      {
+        path: "/friend",
+        label: "朋友",
+        key: "friend",
+      },
+      {
+        path: "/fm",
+        label: "私人FM",
+        key: "fm",
+      },
+    ];
+
+    const staticPersonalMenuOption = {
+      label: "我的音乐",
+      type: "group",
+      key: "personal",
+      children: [
+        {
+          path: "/history",
+          label: "最近播放",
+          key: "history",
+          iconName: "history",
+        },
+        {
+          path: "/radio",
+          label: "我的电台",
+          key: "history",
+          iconName: "radio",
+        },
+        {
+          path: "/collections",
+          label: "我的收藏",
+          key: "collection",
+          iconName: "collections",
+        },
+      ],
+    };
+
+    const createdPlaylists = ref([]);
+    const personalPlaylistsOption = ref({
+      label: "创建的歌单",
+      key: "personal-playlists",
+      iconName: "logo",
+      children: createdPlaylists,
+    });
+
+    const favoredPlaylists = ref([]);
+    const favoredPlaylistsOption = ref({
+      label: "收藏的歌单",
+      key: "favored-playlists",
+      children: favoredPlaylists,
+    });
+    const store = useStore();
+
+    const loginStatus = computed(() => store.getters.isLogined);
+    const userinfo = computed(() => store.getters.getUserinfo);
+
+    function CreateMenuOption(playlist) {
+      return {
+        label: playlist.name,
+        key: "/playlist-detail/" + playlist.id,
+        iconName: "playlist",
+      };
+    }
+
+    const getUserPlaylists = async () => {
+      if (userinfo.value) {
+        let res = await playlist.getUserPlaylists(userinfo.value.id);
+        res.playlist.forEach((item) => {
+          const playlist = new Playlist(item);
+          if (item.userId == userinfo.value.id) {
+            createdPlaylists.value.push(CreateMenuOption(playlist));
+          } else {
+            favoredPlaylists.value.push(CreateMenuOption(playlist));
+          }
+        });
+      }
+    };
+
+    watch(
+      () => loginStatus.value,
+      () => {
+        if (loginStatus.value === true) {
+          getUserPlaylists();
+        } else {
+          favoredPlaylists.value = []
+          createdPlaylists.value = []
+        }
+      }
+    );
+
     return {
       staticMenuOption,
       staticPersonalMenuOption,
@@ -135,36 +174,11 @@ export default {
       favoredPlaylists,
     };
   },
-  created() {
-    this.getUserPlaylists();
-  },
-  watch: {
-    "$store.state.accountId": "getUserPlaylists",
-  },
   methods: {
     toPlaylistDetail(id) {
       this.$router.push(`/playlist-detail/${id}`);
     },
-    async getUserPlaylists() {
-      if (this.$store.state.accountId) {
-        let res = await playlist.getUserPlaylists(this.$store.state.accountId);
-        res.playlist.forEach((item) => {
-          const playlist = new Playlist(item);
-          if (item.userId == this.$store.state.accountId) {
-            createdPlaylists.value.push(this.CreateMenuOption(playlist))
-          } else {
-            favoredPlaylists.value.push(this.CreateMenuOption(playlist));
-          }
-        });
-      }
-    },
-    CreateMenuOption(playlist) {
-      return {
-        label: playlist.name,
-        key: "/playlist-detail/" + playlist.id,
-        iconName: "playlist",
-      };
-    },
+
   },
 };
 </script>

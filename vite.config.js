@@ -9,18 +9,6 @@ function resolve(dir) {
 }
 
 export default defineConfig({
-  server: {
-    host: '127.0.0.1',
-    port: '9999',
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:3000',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
-
-  },
   plugins: [
     vue(),
     viteSvgIcons({
@@ -30,20 +18,18 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      { find: '@', replacement: resolve('src')},
-      { find: 'components', replacement: resolve('src/components') },
-      { find: 'model', replacement: resolve('src/model') },
-      { find: 'views', replacement: resolve('src/views') },
-      { find: 'styles', replacement: resolve('src/styles') },
-      { find: 'assets', replacement: resolve('src/assets') },
-      { find: 'api', replacement: resolve('src/api') }
+      { find: '@', replacement: resolve('src') },
     ]
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-
+  server: {
+    host: '127.0.0.1',
+    port: '9999',
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
-    }
-  }
+    },
+  },
 })

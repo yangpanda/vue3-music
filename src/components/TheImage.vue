@@ -8,7 +8,11 @@
     }"
   >
     <img class="image" v-lazy="src" alt="..." />
-    <div v-if="!height" class="after" :style="{ paddingTop: paddingHeight }"></div>
+    <div
+      v-if="!height"
+      class="after"
+      :style="{ paddingTop: paddingHeight }"
+    ></div>
   </div>
 </template>
 
@@ -32,7 +36,7 @@ export default {
     },
     height: {
       type: String,
-    }
+    },
   },
   data() {
     return {
@@ -59,7 +63,7 @@ export default {
   }
 
   .after {
-    width: 100%;
+    width: 0;
     height: 0;
   }
 }

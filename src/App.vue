@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import Sidebar from "components/Sidebar.vue";
-import Login from "components/Login.vue";
-import Player from "components/Player.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import Login from "@/components/Login.vue";
+import Player from "@/components/Player.vue";
 
 import {
   NLayout,

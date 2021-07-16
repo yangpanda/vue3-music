@@ -12,12 +12,15 @@
       :key="index"
       :song="item"
       :index="index"
+      @play="onPlay()"
     />
   </div>
 </template>
 
 <script>
-import SongTableListItem from "components/SongTableListItem.vue";
+import SongTableListItem from "@/components/SongTableListItem.vue";
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
 
 export default {
   name: "SongTableList",
@@ -25,6 +28,22 @@ export default {
     songs: {
       type: Array,
     },
+  },
+  setup(props) {
+    const store = useStore()
+
+    const playlist = computed(() => store.getters.getPlaylist)
+    const setPlaylist = (list) => store.commit('setPlaylist', list)
+
+    const onPlay = () => {
+      if (playlist !== props.songs) {
+        setPlaylist(props.songs)
+      }
+    }
+
+    return {
+      onPlay
+    }
   },
   components: {
     SongTableListItem,
@@ -37,7 +56,8 @@ export default {
   .song-table-list-header {
     height: 36px;
     display: grid;
-    grid-template-columns: 5% 35% 25% 30% 5%;
+    grid-template-columns: 80px 3fr 2fr 2fr 60px;
+    column-gap: 20px;
     padding: 0 20px;
     line-height: 36px;
     color: var(--text-gray-200);

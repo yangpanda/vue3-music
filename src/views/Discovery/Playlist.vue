@@ -27,9 +27,9 @@ import { onMounted, ref } from "vue";
 
 import { getPlaylist } from "@/api/service/playlist.js";
 
-import Playlist from "model/Playlist.js";
+import Playlist from "@/model/Playlist.js";
 
-import CardPlaylist from "components/CardPlaylist.vue";
+import CardPlaylist from "@/components/CardPlaylist.vue";
 
 export default {
   name: "Playlist",

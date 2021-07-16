@@ -41,6 +41,7 @@ export default {
   width: 1em;
   line-height: 1em;
   fill: currentColor;
+  cursor: pointer;
 }
 
 svg {

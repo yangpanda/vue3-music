@@ -21,7 +21,7 @@
 <script>
 import { ref } from "vue";
 import * as banner from "@/api/service/banner.js";
-import TheImage from "components/TheImage.vue";
+import TheImage from "@/components/TheImage.vue";
 
 export default {
   name: "Banner",

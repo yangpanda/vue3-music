@@ -26,3 +26,7 @@ export const getNeteaseMv = (limit, offset = 0) => {
     return request.get(`/mv/exclusive/rcmd?limit=${limit}&offset=${offset}`)
   }
 }
+
+export const getMvDetail = (id) => {
+  return request.get(`/mv/url?id=${id}`)
+}

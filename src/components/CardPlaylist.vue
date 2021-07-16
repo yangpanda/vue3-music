@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import CardBase from "components/CardBase.vue";
+import CardBase from "@/components/CardBase.vue";
 import { getSongDetail, getPlaylistDetail } from "@/composables/usePlaylist";
 
 export default {

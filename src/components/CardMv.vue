@@ -1,5 +1,5 @@
 <template>
-  <card-base :title="mv.name">
+  <card-base :title="mv.name" @click="$router.push(`/mv-detail/${mv.id}`)">
     <template #image>
       <the-image
         :src="image() + '?param=640y360'"
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import CardBase from "components/CardBase.vue";
+import CardBase from "@/components/CardBase.vue";
 
 export default {
   name: "CardMv",
