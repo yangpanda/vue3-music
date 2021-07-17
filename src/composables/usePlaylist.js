@@ -24,7 +24,6 @@ export function usePlaylistGetPersonalized() {
 export async function getSongDetail(ids) {
   const songs = []
   const response = await song.getSongDetail(ids.join(','))
-  console.log(response.songs);
   response.songs.map(item => {
     songs.push(new Song(item))
   })
@@ -32,8 +31,8 @@ export async function getSongDetail(ids) {
 }
 
 export async function getPlaylistDetail(id) {
-    const detailData = await playlist.getPlaylistDetail(id);
-    return new Playlist(detailData.playlist);
+  const detailData = await playlist.getPlaylistDetail(id);
+  return new Playlist(detailData.playlist);
 }
 
 export function usePlaylistGetDetail(id) {

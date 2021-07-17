@@ -48,7 +48,6 @@ export function useMvGetNeteaseMv() {
   const neteaseMv = ref([])
   const getNeteaseMv = async () => {
     const response = await mv.getNeteaseMv(8);
-    console.log(response);
     response.data.map(item => neteaseMv.value.push(item));
   };
 
