@@ -25,11 +25,6 @@
       <svg-icon @click="nextTrack()" iconName="#icon-next" size="24" />
       <svg-icon @click="toggleLyric()" iconName="#icon-lyric" size="21" />
     </div>
-    <!-- <div class="progress">
-      <div class="progress-bar">
-        <div class="inside-bar"></div>
-      </div>
-    </div> -->
     <div class="progress">
       <span>{{ formatTime(currentTime) }}</span>
       <the-slider :duration="duration" :currentTime="currentTime"></the-slider>
@@ -41,7 +36,7 @@
     <audio
       autoplay
       ref="audio"
-      :src="songUrl"
+      :src="url"
       @ended="ended()"
       @timeupdate="getCurrentTime()"
       @durationchange="getDuration()"
@@ -51,9 +46,10 @@
 
 <script>
 import * as utils from "@/utils/index.js";
-import { ref, computed } from "vue";
+import { ref, computed, watch, nextTick } from "vue";
 import { useStore } from "vuex";
 import TheSlider from "@/components/TheSlider.vue";
+import * as song from "@/api/service/song.js";
 
 export default {
   name: "AudioPlayer",
@@ -77,14 +73,30 @@ export default {
     },
   },
   setup() {
-    let playMode = ref("order");
     const store = useStore();
     const playIndex = computed(() => store.getters.getPlayIndex);
     const playlist = computed(() => store.getters.getPlaylist);
 
     const setPlayIndex = (index) => store.commit("setPlayIndex", index);
 
+    const url = ref("");
+    const getSongUrl = async (id) => {
+      const res = await song.getSongsUrl(id);
+      if (res.code === 200) {
+        url.value = res.data[0].url;
+      }
+    };
+    watch(
+      () => playIndex.value,
+      () => {
+        nextTick(getSongUrl(playlist.value[playIndex.value].id));
+      }
+    );
+
+    const playMode = ref("order");
+
     const toggleOrderMode = () => {
+      this.$refs.audio.loop = false
       playMode.value = "order";
     };
 
@@ -94,6 +106,7 @@ export default {
     };
 
     const toggleUnorderMode = () => {
+      this.$refs.audio.loop = false
       playMode.value = "unorder";
     };
 
@@ -117,6 +130,7 @@ export default {
     })();
 
     return {
+      url,
       playlist,
       playIndex,
       playMode,
@@ -127,19 +141,8 @@ export default {
   mounted() {
     this.$refs.audio.volume = this.volume;
   },
-  watch: {
-    // currentTime: 'setCurrentTime'
-  },
-  computed: {
-    songUrl() {
-      return this.playlist.length === 0
-        ? ""
-        : this.playlist[this.playIndex].url;
-    },
-  },
   methods: {
     ended() {
-      // this.isPlaying = false;
       this.setPlayIndex(this.playIndex + 1);
     },
     play() {
@@ -150,8 +153,12 @@ export default {
       this.isPlaying = false;
       this.$refs.audio.pause();
     },
-    nextTrack() {},
-    preTrack() {},
+    nextTrack() {
+      this.setPlayIndex(this.playIndex + 1)
+    },
+    preTrack() {
+      this.setPlayIndex(this.playIndex - 1)
+    },
     decreaseVolume() {
       if (this.volume > 0 && this.volume > 0.2) {
         this.volume = this.volume - 0.1;
@@ -218,28 +225,6 @@ export default {
     column-gap: 15px;
     justify-content: center;
     align-items: center;
-
-    // .progress-bar {
-    //   height: 4px;
-    //   width: 360px;
-    //   background-color: rgba(0, 0, 0, 0.1);
-    //   position: relative;
-
-    //   .inside-bar {
-    //     position: absolute;
-    //     left: 0;
-    //     height: 4px;
-    //     width: 50%;
-    //     background-color: #dd001b;
-
-    //     &::after {
-    //       width: 6px;
-    //       height: 6px;
-    //       border-radius: 50%;
-    //       background-color: #dd001b;
-    //     }
-    //   }
-    // }
   }
 }
 </style>

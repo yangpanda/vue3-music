@@ -14,6 +14,8 @@ export default {
   setPlayIndex(state, index) {
     if (state.playlist.length === index) {
       state.playIndex = 0
+    } else if (index < 0) {
+      state.playIndex = state.playlist.length - 1
     } else {
       state.playIndex = index
     }
