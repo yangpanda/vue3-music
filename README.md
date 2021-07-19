@@ -1,16 +1,17 @@
 # vue-neteasy-music
 
-## Project setup
-```
-npm install
-```
+学习 vue 的练手项目
 
-### Compiles and hot-reloads for development
-```
-npm run dev
-```
+## 感谢
 
-### Compiles and minifies for production
-```
-npm run build
-```
+[Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
+
+[desktop-nicemusic](https://gitee.com/lxhcool/desktop-nicemusic)
+
+## TODO
+
+- [ ] 搜索功能
+- 播放器
+	1. - [ ] 进度条功能完善
+	2. - [ ] 播放模式
+	3. - [ ] 播放详情页
