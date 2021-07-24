@@ -26,8 +26,6 @@
       <div class="volum"></div>
       <div class="song-list"></div>
     </div>
-    <!-- <audio :src="songURL" autoplay></audio> -->
-    <div class="lyric shadow">歌词</div>
     <playing-page
       class="playing-page"
       :class="{ 'show-playing-page': showPlayingPage }"
@@ -303,31 +301,20 @@ export default {
     flex: 1;
   }
 
-  .lyric {
-    position: absolute;
-    left: 272px;
-    bottom: var(--footer-height);
-    right: 0;
-    z-index: var(--max-z-index);
-    text-align: center;
-    background-color: rgba(255, 255, 255, .7);
-    font-size: 16px;
-    line-height: 2em;
-  }
-
   .playing-page {
     position: absolute;
-    height: 0;
     left: 0;
     right: 0;
     bottom: var(--footer-height);
+    overflow: hidden;
+    height: 0;
     z-index: calc(var(--max-z-index) - 1);
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: #fff;
     transition: height 0.5s;
   }
 
   .show-playing-page {
-    height: calc(100vh);
+    height: calc(100vh - var(--footer-height));
   }
 }
 </style>
