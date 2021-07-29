@@ -10,16 +10,33 @@
         radius="6px"
         width="540px"
         height="200px"
+        :class="{
+          pre: index === pre,
+          next: index === next,
+          center: index === pointer,
+        }"
       />
-      <button class="button pre">pre</button>
-      <button class="button next">next</button>
+      <div class="button pre" @click="backward()">
+        <svg-icon iconName="#icon-arrow-left" iconColor="#d8d8d8" size="30" />
+      </div>
+      <div class="button next" @click="forward()">
+        <svg-icon iconName="#icon-arrow-right" iconColor="#d8d8d8" size="30" />
+      </div>
     </div>
-    <div class="navigation"></div>
+    <div class="navigation">
+      <div
+        class="navigator"
+        v-for="(item, index) in banners.length"
+        :key="index"
+        @click="changePointer(index)"
+        :class="{ active: pointer === index }"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import * as banner from "@/api/service/banner.js";
 import TheImage from "@/components/TheImage.vue";
 
@@ -29,7 +46,9 @@ export default {
     TheImage,
   },
   data() {
-    return {};
+    return {
+      timer: 0,
+    };
   },
   setup() {
     const banners = ref([]);
@@ -37,14 +56,65 @@ export default {
       const res = await banner.getBanners(2);
       banners.value = res.banners;
     };
+    onBeforeMount(getBanners);
+
+    const pointer = ref(0);
+    const pre = computed(() => {
+      if (pointer.value === 0) {
+        return banners.value.length - 1;
+      } else {
+        return pointer.value - 1;
+      }
+    });
+    const next = computed(() => {
+      if (pointer.value === banners.value.length - 1) {
+        return 0;
+      } else {
+        return pointer.value + 1;
+      }
+    });
 
     return {
       banners,
-      getBanners,
+      pointer,
+      pre,
+      next,
     };
   },
-  beforeCreate() {
-    this.getBanners();
+  beforeMount() {
+    this.updateTimer();
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
+  methods: {
+    updateTimer() {
+      clearInterval(this.timer);
+      this.timer = setInterval(this.forward, 4000);
+    },
+    changePointer(index) {
+      clearInterval(this.timer);
+      this.pointer = index;
+      this.timer = setInterval(this.forward, 4000);
+    },
+    forward() {
+      clearInterval(this.timer);
+      if (this.pointer === this.banners.length - 1) {
+        this.pointer = 0;
+      } else {
+        this.pointer++;
+      }
+      this.timer = setInterval(this.forward, 4000);
+    },
+    backward() {
+      clearInterval(this.timer);
+      if (this.pointer === 0) {
+        this.pointer = this.banners.length - 1;
+      } else {
+        this.pointer--;
+      }
+      this.timer = setInterval(this.forward, 4000);
+    },
   },
 };
 </script>
@@ -59,21 +129,68 @@ export default {
     .button {
       position: absolute;
       top: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       transform: translateY(-50%);
-    }
-    .pre {
-      left: 0;
-    }
-    .next {
-      right: 0;
+      padding: 10px;
+      
+
+      &.pre {
+        left: 0;
+      }
+      &.next {
+        right: 0;
+      }
     }
 
     .image {
+      visibility: hidden;
       position: absolute;
-      display: inline-block;
-      // position: absolute;
-      // left: 0;
-      // top: 0;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      transition: all 0.4s ease-in-out;
+
+      &.pre {
+        visibility: initial;
+        right: auto;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%) scaleY(0.9);
+      }
+
+      &.next {
+        visibility: initial;
+        left: auto;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%) scaleY(0.9);
+      }
+
+      &.center {
+        visibility: initial;
+        z-index: 1;
+      }
+    }
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    column-gap: 10px;
+
+    .navigator {
+      cursor: pointer;
+      border: 1px solid lightgray;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+
+      &.active {
+        background-color: var(--red-color);
+      }
     }
   }
 }
