@@ -46,7 +46,7 @@
 
 <script>
 import * as utils from "@/utils/index.js";
-import { ref, computed, watch, nextTick } from "vue";
+import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import TheSlider from "@/components/TheSlider.vue";
 import * as song from "@/api/service/song.js";
@@ -89,7 +89,7 @@ export default {
     watch(
       () => playIndex.value,
       () => {
-        nextTick(getSongUrl(playlist.value[playIndex.value].id));
+        getSongUrl(playlist.value[playIndex.value].id);
       }
     );
 
