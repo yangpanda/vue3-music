@@ -3,5 +3,5 @@ export default {
   logined: null,
   playlist: [],
   likedSongList: null,
-  playIndex: 0,
+  playIndex: null,
 }
