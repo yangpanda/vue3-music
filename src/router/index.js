@@ -13,7 +13,6 @@ const routes = [
     children: [
       { path: 'personal-recommend', component: () => import('@/views/Discovery/PersonalRecommend.vue') },
       { path: 'playlist', component: () => import('@/views/Discovery/Playlist.vue') },
-      { path: 'anchor', component: () => import('@/views/Discovery/Anchor.vue') },
       { path: 'ranking', component: () => import('@/views/Discovery/Ranking.vue') },
       { path: 'newest-music', component: () => import('@/views/Discovery/NewestMusic.vue') },
       { path: 'artist', component: () => import('@/views/Discovery/Artist.vue') },
