@@ -5,7 +5,7 @@
         <div class="icon-container round">
           <svg-icon
             class="icon-play"
-            iconName="#icon-play"
+            iconName="#icon-play-triangle"
             iconColor="#fff"
             size="18"
           />

@@ -3,7 +3,7 @@
     <div class="wrapper shadow">
       <div class="play-button-container round light-shadow">
         <svg-icon
-          iconName="#icon-play"
+          iconName="#icon-play-triangle"
           iconColor="#ec4141"
           size="18"
           class="play"
