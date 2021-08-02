@@ -36,7 +36,7 @@ export default {
     const setPlaylist = (list) => store.commit('setPlaylist', list)
 
     const onPlay = () => {
-      if (playlist !== props.songs) {
+      if (!Object.is(playlist, props.songs)) {
         setPlaylist(props.songs)
       }
     }
