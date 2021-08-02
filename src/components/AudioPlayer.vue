@@ -76,8 +76,10 @@ export default {
     const store = useStore();
     const playIndex = computed(() => store.getters.getPlayIndex);
     const playlist = computed(() => store.getters.getPlaylist);
+    const playMode = computed(() => store.getters.getPlayMode);
 
     const setPlayIndex = (index) => store.commit("setPlayIndex", index);
+    const setPlayMode = (mode) => store.commit("setPlayMode", mode);
 
     const url = ref("");
     const getSongUrl = async (id) => {
@@ -93,53 +95,39 @@ export default {
       }
     );
 
-    const playMode = ref("order");
-
-    const toggleOrderMode = () => {
-      this.$refs.audio.loop = false
-      playMode.value = "order";
-    };
-
-    const toggleLoopMode = () => {
-      playMode.value = "loop";
-      this.$refs.audio.loop = true;
-    };
-
-    const toggleUnorderMode = () => {
-      this.$refs.audio.loop = false
-      playMode.value = "unorder";
-    };
-
-    const changeMode = (() => {
-      let count = 0;
-
-      return function () {
-        count++;
-        switch (count % 3) {
-          case 0:
-            toggleOrderMode();
-            break;
-          case 1:
-            toggleUnorderMode();
-            break;
-          case 2:
-            toggleLoopMode();
-            break;
-        }
-      };
-    })();
-
     return {
       url,
       playlist,
       playIndex,
       playMode,
-      changeMode,
       setPlayIndex,
+      setPlayMode,
     };
   },
   mounted() {
     this.$refs.audio.volume = this.volume;
+
+    this.changeMode = (() => {
+      let count = 0;
+      const audio = this.$refs.audio;
+
+      return function () {
+        count++;
+        switch (count % 3) {
+          case 0:
+            audio.loop = false;
+            this.setPlayMode("order");
+            break;
+          case 1:
+            this.setPlayMode("unorder");
+            break;
+          case 2:
+            audio.loop = true;
+            this.setPlayMode("loop");
+            break;
+        }
+      };
+    })();
   },
   methods: {
     ended() {
@@ -154,10 +142,10 @@ export default {
       this.$refs.audio.pause();
     },
     nextTrack() {
-      this.setPlayIndex(this.playIndex + 1)
+      this.setPlayIndex(this.playIndex + 1);
     },
     preTrack() {
-      this.setPlayIndex(this.playIndex - 1)
+      this.setPlayIndex(this.playIndex - 1);
     },
     decreaseVolume() {
       if (this.volume > 0 && this.volume > 0.2) {

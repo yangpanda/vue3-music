@@ -19,5 +19,8 @@ export default {
     } else {
       state.playIndex = index
     }
+  },
+  setPlayMode(state, mode) {
+    state.playMode = mode
   }
 }

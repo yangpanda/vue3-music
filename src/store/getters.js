@@ -11,5 +11,8 @@ export default {
   },
   getPlaylist(state) {
     return state.playlist
+  },
+  getPlayMode(state) {
+    return state.playMode
   }
 }
