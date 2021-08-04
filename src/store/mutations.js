@@ -22,5 +22,9 @@ export default {
   },
   setPlayMode(state, mode) {
     state.playMode = mode
+  },
+  insertSong(state, song) {
+    state.playlist.splice(state.playIndex + 1, 0, song)
+    state.playIndex += 1
   }
 }

@@ -32,8 +32,8 @@ export default {
     },
   },
   methods: {
-    async play(song) {
-      this.$store.commit("setCurrentSong", song);
+    play(song) {
+      this.$store.commit("insertSong", song)
     },
   },
 };
