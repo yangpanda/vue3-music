@@ -21,21 +21,15 @@ export default {
   name: "PlayingPage",
   setup() {
     const store = useStore();
-    const playIndex = computed(() => store.getters.getPlayIndex);
-    const playlist = computed(() => store.getters.getPlaylist);
+    const currentSong = computed(() => store.getters.getCurrentSong)
+
+    const songImage = computed(() => currentSong.value ? currentSong.value.image : "")
 
     return {
-      playlist,
-      playIndex,
+      songImage
     };
   },
-  computed: {
-    songImage() {
-      if (this.playlist.length > this.playIndex) {
-        return this.playlist[this.playIndex].image;
-      }
-    },
-  },
+
 };
 </script>
 
