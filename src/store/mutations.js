@@ -26,5 +26,19 @@ export default {
   insertSong(state, song) {
     state.playlist.splice(state.playIndex + 1, 0, song)
     state.playIndex += 1
+  },
+  setRandomPlaylist(state) {
+    const playlist = [...state.playlist]
+
+    for (let i = 0; i < playlist.length; i++) {
+      const swapIndex = ~~(i + Math.random() * (playlist.length - i));
+
+      [ playlist[i], playlist[swapIndex] ] = [ playlist[swapIndex], playlist[i] ];
+    }
+
+    state.randomPlaylist = playlist
+  },
+  setCurrentSong(state, song) {
+    state.currentSong = song
   }
 }

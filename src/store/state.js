@@ -4,5 +4,7 @@ export default {
   playlist: [],
   likedSongList: null,
   playIndex: null,
+  randomPlaylist: [],
   playMode: 'order',
+  currentSong: null,
 }

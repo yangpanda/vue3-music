@@ -50,15 +50,16 @@ export default {
   emits: ['play'],
   setup(props, { emit }) {
     const store = useStore()
-    const setPlayIndex = (index) => store.commit("setPlayIndex", index)
+    const setCurrentSong = (song) => store.commit("setCurrentSong", song);
+    const setPlayIndex = (index) => store.commit("setPlayIndex", index);
 
-    const play = (index) => {
-      emit('play', index)
-      setPlayIndex(index)
+    const play = () => {
+      setCurrentSong(props.song)
+      setPlayIndex(props.index)
+      emit('play')
     }
     return {
       play,
-      setPlayIndex
     }
   },
   methods: {

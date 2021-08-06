@@ -14,5 +14,11 @@ export default {
   },
   getPlayMode(state) {
     return state.playMode
+  },
+  getRandomPlaylist(state) {
+    return state.randomPlaylist
+  },
+  getCurrentSong(state) {
+    return state.currentSong
   }
 }

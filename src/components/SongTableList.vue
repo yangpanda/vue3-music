@@ -34,10 +34,12 @@ export default {
 
     const playlist = computed(() => store.getters.getPlaylist)
     const setPlaylist = (list) => store.commit('setPlaylist', list)
+    const setRandomPlaylist = () => store.commit('setRandomPlaylist')
 
     const onPlay = () => {
       if (!Object.is(playlist, props.songs)) {
         setPlaylist(props.songs)
+        setRandomPlaylist()
       }
     }
 
