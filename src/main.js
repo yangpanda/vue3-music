@@ -9,8 +9,6 @@ import "@/styles/variables.scss"
 import "@/styles/index.scss";
 import "@/styles/common.scss";
 
-import "element-plus/lib/theme-chalk/index.css";
-
 import 'virtual:svg-icons-register'
 
 const app = createApp(App);
@@ -20,18 +18,6 @@ import TheImage from "@/components/TheImage.vue"
 
 app.component("SvgIcon", SvgIcon);
 app.component("TheImage", TheImage);
-
-import {
-  ElPagination,
-} from "element-plus";
-
-const Elements = [
-  ElPagination,
-];
-
-for (let element of Elements) {
-  app.use(element);
-}
 
 import {
   create,
