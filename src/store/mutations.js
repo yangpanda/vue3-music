@@ -28,7 +28,8 @@ export default {
     state.playIndex += 1
   },
   setRandomPlaylist(state) {
-    const playlist = [...state.playlist]
+    // const playlist = [...state.playlist]
+    const playlist = [...Array(state.playlist.length).keys()]
 
     for (let i = 0; i < playlist.length; i++) {
       const swapIndex = ~~(i + Math.random() * (playlist.length - i));

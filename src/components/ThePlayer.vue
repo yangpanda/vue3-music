@@ -140,18 +140,6 @@ export default {
         getSongUrl(currentSong.value.id);
       }
     );
-    // watch(
-    //   () => playIndex.value,
-    //   () => {
-    //     if (playMode.value === "order") {
-    //       setCurrentSong(playlist.value[playIndex.value]);
-    //       getSongUrl(currentSong.value.id);
-    //     } else {
-    //       setCurrentSong(randomPlaylist.value[playIndex.value]);
-    //       getSongUrl(currentSong.value.id);
-    //     }
-    //   }
-    // );
 
     return {
       url,
@@ -160,6 +148,7 @@ export default {
       songImage,
       songSinger,
       playlist,
+      randomPlaylist,
       playIndex,
       playMode,
       setPlayIndex,
@@ -205,18 +194,30 @@ export default {
       this.$refs.audio.pause();
     },
     nextTrack() {
-      this.setPlayIndex(this.playIndex + 1);
       if (this.playMode === "unorder") {
-        this.setCurrentSong(this.randomPlaylist[this.playIndex]);
+        const index = this.randomPlaylist.indexOf(this.playIndex)
+        if (index + 1 >= this.randomPlaylist.length) {
+          this.setPlayIndex(this.randomPlaylist[0])
+        } else {
+          this.setPlayIndex(this.randomPlaylist[index + 1])
+        }
+        this.setCurrentSong(this.playlist[this.playIndex]);
       } else {
+        this.setPlayIndex(this.playIndex + 1);
         this.setCurrentSong(this.playlist[this.playIndex]);
       }
     },
     preTrack() {
-      this.setPlayIndex(this.playIndex - 1);
       if (this.playMode === "unorder") {
-        this.setCurrentSong(this.randomPlaylist[this.playIndex]);
+        const index = this.randomPlaylist.indexOf(this.playIndex)
+        if (index - 1 < 0) {
+          this.setPlayIndex(this.randomPlaylist[this.randomPlaylist.length - 1])
+        } else {
+          this.setPlayIndex(this.randomPlaylist[index - 1])
+        }
+        this.setCurrentSong(this.playlist[this.playIndex]);
       } else {
+        this.setPlayIndex(this.playIndex - 1);
         this.setCurrentSong(this.playlist[this.playIndex]);
       }
     },
