@@ -64,7 +64,7 @@
     </div>
     <div class="right">
       <div class="volum"></div>
-      <div class="song-list">
+      <div class="song-list" @click="showPlaylist = !showPlaylist">
         <svg-icon iconName="#icon-play-list"></svg-icon>
       </div>
     </div>
@@ -72,6 +72,7 @@
       class="playing-page"
       :class="{ 'show-playing-page': showPlayingPage }"
     ></playing-page>
+    <the-playlist v-show="showPlaylist" class="playlist" />
   </div>
 </template>
 
@@ -81,6 +82,7 @@ import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import TheSlider from "@/components/TheSlider.vue";
 import PlayingPage from "@/components/PlayingPage.vue";
+import ThePlaylist from "@/components/ThePlaylist.vue";
 import * as song from "@/api/service/song.js";
 
 export default {
@@ -88,6 +90,7 @@ export default {
   components: {
     TheSlider,
     PlayingPage,
+    ThePlaylist
   },
   data() {
     return {
@@ -96,6 +99,7 @@ export default {
       currentTime: 0,
       duration: 0,
       showPlayingPage: false,
+      showPlaylist: false,
     };
   },
   emits: {
@@ -388,6 +392,14 @@ export default {
 
   .show-playing-page {
     height: calc(100vh - var(--footer-height));
+  }
+
+  .playlist {
+    position: fixed;
+    right: 0;
+    top: var(--header-height);
+    bottom: var(--footer-height);
+    z-index: var(--max-z-index);
   }
 }
 </style>

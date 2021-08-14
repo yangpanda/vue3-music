@@ -25,6 +25,7 @@ import {
   NLayout,
   NLayoutContent,
   NLayoutHeader,
+  NSpace,
   NAvatar,
   NFormItemRow,
 } from 'naive-ui'
@@ -35,6 +36,7 @@ const naive = create({
     NLayout,
     NLayoutContent,
     NLayoutHeader,
+    NSpace,
     NAvatar,
     NFormItemRow,
   ]
