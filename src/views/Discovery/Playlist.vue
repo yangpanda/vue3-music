@@ -1,31 +1,55 @@
 <template>
   <div class="playlist">
+    <div class="tag-nav">
+      <the-button class="title">
+        全部歌单
+        <svg-icon iconName="#icon-arrow-down" size="12" />
+        <template #drop-menu>
+          <div class="drop-menu">
+            <div class="cat" v-for="(item, index) in categories" :key="index">
+              <div class="title">{{ item.cat }}</div>
+              <div class="sub">
+                <n-tag
+                  round
+                  v-for="(subitem, subindex) in item.sub"
+                  :key="subindex"
+                  class="sub-item"
+                  style="cursor: pointer;"
+                  @click="() => cat = subitem"
+                >
+                  {{ subitem }}
+                </n-tag>
+              </div>
+            </div>
+          </div>
+        </template>
+      </the-button>
+      <div class="tags">
+        <div>热门标签：</div>
+        <div
+          class="tag"
+          v-for="(item, index) in hottags"
+          :key="index"
+          @click="updateCat(item)"
+        >
+          {{ item }}
+        </div>
+      </div>
+    </div>
     <div class="playlist-wrapper">
       <card-playlist
-        v-for="(item, index) in playlists.slice(
-          pageNumber * (currentPageIndex - 1),
-          pageNumber * currentPageIndex
-        )"
+        v-for="(item, index) in playlists"
         :key="index"
         :playlist="item"
       />
     </div>
-    <el-pagination
-      class="playlist-wrapper"
-      background
-      layout="prev, pager, next"
-      page-size="20"
-      :total="playlists.length"
-      @current-change="currentChange"
-    >
-    </el-pagination>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 
-import { getPlaylist } from "@/api/service/playlist.js";
+import * as api from "@/api/service/playlist.js";
 
 import Playlist from "@/model/Playlist.js";
 
@@ -37,36 +61,68 @@ export default {
     CardPlaylist,
   },
   data() {
-    return {
-      pageNumber: 20,
-      currentPageIndex: 1,
-    };
+    return {};
   },
   setup() {
     const playlists = ref([]);
-    const loading = ref(Boolean);
-    loading.value = true;
+    const hottags = ref([]);
+    const categories = ref({});
+    const cat = ref("全部");
 
-    const getAllPlaylist = async () => {
-      const res = await getPlaylist();
+    const getPlaylist = async (param) => {
+      const res = await api.getPlaylist(param);
+      let tmpPlaylists = [];
       res.playlists.forEach((playlist) => {
-        playlists.value.push(new Playlist(playlist));
+        tmpPlaylists.push(new Playlist(playlist));
       });
-      setTimeout(() => {
-        loading.value = false;
-      }, 500);
+      playlists.value = tmpPlaylists;
     };
 
-    onMounted(getAllPlaylist);
+    watchEffect(() => {
+      getPlaylist({
+        order: "hot",
+        cat: cat.value,
+      });
+    });
+
+    const getHotPlaylistTags = async () => {
+      const res = await api.getHotPlaylistTags();
+      res.tags.forEach((tag) => {
+        hottags.value.push(tag.name);
+      });
+    };
+
+    const getPlaylistCat = async () => {
+      const res = await api.getPlaylistCat();
+      if (res.code === 200) {
+        for (let key in res.categories) {
+          let sub = res.sub
+            .filter((item) => item.category == key)
+            .map((item) => item.name);
+          categories.value[key] = {
+            cat: res.categories[key],
+            sub,
+          };
+        }
+      }
+    };
+
+    onMounted(() => getHotPlaylistTags());
+    onMounted(() => getPlaylistCat());
 
     return {
       playlists,
-      loading,
+      hottags,
+      categories,
+      cat,
     };
   },
   methods: {
-    currentChange(current) {
-      this.currentPageIndex = current;
+    updateOrder(order) {
+      this.order = order;
+    },
+    updateCat(cat) {
+      this.cat = cat;
     },
   },
 };
@@ -74,10 +130,49 @@ export default {
 
 <style lang="scss" scoped>
 .playlist {
+  .tag-nav {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+
+    .title {
+      margin-right: 20px;
+    }
+
+    .tags {
+      display: flex;
+
+      .tag {
+        margin: 0 15px;
+      }
+    }
+  }
   .playlist-wrapper {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px 20px;
+  }
+}
+
+.loading {
+  position: relative;
+  bottom: var(--footer-height);
+}
+
+.drop-menu {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+
+  .title {
+    margin-bottom: 10px;
+  }
+
+  .sub {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    row-gap: 10px;
   }
 }
 </style>
