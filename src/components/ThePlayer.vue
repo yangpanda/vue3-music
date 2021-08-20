@@ -397,7 +397,7 @@ export default {
   .playlist {
     position: fixed;
     right: 0;
-    top: var(--header-height);
+    top: calc(var(--header-height) + 20px);
     bottom: var(--footer-height);
     z-index: var(--max-z-index);
   }
