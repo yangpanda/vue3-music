@@ -12,8 +12,13 @@ export const getPersonalized = limit => {
   }
 }
 
-export const getPlaylist = () =>
-  request.get(`/top/playlist?limit=100`)
+export const getPlaylist = (params) => {
+  if (params === undefined) {
+    return request.get(`/top/playlist`)
+  } else {
+    return request.get(`/top/playlist`, {params})
+  }
+}
 
 export const getPlaylistDetail = (id) =>
   request.get(`/playlist/detail?id=${id}`)
@@ -29,3 +34,9 @@ export const getUserPlaylists = (uid) =>
 
 export const getRankList = () =>
   request.get("/toplist")
+
+export const getHotPlaylistTags = () =>
+  request.get("/playlist/hot")
+
+export const getPlaylistCat = () =>
+  request.get("/playlist/catlist")
