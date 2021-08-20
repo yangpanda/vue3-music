@@ -30,10 +30,14 @@ import {
   NSpace,
   NAvatar,
   NFormItemRow,
+  NElement,
+  NButton,
+  NPopover,
 } from 'naive-ui'
 
 const naive = create({
   components: [
+    NElement,
     NTag,
     NLayout,
     NLayoutContent,
@@ -41,6 +45,8 @@ const naive = create({
     NSpace,
     NAvatar,
     NFormItemRow,
+    NButton,
+    NPopover
   ]
 })
 
