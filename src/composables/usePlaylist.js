@@ -4,29 +4,25 @@ import { ref, onMounted, watch } from 'vue'
 import Playlist from '@/model/Playlist.js'
 import Song from '@/model/Song.js'
 
-export function usePlaylistGetPersonalized() {
-  const personalized = ref([])
+export function usePlaylistPersonalized() {
+  const personalizedPlaylists = ref([])
 
   const getPersonalized = async () => {
     const response = await playlist.getPersonalized(10)
-    response.result.map(item => {
-      personalized.value.push(new Playlist(item))
-    })
+    personalizedPlaylists.value = response.result.map(item => new Playlist(item))
   }
 
   onMounted(getPersonalized)
 
   return {
-    personalized,
+    personalizedPlaylists,
   }
 }
 
 export async function getSongDetail(ids) {
-  const songs = []
+  let songs = []
   const response = await song.getSongDetail(ids.join(','))
-  response.songs.map(item => {
-    songs.push(new Song(item))
-  })
+  songs = response.songs.map(item => new Song(item))
   return songs
 }
 
@@ -35,9 +31,9 @@ export async function getPlaylistDetail(id) {
   return new Playlist(detailData.playlist);
 }
 
-export function usePlaylistGetDetail(id) {
+export function usePlaylistDetail(id) {
   const playlistDetail = ref({})
-  let songs = ref([])
+  const songs = ref([])
 
   onMounted(() => {
     getPlaylistDetail(id).then(response => {
@@ -45,8 +41,8 @@ export function usePlaylistGetDetail(id) {
     })
   })
   watch(playlistDetail, () => {
-    const ids = []
-    playlistDetail.value.trackIds.map(item => { ids.push(item.id) })
+    let ids = []
+    ids = playlistDetail.value.trackIds.map(item => item.id)
     getSongDetail(ids).then(response => songs.value = response)
   })
 

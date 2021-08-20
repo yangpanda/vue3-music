@@ -2,8 +2,8 @@ import * as song from '@/api/service/song.js'
 import { ref, onMounted } from 'vue'
 import Song from '@/model/Song.js'
 
-export function useSongGetNewSongs() {
-  const newsong = ref([])
+export function useSongNewsong() {
+  const newsongs = ref([])
 
   const getNewSongs = async () => {
     const res = await song.getNewSongs(15);
@@ -12,13 +12,13 @@ export function useSongGetNewSongs() {
 
     const songsData = await song.getSongDetail(songIds.join(","));
     songsData.songs.map((item) => {
-      newsong.value.push(new Song(item))
+      newsongs.value.push(new Song(item))
     });
   }
 
   onMounted(getNewSongs)
 
   return {
-    newsong
+    newsongs
   }
 }

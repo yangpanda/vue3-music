@@ -36,7 +36,7 @@
 import SongTableList from "@/components/SongTableList.vue";
 import TheImage from "@/components/TheImage.vue";
 
-import { usePlaylistGetDetail } from '@/composables/usePlaylist.js'
+import { usePlaylistDetail } from '@/composables/usePlaylist.js'
 
 export default {
   name: "PlaylistDetail",
@@ -51,7 +51,7 @@ export default {
     const {
       playlistDetail,
       songs
-    } = usePlaylistGetDetail(props.id)
+    } = usePlaylistDetail(props.id)
 
     return {
       playlistDetail,

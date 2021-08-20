@@ -1,32 +1,32 @@
 import * as mv from '@/api/service/mv.js'
 import { ref, onMounted } from 'vue'
 
-export function useMvGetPrivatecontent() {
-  const privatecontent = ref([])
+export function useMvPrivatecontent() {
+  const privatecontents = ref([])
   const getPrivatecontent = async () => {
     const response = await mv.getPrivatecontent(3)
-    response.result.map(item => privatecontent.value.push(item))
+    response.result.map(item => privatecontents.value.push(item))
   }
 
   onMounted(getPrivatecontent)
 
   return {
-    privatecontent
+    privatecontents
   }
 }
 
-export function useMvGetPersonalizedMv() {
-  const personalized_mv = ref([])
+export function useMvPersonalized() {
+  const personalizedMvs = ref([])
   const getPersonalizedMv = async () => {
     const response = await mv.getPersonalizedMv();
-    response.result.map(item => personalized_mv.value.push(item));
-    personalized_mv.value = personalized_mv.value.slice(0, 3);
+    response.result.map(item => personalizedMvs.value.push(item));
+    personalizedMvs.value = personalizedMvs.value.slice(0, 3);
   };
 
   onMounted(getPersonalizedMv);
 
   return {
-    personalized_mv
+    personalizedMvs
   }
 }
 
