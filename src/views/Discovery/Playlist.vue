@@ -1,48 +1,42 @@
 <template>
   <div class="playlist">
-    <div class="tag-nav">
-      <the-button class="title">
-        全部歌单
-        <svg-icon iconName="#icon-arrow-down" size="12" />
-        <template #drop-menu>
-          <div class="drop-menu">
-            <div class="cat" v-for="(item, index) in categories" :key="index">
-              <div class="title">{{ item.cat }}</div>
-              <div class="sub">
-                <n-tag
-                  round
-                  v-for="(subitem, subindex) in item.sub"
-                  :key="subindex"
-                  class="sub-item"
-                  style="cursor: pointer;"
-                  @click="() => cat = subitem"
-                >
-                  {{ subitem }}
-                </n-tag>
-              </div>
-            </div>
-          </div>
+    <div class="nav">
+      <n-popover display-directive="show" trigger="focus" placement="bottom-start" style="width: 800px">
+        <template #trigger>
+          <n-button>{{ cat }}</n-button>
         </template>
-      </the-button>
-      <div class="tags">
-        <div>热门标签：</div>
-        <div
-          class="tag"
-          v-for="(item, index) in hottags"
-          :key="index"
-          @click="updateCat(item)"
-        >
-          {{ item }}
-        </div>
+        <n-space vertical>
+          <n-thing v-for="(item, index) in categories" :key="index">
+            <template #header>{{ item.cat }}</template>
+            <n-space>
+              <n-tag
+                v-for="(subitem, subindex) in item.sub"
+                :key="subindex"
+                class="sub-item"
+                style="cursor: pointer"
+                @click.stop.prevent="handleCatSelected(subitem)"
+                round
+              >
+                {{ subitem }}
+              </n-tag>
+            </n-space>
+          </n-thing>
+        </n-space>
+      </n-popover>
+      <div class="nav-tag">
+        <span>热门标签：</span>
+        <n-menu
+          mode="horizontal"
+          :options="tagMenuOptions"
+          v-model:value="cat"
+        ></n-menu>
       </div>
     </div>
-    <div class="playlist-wrapper">
-      <card-playlist
-        v-for="(item, index) in playlists"
-        :key="index"
-        :playlist="item"
-      />
-    </div>
+    <n-grid :x-gap="20" :y-gap="20" :cols="5">
+      <n-grid-item v-for="(item, index) in playlists" :key="index">
+        <card-playlist :playlist="item" />
+      </n-grid-item>
+    </n-grid>
   </div>
 </template>
 
@@ -55,10 +49,16 @@ import Playlist from "@/model/Playlist.js";
 
 import CardPlaylist from "@/components/CardPlaylist.vue";
 
+import { NGrid, NGridItem, NMenu, NThing } from "naive-ui";
+
 export default {
   name: "Playlist",
   components: {
     CardPlaylist,
+    NGrid,
+    NGridItem,
+    NMenu,
+    NThing,
   },
   data() {
     return {};
@@ -68,6 +68,7 @@ export default {
     const hottags = ref([]);
     const categories = ref({});
     const cat = ref("全部");
+    const tagMenuOptions = ref([]);
 
     const getPlaylist = async (param) => {
       const res = await api.getPlaylist(param);
@@ -87,8 +88,12 @@ export default {
 
     const getHotPlaylistTags = async () => {
       const res = await api.getHotPlaylistTags();
-      res.tags.forEach((tag) => {
-        hottags.value.push(tag.name);
+      hottags.value = res.tags.map((tag) => tag.name);
+      tagMenuOptions.value = hottags.value.map((tag) => {
+        return {
+          label: tag,
+          key: tag,
+        };
       });
     };
 
@@ -113,15 +118,13 @@ export default {
     return {
       playlists,
       hottags,
+      tagMenuOptions,
       categories,
       cat,
     };
   },
   methods: {
-    updateOrder(order) {
-      this.order = order;
-    },
-    updateCat(cat) {
+    handleCatSelected(cat) {
       this.cat = cat;
     },
   },
@@ -129,50 +132,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.playlist {
-  .tag-nav {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-
-    .title {
-      margin-right: 20px;
-    }
-
-    .tags {
-      display: flex;
-
-      .tag {
-        margin: 0 15px;
-      }
-    }
-  }
-  .playlist-wrapper {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px 20px;
-  }
-}
-
-.loading {
-  position: relative;
-  bottom: var(--footer-height);
-}
-
-.drop-menu {
+.nav {
   display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-
-  .title {
-    margin-bottom: 10px;
-  }
-
-  .sub {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 20px;
-    row-gap: 10px;
-  }
+  align-items: center;
+  column-gap: 20px;
+  margin-bottom: 20px;
 }
 </style>
