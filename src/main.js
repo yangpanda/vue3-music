@@ -15,9 +15,11 @@ const app = createApp(App);
 
 import SvgIcon from "@/components/SvgIcon.vue";
 import TheImage from "@/components/TheImage.vue"
+import TheButton from "@/components/TheButton.vue"
 
 app.component("SvgIcon", SvgIcon);
 app.component("TheImage", TheImage);
+app.component("TheButton", TheButton)
 
 import {
   create,
