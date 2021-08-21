@@ -1,7 +1,12 @@
 <template>
   <div class="playlist">
     <div class="nav">
-      <n-popover display-directive="show" trigger="focus" placement="bottom-start" style="width: 800px">
+      <n-popover
+        display-directive="show"
+        trigger="focus"
+        placement="bottom-start"
+        style="width: 800px"
+      >
         <template #trigger>
           <n-button>{{ cat }}</n-button>
         </template>
@@ -14,7 +19,7 @@
                 :key="subindex"
                 class="sub-item"
                 style="cursor: pointer"
-                @click.stop.prevent="handleCatSelected(subitem)"
+                @mousedown="handleCatSelected(subitem)"
                 round
               >
                 {{ subitem }}
@@ -27,7 +32,7 @@
         <span>热门标签：</span>
         <n-menu
           mode="horizontal"
-          :options="tagMenuOptions"
+          :options="hotTagsMenuOption"
           v-model:value="cat"
         ></n-menu>
       </div>
@@ -41,14 +46,15 @@
 </template>
 
 <script>
-import { onMounted, ref, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
 
-import * as api from "@/api/service/playlist.js";
-
-import Playlist from "@/model/Playlist.js";
+import {
+  usePlaylistHotTags,
+  usePlaylistCat,
+  usePlaylistGet,
+} from "@/composables/usePlaylist.js";
 
 import CardPlaylist from "@/components/CardPlaylist.vue";
-
 import { NGrid, NGridItem, NMenu, NThing } from "naive-ui";
 
 export default {
@@ -64,20 +70,10 @@ export default {
     return {};
   },
   setup() {
-    const playlists = ref([]);
-    const hottags = ref([]);
-    const categories = ref({});
+    const { hotTags, hotTagsMenuOption } = usePlaylistHotTags();
+    const { playlists, getPlaylist } = usePlaylistGet();
+    const { categories } = usePlaylistCat();
     const cat = ref("全部");
-    const tagMenuOptions = ref([]);
-
-    const getPlaylist = async (param) => {
-      const res = await api.getPlaylist(param);
-      let tmpPlaylists = [];
-      res.playlists.forEach((playlist) => {
-        tmpPlaylists.push(new Playlist(playlist));
-      });
-      playlists.value = tmpPlaylists;
-    };
 
     watchEffect(() => {
       getPlaylist({
@@ -86,39 +82,10 @@ export default {
       });
     });
 
-    const getHotPlaylistTags = async () => {
-      const res = await api.getHotPlaylistTags();
-      hottags.value = res.tags.map((tag) => tag.name);
-      tagMenuOptions.value = hottags.value.map((tag) => {
-        return {
-          label: tag,
-          key: tag,
-        };
-      });
-    };
-
-    const getPlaylistCat = async () => {
-      const res = await api.getPlaylistCat();
-      if (res.code === 200) {
-        for (let key in res.categories) {
-          let sub = res.sub
-            .filter((item) => item.category == key)
-            .map((item) => item.name);
-          categories.value[key] = {
-            cat: res.categories[key],
-            sub,
-          };
-        }
-      }
-    };
-
-    onMounted(() => getHotPlaylistTags());
-    onMounted(() => getPlaylistCat());
-
     return {
       playlists,
-      hottags,
-      tagMenuOptions,
+      hotTags,
+      hotTagsMenuOption,
       categories,
       cat,
     };

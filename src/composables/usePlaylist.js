@@ -51,3 +51,71 @@ export function usePlaylistDetail(id) {
     songs
   }
 }
+
+export function usePlaylistGet() {
+  const playlists = ref([])
+
+  const getPlaylist = async (param) => {
+    const res = await playlist.getPlaylist(param);
+    if (res.code === 200) {
+      playlists.value = res.playlists.map(item => new Playlist(item))
+    }
+  };
+
+  return {
+    playlists,
+    getPlaylist
+  }
+}
+
+export function usePlaylistHotTags() {
+  const hotTags = ref([])
+  const hotTagsMenuOption = ref([])
+
+  const gettPlaylistHotTags = async () => {
+    const res = await playlist.getHotPlaylistTags();
+    if (res.code === 200) {
+      hotTags.value = res.tags.map((tag) => tag.name);
+      hotTagsMenuOption.value = hotTags.value.map((tag) => {
+        return {
+          label: tag,
+          key: tag,
+        }
+      })
+    }
+  }
+
+  onMounted(gettPlaylistHotTags)
+
+  return {
+    hotTags,
+    hotTagsMenuOption,
+    gettPlaylistHotTags
+  }
+}
+
+export function usePlaylistCat() {
+  const categories = ref({})
+
+  const getPlaylistCat = async () => {
+    const res = await playlist.getPlaylistCat();
+    if (res.code === 200) {
+      for (let key in res.categories) {
+        let sub = res.sub
+          .filter((item) => item.category == key)
+          .map((item) => item.name);
+        categories.value[key] = {
+          cat: res.categories[key],
+          sub,
+        };
+      }
+    }
+  };
+
+  onMounted(getPlaylistCat)
+
+  return {
+    categories,
+    getPlaylistCat,
+  }
+}
