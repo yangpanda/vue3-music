@@ -96,14 +96,21 @@ export function usePlaylistHotTags() {
 
 export function usePlaylistCat() {
   const categories = ref({})
+  const cat = ref({})
 
   const getPlaylistCat = async () => {
     const res = await playlist.getPlaylistCat();
     if (res.code === 200) {
+      cat.value = {
+        name: res.all.name,
+        count: res.all.resourceCount
+      }
       for (let key in res.categories) {
         let sub = res.sub
           .filter((item) => item.category == key)
-          .map((item) => item.name);
+          .map((item) => {
+            return { name: item.name, count: item.resourceCount }
+          });
         categories.value[key] = {
           cat: res.categories[key],
           sub,
@@ -116,6 +123,7 @@ export function usePlaylistCat() {
 
   return {
     categories,
+    cat,
     getPlaylistCat,
   }
 }

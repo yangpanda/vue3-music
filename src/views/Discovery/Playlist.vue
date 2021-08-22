@@ -1,5 +1,5 @@
 <template>
-  <div class="playlist">
+  <div class="container">
     <div class="nav">
       <n-popover
         display-directive="show"
@@ -8,7 +8,7 @@
         style="width: 800px"
       >
         <template #trigger>
-          <n-button>{{ cat }}</n-button>
+          <n-button>{{ cat.name }}</n-button>
         </template>
         <n-space vertical>
           <n-thing v-for="(item, index) in categories" :key="index">
@@ -17,36 +17,36 @@
               <n-tag
                 v-for="(subitem, subindex) in item.sub"
                 :key="subindex"
-                class="sub-item"
                 style="cursor: pointer"
-                @mousedown="handleCatSelected(subitem)"
+                @mousedown="cat = subitem"
                 round
               >
-                {{ subitem }}
+                {{ subitem.name }}
               </n-tag>
             </n-space>
           </n-thing>
         </n-space>
       </n-popover>
-      <div class="nav-tag">
+      <div>
         <span>热门标签：</span>
         <n-menu
           mode="horizontal"
           :options="hotTagsMenuOption"
-          v-model:value="cat"
+          v-model:value="cat.name"
         ></n-menu>
       </div>
     </div>
-    <n-grid :x-gap="20" :y-gap="20" :cols="5">
+    <n-grid :x-gap="20" :y-gap="15" :cols="5">
       <n-grid-item v-for="(item, index) in playlists" :key="index">
         <card-playlist :playlist="item" />
       </n-grid-item>
     </n-grid>
+    <n-pagination v-model:page="page" :page-count="pageCount" style="justify-content: center"/>
   </div>
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
+import { ref, watchPostEffect } from "vue";
 
 import {
   usePlaylistHotTags,
@@ -55,7 +55,7 @@ import {
 } from "@/composables/usePlaylist.js";
 
 import CardPlaylist from "@/components/CardPlaylist.vue";
-import { NGrid, NGridItem, NMenu, NThing } from "naive-ui";
+import { NGrid, NGridItem, NMenu, NThing, NPagination } from "naive-ui";
 
 export default {
   name: "Playlist",
@@ -65,6 +65,7 @@ export default {
     NGridItem,
     NMenu,
     NThing,
+    NPagination,
   },
   data() {
     return {};
@@ -72,15 +73,22 @@ export default {
   setup() {
     const { hotTags, hotTagsMenuOption } = usePlaylistHotTags();
     const { playlists, getPlaylist } = usePlaylistGet();
-    const { categories } = usePlaylistCat();
-    const cat = ref("全部");
+    const { cat, categories } = usePlaylistCat();
 
-    watchEffect(() => {
+    const page = ref(1)
+    const pageCount = ref(0)
+    watchPostEffect(() => {
+      const judge = Number(cat.value.count) % 50
+      const count = Math.floor(cat.value.count / 50)
+      pageCount.value = judge === 0 ? count : count + 1
+
+      console.log('exec');
       getPlaylist({
         order: "hot",
-        cat: cat.value,
-      });
-    });
+        cat: cat.value.name,
+        offset: page.value * 50
+      })
+    })
 
     return {
       playlists,
@@ -88,21 +96,23 @@ export default {
       hotTagsMenuOption,
       categories,
       cat,
+      page,
+      pageCount
     };
-  },
-  methods: {
-    handleCatSelected(cat) {
-      this.cat = cat;
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
 .nav {
   display: flex;
   align-items: center;
   column-gap: 20px;
-  margin-bottom: 20px;
 }
 </style>
