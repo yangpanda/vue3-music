@@ -23,7 +23,7 @@
                 value="火"
                 :show="subitem.hot"
               >
-                <n-tag style="cursor: pointer" @mousedown="cat = subitem" round>
+                <n-tag style="cursor: pointer" @mousedown="cat = subitem; page = 1" round>
                   {{ subitem.name }}
                 </n-tag>
               </n-badge>
@@ -32,7 +32,7 @@
         </n-space>
       </n-popover>
       <div class="hot-tags">
-        <span>热门标签：</span>
+        <span style="white-space: nowrap">热门标签：</span>
         <n-tag
           v-for="(item, index) in hotTags"
           :key="index"
@@ -125,6 +125,7 @@ export default {
       });
     },
     changeCat(name) {
+      this.page = 1
       let catArr = [];
       this.categories.forEach((item) => {
         catArr = catArr.concat(item.sub);
