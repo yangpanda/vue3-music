@@ -7,7 +7,7 @@
       <n-layout-sider bordered :native-scrollbar="false">
         <the-sidebar />
       </n-layout-sider>
-      <n-layout-content :native-scrollbar="false">
+      <n-layout-content :native-scrollbar="false" ref="content">
         <router-view :key="$route.fullPath"></router-view>
       </n-layout-content>
     </n-layout>
@@ -41,6 +41,16 @@ export default {
     NLayoutContent,
     NLayoutFooter,
   },
+  provide() {
+    return {
+      scrollTop: this.scrollTop
+    }
+  },
+  methods: {
+    scrollTop() {
+      this.$refs.content.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 };
 </script>
 
