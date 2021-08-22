@@ -43,20 +43,37 @@
       </div>
     </div>
   </div>
-  <div v-if="showLoginPanel" class="login-panel shadow">
-    <form class="form">
-      <input type="email" placeholder="邮箱" v-model="email" />
-      <input type="password" placeholder="请输入密码" v-model="password" />
-      <input type="button" value="登录" @click="login" />
-    </form>
-  </div>
+  <n-modal class="login-panel" v-model:show="showLoginPanel">
+    <n-form style="width: 300px;">
+      <n-form-item-row label="邮箱">
+        <n-input type="email" placeholder="邮箱" v-model="email" />
+      </n-form-item-row>
+      <n-form-item-row label="密码">
+        <n-input
+          type="password"
+          show-password-toggle
+          placeholder="密码"
+          label="密码"
+          :value="password"
+        />
+      </n-form-item-row>
+      <n-button type="primary" block @click="login">登录</n-button>
+    </n-form>
+  </n-modal>
 </template>
 
 <script>
 import { useUserLogin } from "@/composables/useUser.js";
+import { NModal, NForm, NFormItemRow, NInput } from "naive-ui";
 
 export default {
   name: "Login",
+  components: {
+    NModal,
+    NForm,
+    NFormItemRow,
+    NInput,
+  },
   setup() {
     const {
       email,
@@ -144,22 +161,6 @@ export default {
         }
       }
     }
-  }
-}
-
-.login-panel {
-  position: fixed;
-  z-index: var(--max-z-index);
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 20px;
-
-  .form {
-    display: flex;
-    flex-direction: column;
   }
 }
 </style>

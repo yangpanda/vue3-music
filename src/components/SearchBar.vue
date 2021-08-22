@@ -1,19 +1,20 @@
 <template>
-  <div class="wrapper">
-    <form>
-      <input type="search" placeholder="搜索">
-    </form>
-  </div>
+  <n-auto-complete class="searchbar" placeholder="搜索"></n-auto-complete>
 </template>
 
 <script>
-export default {
+import { NAutoComplete } from "naive-ui";
 
-}
+export default {
+  name: 'SearchBar',
+  components: {
+    NAutoComplete,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-input {
-  outline: none;
+.searchbar {
+  width: 260px;
 }
 </style>

@@ -1,14 +1,25 @@
 <template>
   <n-layout position="absolute">
-    <n-layout-header class="header">
-      <the-header />
+    <n-layout-header bordered class="header">
+      <div class="ui-logo">
+        <svg-icon
+          iconName="#icon-logo"
+          iconColor="#ec4141"
+          container
+          style="margin-right: 5px"
+        />
+        <span class="title">网易云音乐</span>
+      </div>
+      <search-bar />
+      <login />
     </n-layout-header>
-    <n-layout class="center" has-sider position="absolute">
+    <n-layout class="center" has-sider position="absolute" style="top: 56px; bottom: 70px">
       <n-layout-sider bordered :native-scrollbar="false">
         <the-sidebar />
       </n-layout-sider>
       <n-layout-content :native-scrollbar="false" ref="content">
         <router-view :key="$route.fullPath"></router-view>
+        <n-back-top :right="40" :bottom="90"></n-back-top>
       </n-layout-content>
     </n-layout>
     <n-layout-footer position="absolute">
@@ -18,7 +29,8 @@
 </template>
 
 <script>
-import TheHeader from "@/components/TheHeader.vue";
+import Login from "@/components/Login.vue";
+import SearchBar from "@/components/SearchBar.vue";
 import TheSidebar from "@/components/TheSidebar.vue";
 import ThePlayer from "@/components/ThePlayer.vue";
 
@@ -28,11 +40,11 @@ import {
   NLayoutSider,
   NLayoutContent,
   NLayoutFooter,
+  NBackTop,
 } from "naive-ui";
 
 export default {
   components: {
-    TheHeader,
     TheSidebar,
     ThePlayer,
     NLayout,
@@ -40,23 +52,36 @@ export default {
     NLayoutSider,
     NLayoutContent,
     NLayoutFooter,
+    NBackTop,
+    Login,
+    SearchBar,
   },
   provide() {
     return {
-      scrollTop: this.scrollTop
-    }
+      scrollTop: this.scrollTop,
+    };
   },
   methods: {
     scrollTop() {
-      this.$refs.content.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }
+      this.$refs.content.scrollTo({ top: 0, behavior: "smooth" });
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.center {
-  top: var(--header-height);
-  bottom: var(--footer-height);
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 56px;
+
+  .ui-logo {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+  }
 }
 </style>
