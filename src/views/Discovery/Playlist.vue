@@ -11,29 +11,37 @@
           <n-button>{{ cat.name }}</n-button>
         </template>
         <n-space vertical>
+          <n-thing @mousedown="cat = all" style="cursor: pointer">
+            <template #header>{{ all.name }}</template>
+          </n-thing>
           <n-thing v-for="(item, index) in categories" :key="index">
             <template #header>{{ item.cat }}</template>
             <n-space>
-              <n-tag
+              <n-badge
                 v-for="(subitem, subindex) in item.sub"
                 :key="subindex"
-                style="cursor: pointer"
-                @mousedown="cat = subitem"
-                round
+                value="火"
+                :show="subitem.hot"
               >
-                {{ subitem.name }}
-              </n-tag>
+                <n-tag style="cursor: pointer" @mousedown="cat = subitem" round>
+                  {{ subitem.name }}
+                </n-tag>
+              </n-badge>
             </n-space>
           </n-thing>
         </n-space>
       </n-popover>
-      <div>
+      <div class="hot-tags">
         <span>热门标签：</span>
-        <n-menu
-          mode="horizontal"
-          :options="hotTagsMenuOption"
-          v-model:value="cat.name"
-        ></n-menu>
+        <n-tag
+          v-for="(item, index) in hotTags"
+          :key="index"
+          checkable
+          :checked="cat.name === item"
+          @click="changeCat(item)"
+        >
+          {{ item }}
+        </n-tag>
       </div>
     </div>
     <n-grid :x-gap="20" :y-gap="15" :cols="5">
@@ -41,12 +49,17 @@
         <card-playlist :playlist="item" />
       </n-grid-item>
     </n-grid>
-    <n-pagination v-model:page="page" :page-count="pageCount" style="justify-content: center"/>
+    <n-pagination
+      v-model:page="page"
+      :page-count="pageCount"
+      @update:page="scroll"
+      style="justify-content: center"
+    />
   </div>
 </template>
 
 <script>
-import { ref, watchPostEffect } from "vue";
+import { nextTick, ref, watchPostEffect } from "vue";
 
 import {
   usePlaylistHotTags,
@@ -55,7 +68,7 @@ import {
 } from "@/composables/usePlaylist.js";
 
 import CardPlaylist from "@/components/CardPlaylist.vue";
-import { NGrid, NGridItem, NMenu, NThing, NPagination } from "naive-ui";
+import { NGrid, NGridItem, NMenu, NThing, NPagination, NBadge } from "naive-ui";
 
 export default {
   name: "Playlist",
@@ -66,39 +79,62 @@ export default {
     NMenu,
     NThing,
     NPagination,
+    NBadge,
   },
-  data() {
-    return {};
-  },
+  inject: ["scrollTop"],
   setup() {
     const { hotTags, hotTagsMenuOption } = usePlaylistHotTags();
     const { playlists, getPlaylist } = usePlaylistGet();
-    const { cat, categories } = usePlaylistCat();
+    const { all, categories } = usePlaylistCat();
+    const cat = ref({
+      name: "全部歌单",
+      hot: false,
+      count: "1000",
+    });
 
-    const page = ref(1)
-    const pageCount = ref(0)
+    const page = ref(1);
+    const pageCount = ref(0);
     watchPostEffect(() => {
-      const judge = Number(cat.value.count) % 50
-      const count = Math.floor(cat.value.count / 50)
-      pageCount.value = judge === 0 ? count : count + 1
+      const judge = cat.value.count % 50;
+      const count = Math.floor(cat.value.count / 50);
+      pageCount.value = judge === 0 ? count : count + 1;
 
-      console.log('exec');
+      console.log("exec");
       getPlaylist({
         order: "hot",
         cat: cat.value.name,
-        offset: page.value * 50
-      })
-    })
+        offset: page.value * 50,
+      });
+    });
 
     return {
       playlists,
       hotTags,
       hotTagsMenuOption,
       categories,
+      all,
       cat,
       page,
-      pageCount
+      pageCount,
     };
+  },
+  methods: {
+    scroll() {
+      nextTick(() => {
+        this.scrollTop();
+      });
+    },
+    changeCat(name) {
+      let catArr = [];
+      this.categories.forEach((item) => {
+        catArr = catArr.concat(item.sub);
+      });
+
+      const cat = catArr.find((item) => item.name == name);
+      if (cat) {
+        this.cat = cat;
+      }
+    },
   },
 };
 </script>
@@ -111,6 +147,12 @@ export default {
 }
 
 .nav {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.hot-tags {
   display: flex;
   align-items: center;
   column-gap: 20px;
