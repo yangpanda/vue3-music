@@ -4,10 +4,7 @@ import { computed, onMounted, watch, ref } from "vue";
 import User from '@/model/User.js'
 
 export function useUserLogin() {
-  const email = ref("");
-  const password = ref("");
   const showLoginPanel = ref(false);
-  const showDropPanel = ref(false);
 
   const store = useStore();
 
@@ -30,12 +27,11 @@ export function useUserLogin() {
     }
   }
 
-  const login = async () => {
-    const res = await user.login(email.value, password.value)
+  const login = async (model) => {
+    const res = await user.login(model.email, model.password)
     if (res.code === 200) {
       setUserinfo(new User(res.profile))
       setLoginStatus(true)
-      showLoginPanel.value = false
     }
   }
 
@@ -65,8 +61,7 @@ export function useUserLogin() {
   })
 
   return {
-    email, password,
-    showLoginPanel, showDropPanel,
+    showLoginPanel,
     userinfo,
     loginStatus,
     login,

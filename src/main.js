@@ -33,6 +33,7 @@ import {
   NElement,
   NButton,
   NPopover,
+  NIcon,
 } from 'naive-ui'
 
 const naive = create({
@@ -46,7 +47,8 @@ const naive = create({
     NAvatar,
     NFormItemRow,
     NButton,
-    NPopover
+    NPopover,
+    NIcon
   ]
 })
 

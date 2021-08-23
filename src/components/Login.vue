@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper">
-    <span
+    <n-button
+      text
       v-if="!loginStatus"
-      class="login-button"
       @click="showLoginPanel = !showLoginPanel"
     >
       登录
-    </span>
+    </n-button>
     <div v-else class="user-info">
       <n-avatar
         :size="30"
@@ -14,57 +14,78 @@
         :src="userinfo.avatar"
         style="cursor: pointer"
       />
-      <div
-        class="user-info-drop-button"
-        @click="showDropPanel = !showDropPanel"
-      >
-        <span style="margin-right: 4px; color: #fff">
-          {{ userinfo.nickname }}
-        </span>
-        <svg-icon iconName="#icon-triangle-down" size="16" iconColor="#fff" />
-      </div>
-      <div v-if="showDropPanel" class="user-info-drop-list shadow">
-        <div class="personal">
-          <div>
-            <div><span>动态</span></div>
-            <div><span>关注</span></div>
-            <div><span>粉丝</span></div>
-          </div>
-          <div><span>签到</span></div>
+      <n-popover trigger="click" placement="bottom-end" style="width: 300px">
+        <template #trigger>
+          <n-button text icon-placement="right">
+            <template #icon>
+              <n-icon> </n-icon>
+            </template>
+            {{ userinfo.nickname }}
+          </n-button>
+        </template>
+        <div class="dropdown">
+          <div>个人信息设置</div>
+          <div @click="logout">退出登录</div>
         </div>
-        <div class="info-setting list-item">
-          <svg-icon iconName="#icon-user-info" size="20" />
-          <span>个人信息设置</span>
-        </div>
-        <div class="logo-out list-item" @click="logout()">
-          <svg-icon iconName="#icon-log-out" size="20" />
-          <span>退出登录</span>
-        </div>
-      </div>
+      </n-popover>
     </div>
   </div>
   <n-modal class="login-panel" v-model:show="showLoginPanel">
-    <n-form style="width: 300px;">
-      <n-form-item-row label="邮箱">
-        <n-input type="email" placeholder="邮箱" v-model="email" />
-      </n-form-item-row>
-      <n-form-item-row label="密码">
-        <n-input
-          type="password"
-          show-password-toggle
-          placeholder="密码"
-          label="密码"
-          :value="password"
-        />
-      </n-form-item-row>
-      <n-button type="primary" block @click="login">登录</n-button>
-    </n-form>
+    <n-card style="width: 400px; height: 600px;">
+      <n-tabs default-value="email" type="line" justify-content="space-evenly">
+        <n-tab-pane name="email" tab="邮箱">
+          <n-form :model="model">
+            <n-form-item-row path="email" label="邮箱">
+              <n-input type="email" placeholder="邮箱" v-model:value="email" />
+            </n-form-item-row>
+            <n-form-item-row path="password" label="密码">
+              <n-input
+                type="password"
+                show-password-toggle
+                placeholder="密码"
+                label="密码"
+                v-model:value="password"
+              />
+            </n-form-item-row>
+            <n-button type="primary" block @click="login(model)">登录</n-button>
+          </n-form>
+        </n-tab-pane>
+        <n-tab-pane name="phone" tab="手机">
+          <n-form :model="model">
+            <n-form-item-row path="email" label="邮箱">
+              <n-input type="email" placeholder="邮箱" v-model:value="email" />
+            </n-form-item-row>
+            <n-form-item-row path="password" label="密码">
+              <n-input
+                type="password"
+                show-password-toggle
+                placeholder="密码"
+                label="密码"
+                v-model:value="password"
+              />
+            </n-form-item-row>
+            <n-button type="primary" block @click="login">登录</n-button>
+          </n-form>
+        </n-tab-pane>
+        <n-tab-pane name="qr" tab="二维码"></n-tab-pane>
+      </n-tabs>
+    </n-card>
   </n-modal>
 </template>
 
 <script>
 import { useUserLogin } from "@/composables/useUser.js";
-import { NModal, NForm, NFormItemRow, NInput } from "naive-ui";
+import {
+  NModal,
+  NForm,
+  NFormItemRow,
+  NInput,
+  NMenu,
+  NTabs,
+  NTabPane,
+  NCard,
+} from "naive-ui";
+import { ref } from "vue";
 
 export default {
   name: "Login",
@@ -73,24 +94,23 @@ export default {
     NForm,
     NFormItemRow,
     NInput,
+    NMenu,
+    NTabs,
+    NTabPane,
+    NCard,
   },
   setup() {
-    const {
-      email,
-      password,
-      showLoginPanel,
-      showDropPanel,
-      userinfo,
-      loginStatus,
-      login,
-      logout,
-    } = useUserLogin();
+    const { showLoginPanel, userinfo, loginStatus, login, logout } =
+      useUserLogin();
+
+    const modelRef = ref({
+      email: null,
+      password: null,
+    });
 
     return {
-      email,
-      password,
+      model: modelRef,
       showLoginPanel,
-      showDropPanel,
       userinfo,
       loginStatus,
       login,
@@ -101,66 +121,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  .login-button {
-    cursor: pointer;
-  }
-
-  .user-info {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: 10px;
-    align-items: center;
-    position: relative;
-    height: var(--header-height);
-
-    .user-info-drop-button {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .user-info-drop-list {
-      position: absolute;
-      top: var(--header-height);
-      right: 0;
-      background-color: #fff;
-      z-index: var(--max-z-index);
-      border-radius: 4px;
-
-      .list-item {
-        display: flex;
-        align-items: center;
-        width: 260px;
-        height: 42px;
-        padding: 0 20px;
-        cursor: pointer;
-        position: relative;
-        margin-top: 5px;
-        margin-bottom: 5px;
-
-        span {
-          margin-left: 10px;
-        }
-
-        &::before {
-          content: "";
-          position: absolute;
-          z-index: auto;
-          top: 0;
-          bottom: 0;
-          left: 5px;
-          right: 5px;
-          border-radius: 4px;
-          background-color: #0000;
-          transition: background-color 0.3s;
-        }
-
-        &:hover::before {
-          background-color: rgba(0, 0, 0, 0.06);
-        }
-      }
-    }
-  }
+.user-info {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
 }
 </style>
