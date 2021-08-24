@@ -4,35 +4,58 @@
       <span class="artist-nav-title">语种：</span>
       <span
         class="artist-nav-item"
-        v-for="(item, index) in languages.values()"
+        :class="{ selected: area === item[0] }"
+        v-for="(item, index) in languages.entries()"
         :key="index"
+        @click="area = item[0]"
       >
-        {{ item }}
+        {{ item[1] }}
       </span>
     </nav>
     <nav class="artist-nav category">
       <span class="artist-nav-title">分类：</span>
       <span
         class="artist-nav-item"
-        v-for="(item, index) in categories.values()"
+        :class="{ selected: type === item[0] }"
+        v-for="(item, index) in categories.entries()"
         :key="index"
+        @click="type = item[0]"
       >
-        {{ item }}
+        {{ item[1] }}
       </span>
     </nav>
     <nav class="artist-nav alphabet">
       <span class="artist-nav-title">筛选：</span>
-      <span
-        class="artist-nav-item"
-        v-for="(item, index) in alphabet"
-        :key="index"
-      >
-        {{ item }}
-      </span>
+      <div class="artist-nav-item-container">
+        <span
+          class="artist-nav-item"
+          @click="initial = -1"
+          :class="{ selected: initial === -1 }"
+          >热门</span
+        >
+        <span
+          class="artist-nav-item"
+          :class="{ selected: initial === item }"
+          v-for="(item, index) in alphabet"
+          :key="index"
+          @click="initial = item"
+        >
+          {{ item }}
+        </span>
+        <span
+          class="artist-nav-item"
+          @click="initial = 0"
+          :class="{ selected: initial === 0 }"
+          >#</span
+        >
+      </div>
     </nav>
     <n-grid x-gap="20" y-gap="15" :cols="6">
       <n-grid-item v-for="(item, index) in artists" :key="index">
         <the-image :src="item.picUrl + '?param=300y300'"></the-image>
+        <div class="footer">
+          <span class="name">{{ item.name }}</span>
+        </div>
       </n-grid-item>
     </n-grid>
   </div>
@@ -40,8 +63,8 @@
 
 <script>
 import * as artist from "@/api/service/artist.js";
-import { ref, watchEffect } from "vue";
-import {NGrid, NGridItem, NAvatar} from 'naive-ui'
+import { shallowReactive, ref, watchEffect, toRefs } from "vue";
+import { NGrid, NGridItem, NAvatar } from "naive-ui";
 
 function generateBigAlphabet() {
   var str = [];
@@ -56,7 +79,7 @@ export default {
   components: {
     NGridItem,
     NGrid,
-    NAvatar
+    NAvatar,
   },
   setup() {
     const languages = new Map([
@@ -76,32 +99,39 @@ export default {
 
     const alphabet = generateBigAlphabet();
 
-    const reqParams = ref({
-      initial: "-1",
+    const paramsReac = shallowReactive({
+      initial: -1,
       area: -1,
       type: -1,
       limit: 30,
       offset: 0,
     });
 
-    const artists = ref([])
+    const artists = ref([]);
 
     const getArtist = async (param) => {
       const res = await artist.getArtist(param);
       if (res.code === 200) {
-        artists.value = res.artists
+        artists.value = res.artists;
       }
     };
 
     watchEffect(() => {
-      getArtist(reqParams.value);
+      getArtist({
+        initial: paramsReac.initial,
+        area: paramsReac.area,
+        type: paramsReac.type,
+        limit: paramsReac.limit,
+        offset: paramsReac.offset,
+      });
     });
 
     return {
       languages,
       categories,
       alphabet,
-      artists
+      artists,
+      ...toRefs(paramsReac),
     };
   },
 };
@@ -117,7 +147,15 @@ export default {
   display: flex;
   column-gap: 10px;
 }
-
+.artist-nav-item-container {
+  display: flex;
+  column-gap: 10px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+}
+.artist-nav-title {
+  white-space: nowrap;
+}
 .artist-nav-item {
   cursor: pointer;
   padding: 0 10px;
