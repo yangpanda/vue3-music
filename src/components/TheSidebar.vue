@@ -184,4 +184,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.menu {
+  width: 240px;
+}
+@media screen and (min-width: 1300px) {
+  .menu {
+    width: 300px;
+  }
+}
 </style>

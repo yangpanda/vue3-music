@@ -14,7 +14,7 @@
       <login />
     </n-layout-header>
     <n-layout class="center" has-sider position="absolute" style="top: 56px; bottom: 70px">
-      <n-layout-sider bordered :native-scrollbar="false">
+      <n-layout-sider class="sidebar" bordered :native-scrollbar="false" width="fit-content">
         <the-sidebar />
       </n-layout-sider>
       <n-layout-content :native-scrollbar="false" ref="content">
