@@ -32,6 +32,7 @@ export function useUserLogin() {
     if (res.code === 200) {
       setUserinfo(new User(res.profile))
       setLoginStatus(true)
+      showLoginPanel.value = false
     }
   }
 

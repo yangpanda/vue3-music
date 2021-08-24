@@ -18,12 +18,18 @@
         <template #trigger>
           <n-button text icon-placement="right">
             <template #icon>
-              <n-icon> </n-icon>
+              <n-icon><icon-arrow-down /></n-icon>
             </template>
             {{ userinfo.nickname }}
           </n-button>
         </template>
         <div class="dropdown">
+          <div>
+            <div>
+              
+            </div>
+            <n-button>签到</n-button>
+          </div>
           <div>个人信息设置</div>
           <div @click="logout">退出登录</div>
         </div>
@@ -31,12 +37,12 @@
     </div>
   </div>
   <n-modal class="login-panel" v-model:show="showLoginPanel">
-    <n-card style="width: 400px; height: 600px;">
+    <n-card style="width: 400px; height: 600px">
       <n-tabs default-value="email" type="line" justify-content="space-evenly">
         <n-tab-pane name="email" tab="邮箱">
           <n-form :model="model">
             <n-form-item-row path="email" label="邮箱">
-              <n-input type="email" placeholder="邮箱" v-model:value="email" />
+              <n-input type="email" placeholder="邮箱" v-model:value="model.email" />
             </n-form-item-row>
             <n-form-item-row path="password" label="密码">
               <n-input
@@ -44,7 +50,7 @@
                 show-password-toggle
                 placeholder="密码"
                 label="密码"
-                v-model:value="password"
+                v-model:value="model.password"
               />
             </n-form-item-row>
             <n-button type="primary" block @click="login(model)">登录</n-button>
@@ -53,7 +59,7 @@
         <n-tab-pane name="phone" tab="手机">
           <n-form :model="model">
             <n-form-item-row path="email" label="邮箱">
-              <n-input type="email" placeholder="邮箱" v-model:value="email" />
+              <n-input type="email" placeholder="邮箱" v-model:value="model.email" />
             </n-form-item-row>
             <n-form-item-row path="password" label="密码">
               <n-input
@@ -61,7 +67,7 @@
                 show-password-toggle
                 placeholder="密码"
                 label="密码"
-                v-model:value="password"
+                v-model:value="model.password"
               />
             </n-form-item-row>
             <n-button type="primary" block @click="login">登录</n-button>
@@ -86,6 +92,7 @@ import {
   NCard,
 } from "naive-ui";
 import { ref } from "vue";
+import { ChevronDown as IconArrowDown } from '@vicons/ionicons5'
 
 export default {
   name: "Login",
@@ -98,6 +105,7 @@ export default {
     NTabs,
     NTabPane,
     NCard,
+    IconArrowDown
   },
   setup() {
     const { showLoginPanel, userinfo, loginStatus, login, logout } =

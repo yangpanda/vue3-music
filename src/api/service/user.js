@@ -3,15 +3,15 @@ import request from "./request";
 export const login = (email, password) =>
   request.get(`/login?email=${email}&password=${password}`);
 
-// export const getLoginStatus = () =>
-//   request.get(`/login/status`, {
-//     params: {
-//       timestamp: Date.now()
-//     }
-//   })
-
 export const getLoginStatus = () =>
-  request.get(`/login/status`)
+  request.get(`/login/status`, {
+    params: {
+      timestamp: Date.now()
+    }
+  })
+
+// export const getLoginStatus = () =>
+//   request.get(`/login/status`)
 
 
 export const getLikedSongs = (uid) => {
@@ -23,4 +23,8 @@ export const getLikedSongs = (uid) => {
 }
 
 export const logout = () =>
-  request.get(`/logout`)
+  request.get(`/logout`, {
+    params: {
+      timestamp: Date.now()
+    }
+  })
