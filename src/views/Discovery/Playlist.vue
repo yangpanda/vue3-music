@@ -81,7 +81,7 @@ export default {
     NPagination,
     NBadge,
   },
-  inject: ["scrollTop"],
+  inject: ["scrollToTop"],
   setup() {
     const { hotTags, hotTagsMenuOption } = usePlaylistHotTags();
     const { playlists, getPlaylist } = usePlaylistGet();

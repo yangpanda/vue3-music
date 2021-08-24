@@ -50,7 +50,7 @@
         >
       </div>
     </nav>
-    <n-grid v-if="show" x-gap="20" y-gap="15" :cols="6" ref="container">
+    <n-grid x-gap="20" y-gap="15" :cols="6" ref="container">
       <n-grid-item v-for="(item, index) in artists" :key="index">
         <the-image :src="item.picUrl + '?param=300y300'"></the-image>
         <div class="footer">
@@ -58,14 +58,16 @@
         </div>
       </n-grid-item>
     </n-grid>
-    <div v-else>loading</div>
+    <div class="lay-center">
+      <n-spin v-show="loadState" class="load-more" />
+    </div>
   </div>
 </template>
 
 <script>
 import * as artist from "@/api/service/artist.js";
-import { shallowReactive, ref, watchEffect, toRefs } from "vue";
-import { NGrid, NGridItem, NAvatar } from "naive-ui";
+import { shallowReactive, ref, watchEffect, toRefs, onUpdated, inject, nextTick } from "vue";
+import { NGrid, NGridItem, NSpin } from "naive-ui";
 
 function generateBigAlphabet() {
   var str = [];
@@ -80,9 +82,25 @@ export default {
   components: {
     NGridItem,
     NGrid,
-    NAvatar,
+    NSpin,
   },
   setup() {
+    const scrollTop = inject('scrollTop')
+    const clientHeight = inject('clientHeight')
+
+    const loadState = ref(true);
+    const loadMore = () => {
+      console.log('load more');
+      if (scrollTop() - domScrollTop - clientHeight() < 50) {
+        loadState.value = true;
+        paramsReac.offset += 1
+      }
+    };
+    nextTick(() => {
+      console.log(scrollTop);
+      console.log(clientHeight);
+    })
+    onUpdated(loadMore)
     const languages = new Map([
       [-1, "全部"],
       [7, "华语"],
@@ -109,18 +127,15 @@ export default {
     });
 
     const artists = ref([]);
-    const show = ref(false)
 
     const getArtist = async (param) => {
       // const res = await artist.getArtist(param);
       // if (res.code === 200) {
       //   artists.value = res.artists;
       // }
-      show.value = false
       artist.getArtist(param).then((response) => {
-        show.value = true
         if (response.code === 200) {
-          artists.value = response.artists;
+          artists.value.push(...response.artists);
           console.log(response);
         }
       });
@@ -141,7 +156,7 @@ export default {
       categories,
       alphabet,
       artists,
-      show,
+      loadState,
       ...toRefs(paramsReac),
     };
   },
@@ -175,5 +190,9 @@ export default {
   border: 1px solid lightcoral;
   background-color: rgb(224, 146, 146);
   border-radius: 999em;
+}
+.lay-center {
+  display: flex;
+  justify-content: center;
 }
 </style>

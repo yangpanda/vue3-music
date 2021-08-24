@@ -42,6 +42,7 @@ import {
   NLayoutFooter,
   NBackTop,
 } from "naive-ui";
+import { ref, computed, provide, onMounted } from "@vue/runtime-core";
 
 export default {
   components: {
@@ -56,13 +57,27 @@ export default {
     Login,
     SearchBar,
   },
+  setup() {
+    const content = ref(null)
+    onMounted(() => {
+      provide('scrollTop', computed(() => content.value.scrollTop))
+      provide('clientHeight', computed(() => content.value.clientHeight))
+      console.dir(content.value);
+    })
+
+    return {
+      content
+    }
+  },
   provide() {
     return {
+      scrollToTop: this.scrollToTop,
       scrollTop: this.scrollTop,
+      clientHeight: this.clientHeight
     };
   },
   methods: {
-    scrollTop() {
+    scrollToTop() {
       this.$refs.content.scrollTo({ top: 0, behavior: "smooth" });
     },
   },
