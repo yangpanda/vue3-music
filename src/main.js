@@ -4,6 +4,8 @@ import router from "./router";
 import store from "./store";
 
 import VueLazyload from '@jambonn/vue-lazyload'
+import loadimage from '@/assets/icons/default.png'
+
 
 import "@/styles/variables.scss"
 import "@/styles/index.scss";
@@ -52,8 +54,12 @@ const naive = create({
   ]
 })
 
-app
-  .use(VueLazyload)
+app.use(VueLazyload, {
+  preLoad: 1.3,
+  error: loadimage,
+  loading: loadimage,
+  attempt: 1
+  })
   .use(naive)
   .use(store)
   .use(router)

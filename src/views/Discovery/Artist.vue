@@ -50,7 +50,7 @@
         >
       </div>
     </nav>
-    <n-grid x-gap="20" y-gap="15" :cols="6">
+    <n-grid v-if="show" x-gap="20" y-gap="15" :cols="6" ref="container">
       <n-grid-item v-for="(item, index) in artists" :key="index">
         <the-image :src="item.picUrl + '?param=300y300'"></the-image>
         <div class="footer">
@@ -58,6 +58,7 @@
         </div>
       </n-grid-item>
     </n-grid>
+    <div v-else>loading</div>
   </div>
 </template>
 
@@ -108,12 +109,21 @@ export default {
     });
 
     const artists = ref([]);
+    const show = ref(false)
 
     const getArtist = async (param) => {
-      const res = await artist.getArtist(param);
-      if (res.code === 200) {
-        artists.value = res.artists;
-      }
+      // const res = await artist.getArtist(param);
+      // if (res.code === 200) {
+      //   artists.value = res.artists;
+      // }
+      show.value = false
+      artist.getArtist(param).then((response) => {
+        show.value = true
+        if (response.code === 200) {
+          artists.value = response.artists;
+          console.log(response);
+        }
+      });
     };
 
     watchEffect(() => {
@@ -131,6 +141,7 @@ export default {
       categories,
       alphabet,
       artists,
+      show,
       ...toRefs(paramsReac),
     };
   },

@@ -1,8 +1,9 @@
 import axios from "axios"
 
 const config = {
-  baseURL: '/api',
+  // baseURL: '/api',
   // baseURL: 'http://127.0.0.1:3000',
+  baseURL: 'https://music-api-khaki-nine.vercel.app/',
   withCredentials: true,
 }
 
