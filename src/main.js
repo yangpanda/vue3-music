@@ -36,6 +36,8 @@ import {
   NButton,
   NPopover,
   NIcon,
+  NGrid,
+  NGridItem,
 } from 'naive-ui'
 
 const naive = create({
@@ -50,7 +52,9 @@ const naive = create({
     NFormItemRow,
     NButton,
     NPopover,
-    NIcon
+    NIcon,
+    NGrid,
+    NGridItem
   ]
 })
 
@@ -59,7 +63,7 @@ app.use(VueLazyload, {
   error: loadimage,
   loading: loadimage,
   attempt: 1
-  })
+})
   .use(naive)
   .use(store)
   .use(router)

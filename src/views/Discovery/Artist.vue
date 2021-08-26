@@ -1,73 +1,73 @@
 <template>
-  <div class="artist-nav-container">
-    <nav class="artist-nav language">
-      <span class="artist-nav-title">语种：</span>
-      <span
-        class="artist-nav-item"
-        :class="{ selected: area === item[0] }"
-        v-for="(item, index) in languages.entries()"
-        :key="index"
-        @click="area = item[0]"
-      >
-        {{ item[1] }}
-      </span>
-    </nav>
-    <nav class="artist-nav category">
-      <span class="artist-nav-title">分类：</span>
-      <span
-        class="artist-nav-item"
-        :class="{ selected: type === item[0] }"
-        v-for="(item, index) in categories.entries()"
-        :key="index"
-        @click="type = item[0]"
-      >
-        {{ item[1] }}
-      </span>
-    </nav>
-    <nav class="artist-nav alphabet">
-      <span class="artist-nav-title">筛选：</span>
-      <div class="artist-nav-item-container">
-        <span
-          class="artist-nav-item"
-          @click="initial = -1"
-          :class="{ selected: initial === -1 }"
-          >热门</span
-        >
-        <span
-          class="artist-nav-item"
-          :class="{ selected: initial === item }"
-          v-for="(item, index) in alphabet"
-          :key="index"
-          @click="initial = item"
-        >
-          {{ item }}
-        </span>
-        <span
-          class="artist-nav-item"
-          @click="initial = 0"
-          :class="{ selected: initial === 0 }"
-          >#</span
-        >
-      </div>
-    </nav>
-    <n-grid x-gap="20" y-gap="15" :cols="6" ref="container">
-      <n-grid-item v-for="(item, index) in artists" :key="index">
-        <the-image :src="item.picUrl + '?param=300y300'"></the-image>
-        <div class="footer">
-          <span class="name">{{ item.name }}</span>
-        </div>
-      </n-grid-item>
-    </n-grid>
-    <div class="lay-center">
-      <n-spin v-show="loadState" class="load-more" />
-    </div>
-  </div>
+	<div class="artist-nav-container">
+		<nav class="artist-nav language">
+			<span class="artist-nav-title">语种：</span>
+			<span
+				class="artist-nav-item"
+				:class="{ selected: area === item[0] }"
+				v-for="(item, index) in languages.entries()"
+				:key="index"
+				@click="area = item[0]"
+			>
+				{{ item[1] }}
+			</span>
+		</nav>
+		<nav class="artist-nav category">
+			<span class="artist-nav-title">分类：</span>
+			<span
+				class="artist-nav-item"
+				:class="{ selected: type === item[0] }"
+				v-for="(item, index) in categories.entries()"
+				:key="index"
+				@click="type = item[0]"
+			>
+				{{ item[1] }}
+			</span>
+		</nav>
+		<nav class="artist-nav alphabet">
+			<span class="artist-nav-title">筛选：</span>
+			<div class="artist-nav-item-container">
+				<span
+					class="artist-nav-item"
+					@click="initial = -1"
+					:class="{ selected: initial === -1 }"
+					>热门</span
+				>
+				<span
+					class="artist-nav-item"
+					:class="{ selected: initial === item }"
+					v-for="(item, index) in alphabet"
+					:key="index"
+					@click="initial = item"
+				>
+					{{ item }}
+				</span>
+				<span
+					class="artist-nav-item"
+					@click="initial = 0"
+					:class="{ selected: initial === 0 }"
+					>#</span
+				>
+			</div>
+		</nav>
+		<n-grid x-gap="20" y-gap="15" :cols="6" ref="container">
+			<n-grid-item v-for="(item, index) in artists" :key="index">
+				<the-image :src="item.picUrl + '?param=300y300'"></the-image>
+				<div class="footer">
+					<span class="name">{{ item.name }}</span>
+				</div>
+			</n-grid-item>
+		</n-grid>
+		<div class="lay-center">
+			<n-spin v-show="loadState" class="load-more" />
+		</div>
+	</div>
 </template>
 
 <script>
 import * as artist from "@/api/service/artist.js";
 import { shallowReactive, ref, watchEffect, toRefs, onUpdated, inject, nextTick } from "vue";
-import { NGrid, NGridItem, NSpin } from "naive-ui";
+import { NSpin, useLoadingBar } from "naive-ui";
 
 function generateBigAlphabet() {
   var str = [];
@@ -80,11 +80,10 @@ function generateBigAlphabet() {
 export default {
   name: "Artist",
   components: {
-    NGridItem,
-    NGrid,
     NSpin,
   },
   setup() {
+    const loadingBar = useLoadingBar()
     const scrollTop = inject('scrollTop')
     const clientHeight = inject('clientHeight')
 
@@ -96,10 +95,9 @@ export default {
         paramsReac.offset += 1
       }
     };
-    nextTick(() => {
-      console.log(scrollTop);
-      console.log(clientHeight);
-    })
+    console.log(document.documentElement.clientHeight);
+    console.log(document.documentElement.scrollHeight);
+
     onUpdated(loadMore)
     const languages = new Map([
       [-1, "全部"],
@@ -129,15 +127,13 @@ export default {
     const artists = ref([]);
 
     const getArtist = async (param) => {
-      // const res = await artist.getArtist(param);
-      // if (res.code === 200) {
-      //   artists.value = res.artists;
-      // }
+      loadingBar.start()
       artist.getArtist(param).then((response) => {
         if (response.code === 200) {
           artists.value.push(...response.artists);
-          console.log(response);
         }
+
+        loadingBar.finish()
       });
     };
 
@@ -165,34 +161,34 @@ export default {
 
 <style scoped>
 .artist-nav-container {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
 }
 .artist-nav {
-  display: flex;
-  column-gap: 10px;
+	display: flex;
+	column-gap: 10px;
 }
 .artist-nav-item-container {
-  display: flex;
-  column-gap: 10px;
-  row-gap: 10px;
-  flex-wrap: wrap;
+	display: flex;
+	column-gap: 10px;
+	row-gap: 10px;
+	flex-wrap: wrap;
 }
 .artist-nav-title {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 .artist-nav-item {
-  cursor: pointer;
-  padding: 0 10px;
+	cursor: pointer;
+	padding: 0 10px;
 }
 .artist-nav-item.selected {
-  border: 1px solid lightcoral;
-  background-color: rgb(224, 146, 146);
-  border-radius: 999em;
+	border: 1px solid lightcoral;
+	background-color: rgb(224, 146, 146);
+	border-radius: 999em;
 }
 .lay-center {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 </style>

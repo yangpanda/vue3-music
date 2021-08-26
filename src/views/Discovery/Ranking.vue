@@ -1,23 +1,18 @@
 <template>
-  <div class="rank">
-    <h1>官方榜</h1>
-    <div class="official-wrapper">
-      <div class="wrapper" v-for="(item, index) in officialList" :key="index">
-        <card-playlist :playlist="item" style="width: 180px;"/>
-        <ul>
-          <li></li>
-        </ul>
-      </div>
-    </div>
-    <h2>全球榜</h2>
-    <div class="list-wrapper">
-      <card-playlist
-        v-for="(item, index) in list"
-        :key="index"
-        :playlist="item"
-      />
-    </div>
-  </div>
+	<div class="rank">
+		<h1>官方榜</h1>
+		<n-grid :x-gap="20" :y-gap="15" :cols="5">
+			<n-grid-item v-for="(item, index) in officialList" :key="index">
+				<card-playlist :playlist="item" />
+			</n-grid-item>
+		</n-grid>
+		<h2>全球榜</h2>
+		<n-grid :x-gap="20" :y-gap="15" :cols="5">
+			<n-grid-item v-for="(item, index) in list" :key="index">
+				<card-playlist :playlist="item" />
+			</n-grid-item>
+		</n-grid>
+	</div>
 </template>
 
 <script>
@@ -25,6 +20,7 @@ import CardPlaylist from "@/components/CardPlaylist.vue";
 import { ref, onMounted } from "vue";
 import Playlist from "@/model/Playlist.js";
 import * as playlist from "@/api/service/playlist.js";
+import { useLoadingBar } from 'naive-ui'
 
 export default {
   name: "Ranking",
@@ -32,10 +28,13 @@ export default {
     CardPlaylist,
   },
   setup() {
+    const loading = ref(true)
+    const loadingBar = useLoadingBar()
     const list = ref([]);
     const officialList = ref([]);
 
     const getRankList = async () => {
+      loadingBar.start()
       const res = await playlist.getRankList();
 
       if (res.code === 200) {
@@ -46,6 +45,7 @@ export default {
             list.value.push(new Playlist(item));
           }
         });
+        loadingBar.finish()
       }
     };
 
@@ -60,19 +60,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rank {
-  .official-wrapper {
-    row-gap: 20px;
-
-    .wrapper {
-      display: flex;
-      column-gap: 20px;
-    }
-  }
-  .list-wrapper {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: 20px;
-  }
-}
 </style>
