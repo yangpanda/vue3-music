@@ -3,6 +3,7 @@ import * as song from '@/api/service/song.js'
 import { ref, onMounted, watch } from 'vue'
 import Playlist from '@/model/Playlist.js'
 import Song from '@/model/Song.js'
+import { useLoadingBar } from 'naive-ui'
 
 export function usePlaylistPersonalized() {
   const personalizedPlaylists = ref([])
@@ -53,18 +54,25 @@ export function usePlaylistDetail(id) {
 }
 
 export function usePlaylistGet() {
+  const loading = ref(true)
   const playlists = ref([])
+  const loadingBar = useLoadingBar()
 
   const getPlaylist = async (param) => {
+    loading.value = true
+    loadingBar.start()
     const res = await playlist.getPlaylist(param);
     if (res.code === 200) {
       playlists.value = res.playlists.map(item => new Playlist(item))
+      loading.value = false
+      loadingBar.finish()
     }
   };
 
   return {
     playlists,
-    getPlaylist
+    getPlaylist,
+    loading,
   }
 }
 

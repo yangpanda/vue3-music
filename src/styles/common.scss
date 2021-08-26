@@ -46,3 +46,8 @@
 .link {
   cursor: pointer;
 }
+
+.overlay {
+  opacity: 0.4;
+  pointer-events: none;
+}
