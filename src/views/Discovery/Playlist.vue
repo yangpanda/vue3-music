@@ -129,7 +129,7 @@ export default {
   methods: {
     scroll() {
       nextTick(() => {
-        this.scrollTop();
+        this.scrollToTop();
       });
     },
     changeCat(name) {
