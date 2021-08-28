@@ -76,7 +76,6 @@ export default {
     onMounted(() => {
       provide('scrollTop', computed(() => content.value.scrollTop))
       provide('clientHeight', computed(() => content.value.clientHeight))
-      console.dir(content.value);
     })
 
     return {

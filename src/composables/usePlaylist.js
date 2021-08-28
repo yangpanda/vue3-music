@@ -5,21 +5,6 @@ import Playlist from '@/model/Playlist.js'
 import Song from '@/model/Song.js'
 import { useLoadingBar } from 'naive-ui'
 
-export function usePlaylistPersonalized() {
-  const personalizedPlaylists = ref([])
-
-  const getPersonalized = async () => {
-    const response = await playlist.getPersonalized(10)
-    personalizedPlaylists.value = response.result.map(item => new Playlist(item))
-  }
-
-  onMounted(getPersonalized)
-
-  return {
-    personalizedPlaylists,
-  }
-}
-
 export async function getSongDetail(ids) {
   let songs = []
   const response = await song.getSongDetail(ids.join(','))
@@ -32,26 +17,6 @@ export async function getPlaylistDetail(id) {
   return new Playlist(detailData.playlist);
 }
 
-export function usePlaylistDetail(id) {
-  const playlistDetail = ref({})
-  const songs = ref([])
-
-  onMounted(() => {
-    getPlaylistDetail(id).then(response => {
-      playlistDetail.value = response
-    })
-  })
-  watch(playlistDetail, () => {
-    let ids = []
-    ids = playlistDetail.value.trackIds.map(item => item.id)
-    getSongDetail(ids).then(response => songs.value = response)
-  })
-
-  return {
-    playlistDetail,
-    songs
-  }
-}
 
 export function usePlaylistGet() {
   const loading = ref(true)

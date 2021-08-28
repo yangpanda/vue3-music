@@ -15,21 +15,6 @@ export function useMvPrivatecontent() {
   }
 }
 
-export function useMvPersonalized() {
-  const personalizedMvs = ref([])
-  const getPersonalizedMv = async () => {
-    const response = await mv.getPersonalizedMv();
-    response.result.map(item => personalizedMvs.value.push(item));
-    personalizedMvs.value = personalizedMvs.value.slice(0, 3);
-  };
-
-  onMounted(getPersonalizedMv);
-
-  return {
-    personalizedMvs
-  }
-}
-
 export function useMvGetNewMv() {
   const newMv = ref([])
   const getNewMv = async () => {
