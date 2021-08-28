@@ -1,107 +1,111 @@
 <template>
-  <div class="wrapper">
-    <div class="info">
-      <div class="cover">
-        <the-image :src="playlistDetail.imgUrl" />
+  <div class="playlist-detail-container">
+    <div class="playlist-detail-header">
+      <div class="playlist-cover">
+        <the-image :src="detail.imgUrl" width="180px" height="180px" />
       </div>
-      <div class="detail">
-        <div class="title">
-          <n-tag size="small" style="margin-right: 5px">歌单</n-tag>
-          <h2 style="margin: 0">{{ playlistDetail.name }}</h2>
+      <div class="playlist-info">
+        <div class="playlist-title">
+          <n-tag size="small">歌单</n-tag>
+          <h2 style="margin: 0">{{ detail.name }}</h2>
         </div>
-        <div class="avatar">
-          <n-avatar
-            :src="playlistDetail.avatarUrl"
-            circle
-            :size="26"
-            style="margin-right: 5px"
-          />
-          <span>{{ playlistDetail.creatorName }}</span>
+        <div class="playlist-user">
+          <n-avatar :src="detail.avatarUrl" circle :size="26" />
+          <span>{{ detail.creatorName }}</span>
         </div>
-        <div class="tags">
+        <div class="playlist-tags">
           <span>标签： </span>
-          <span>{{ playlistDetail.tags }}</span>
+          <span>{{ detail.tags }}</span>
         </div>
-        <div class="description">
-          <span class="label">简介： </span>
-          <span class="des ellipsis">{{ playlistDetail.description }}</span>
+        <div class="playlist-description">
+          <span class="label" style="white-space: nowrap;">简介： </span>
+          <span>{{ detail.description }}</span>
         </div>
       </div>
     </div>
-    <song-table-list :songs="songs"></song-table-list>
+    <div v-if="showSpin" style="display: flex; justify-content: center;">
+      <n-spin/>
+    </div>
+    <song-table-list v-else :songs="songs"></song-table-list>
   </div>
 </template>
 
-<script>
+<script setup>
+import * as playlist from "@/api/service/playlist.js";
+import * as song from "@/api/service/song.js";
+
+import playlistBgImg from '@/assets/music.svg'
+
+import Playlist from "../model/Playlist";
+import Song from "../model/Song";
+
 import SongTableList from "@/components/SongTableList.vue";
-import TheImage from "@/components/TheImage.vue";
+import { useLoadingBar, NSpin } from "naive-ui";
 
-import { usePlaylistDetail } from '@/composables/usePlaylist.js'
+import { ref, onMounted } from "@vue/runtime-core";
 
-export default {
-  name: "PlaylistDetail",
-  props: {
-    id: String,
-  },
-  components: {
-    SongTableList,
-    TheImage,
-  },
-  setup(props) {
-    const {
-      playlistDetail,
-      songs
-    } = usePlaylistDetail(props.id)
+const props = defineProps({
+  id: String,
+});
 
-    return {
-      playlistDetail,
-      songs,
-    };
-  },
+const loading = useLoadingBar();
+const showSpin = ref(true);
+const detail = ref({});
+const songs = ref([]);
+
+const getSongs = async (ids) => {
+  song.getSongDetail(ids.join(",")).then((res) => {
+    if (res.code === 200) {
+      songs.value = res.songs.map((item) => new Song(item));
+      loading.finish();
+      showSpin.value = false;
+    }
+  });
 };
+
+const getPlaylistDetail = async (id) => {
+  loading.start();
+  showSpin.value = true;
+  playlist.getPlaylistDetail(id).then((res) => {
+    if (res.code === 200) {
+      detail.value = new Playlist(res.playlist);
+
+      let ids = detail.value.trackIds.map((item) => item.id);
+      getSongs(ids);
+    }
+  });
+};
+
+onMounted(getPlaylistDetail(props.id));
 </script>
 
-<style lang="scss" scoped>
-.wrapper {
-  .info {
-    display: flex;
-    padding: 20px;
-    height: 180px;
-
-    .cover {
-      flex: 0 0 180px;
-    }
-
-    .detail {
-      margin-left: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      flex-grow: 1;
-
-      .title {
-        display: flex;
-        align-items: center;
-      }
-
-      .avatar {
-        display: flex;
-        align-items: center;
-      }
-
-      .description {
-        display: flex;
-
-        .label {
-          flex-shrink: 0;
-        }
-
-        .des {
-          flex: 1;
-          width: 0;
-        }
-      }
-    }
-  }
+<style scoped>
+.playlist-detail-header {
+  display: flex;
+  column-gap: 20px;
+  padding: 20px;
+}
+.playlist-info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+  min-width: 820px;
+}
+.playlist-title {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.playlist-user {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.playlist-tags {
+  display: flex;
+  align-items: center;
+}
+.playlist-description {
+  display: flex;
 }
 </style>

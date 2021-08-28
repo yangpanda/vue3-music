@@ -6,9 +6,8 @@
       width: imageWidth,
       height: imageHeight,
     }"
-    v-lazy-container="{ selector: 'img', error: errorImg, loading: loadingImg }"
   >
-    <img class="image" :data-src="src" alt="..." />
+    <img class="image" v-lazy="src"/>
     <div
       v-if="!height"
       class="after"
@@ -18,8 +17,6 @@
 </template>
 
 <script>
-import loadingUrl from '@/assets/icons/loading.svg'
-import errorUrl from '@/assets/icons/error.svg'
 
 export default {
   name: "TheImage",
@@ -41,14 +38,6 @@ export default {
     height: {
       type: String,
     },
-    loadingImg: {
-      type: String,
-      default: loadingUrl
-    },
-    errorImg: {
-      type: String,
-      default: errorUrl,
-    },
   },
   data() {
     return {
@@ -62,15 +51,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
 .image-wrapper {
   display: flex;
   justify-content: center;
@@ -82,18 +62,10 @@ export default {
   .image {
     display: block;
   }
-
-  .image[lazy=loading] {
-    width: 40%;
-  }
   .image[lazy=loaded] {
     width: 100%;
     animation: fadein 1s both;
   }
-  .image[lazy=error] {
-    width: 40%;
-  }
-
   .after {
     width: 0;
     height: 0;
