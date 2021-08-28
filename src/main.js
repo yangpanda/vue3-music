@@ -58,7 +58,7 @@ const naive = create({
 
 app.use(VueLazyload, {
   preLoad: 1.3,
-  attempt: 3
+  attempt: 3,
 })
   .use(naive)
   .use(store)
