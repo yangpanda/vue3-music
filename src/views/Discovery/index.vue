@@ -6,7 +6,7 @@
         <router-link class="playlist router" to="/discovery/playlist">歌单</router-link>
         <router-link class="ranking router" to="/discovery/ranking">排行榜</router-link>
         <router-link class="artist router" to="/discovery/artist">歌手</router-link>
-        <router-link class="newest-music router" to="/discovery/newest-music">最新音乐</router-link>
+        <router-link class="newest-music router" to="/discovery/new-song">最新音乐</router-link>
       </div>
     </div>
     <div class="content">

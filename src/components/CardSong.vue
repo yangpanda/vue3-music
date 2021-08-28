@@ -33,6 +33,7 @@ export default {
   },
   methods: {
     play(song) {
+      this.$store.commit("setCurrentSong", song)
       this.$store.commit("insertSong", song)
     },
   },
