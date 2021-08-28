@@ -40,3 +40,6 @@ export const getHotPlaylistTags = () =>
 
 export const getPlaylistCat = () =>
   request.get("/playlist/catlist")
+
+export const getTopAlbum = (params) =>
+  request.get(`/top/album`, {params})
