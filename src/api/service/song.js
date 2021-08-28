@@ -16,3 +16,6 @@ export const getSongsUrl = (ids) =>
 
 export const getLyric = (id) =>
   request.get(`/lyric?id=${id}`)
+
+export const getTopSong = (params) =>
+  request.get(`/top/song`, {params})
