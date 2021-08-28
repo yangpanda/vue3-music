@@ -3,7 +3,7 @@ export default {
   logined: null,
   playlist: [],
   likedSongList: null,
-  playIndex: null,
+  playIndex: 0,
   randomPlaylist: [],
   playMode: 'order',
   currentSong: null,

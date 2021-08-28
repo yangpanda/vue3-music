@@ -2,23 +2,19 @@ export default class Song {
   constructor(songData) {
     this.id = songData.id
     this.name = songData.name
-    this.singer = filterSinger(songData.ar)
-    this.album = songData.al.name
-    this.duration = formatDuration(songData.dt)
-    this.image = songData.al.picUrl
+    this.singer = filterSinger(songData.ar ?? songData.artists)
+    this.album = (songData.al ?? songData.album).name
+    this.duration = formatDuration(songData.dt ?? songData.duration)
+    this.image = (songData.al ?? songData.album).picUrl
     this.url = `https://music.163.com/song/media/outer/url?id=${songData.id}.mp3`
   }
 }
 
 function filterSinger(singer) {
-  const ret = []
   if (!singer) {
-    return ret
+    return []
   }
-  singer.map(item => {
-    ret.push(item.name)
-  })
-  return ret
+  return singer.map(item => item.name)
 }
 
 function addZero(num) {

@@ -24,8 +24,11 @@ export default {
     state.playMode = mode
   },
   insertSong(state, song) {
+    let length = state.playlist.length
     state.playlist.splice(state.playIndex + 1, 0, song)
-    state.playIndex += 1
+    if (length > 0) {
+      state.playIndex += 1
+    }
   },
   setRandomPlaylist(state) {
     // const playlist = [...state.playlist]

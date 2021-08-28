@@ -14,8 +14,16 @@ const routes = [
       { path: 'personal-recommend', component: () => import('@/views/Discovery/PersonalRecommend.vue') },
       { path: 'playlist', component: () => import('@/views/Discovery/Playlist.vue') },
       { path: 'ranking', component: () => import('@/views/Discovery/Ranking.vue') },
-      { path: 'newest-music', component: () => import('@/views/Discovery/NewSong.vue') },
       { path: 'artist', component: () => import('@/views/Discovery/Artist.vue') },
+      {
+        path: 'new-song',
+        component: () => import('@/views/Discovery/NewSong/index.vue'),
+        redirect: '/discovery/new-song/top-song/',
+        children: [
+          {name: 'TopSong', path: 'top-song', component: () => import('@/views/Discovery/NewSong/TopSong.vue')},
+          {name: 'TopAlbum', path: 'top-album', component: () => import('@/views/Discovery/NewSong/TopAlbum.vue')}
+        ]
+      },
     ]
   },
   {
