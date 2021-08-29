@@ -2,43 +2,43 @@
   <div class="new-album-nav">
     <div class="new-album-nav-left flex col-gap-20">
       <div
-        text
         class="new-album-area pointer"
         v-for="(value, name) in Object.fromEntries(albumAreaMap)"
         :key="value"
         @click="area = value"
+        :class="{ 'area-active': area === value }"
       >
         {{ name }}
       </div>
     </div>
     <div class="new-album-nav-left flex col-gap-20">
       <div
-        text
         class="new-album-type pointer flex"
         v-for="(value, name) in Object.fromEntries(albumTypeMap)"
         :key="value"
         @click="type = value"
+        :class="{ 'type-active': type === value}"
       >
         {{ name }}
       </div>
     </div>
   </div>
-  <n-grid v-if="weekAlbums" x-gap="20" y-gap="20" :cols="5">
-    <n-grid-item v-for="(item, index) in weekAlbums" :key="index">
-      <div class="album-card">
-        <the-image :src="item.picUrl + '?param=200y200'" />
-        <div class="album-name">{{ item.name }}</div>
-      </div>
-    </n-grid-item>
-  </n-grid>
-  <n-grid x-gap="20" y-gap="20" :cols="5">
-    <n-grid-item v-for="(item, index) in monthAlbums" :key="index">
-      <div class="album-card">
-        <the-image :src="item.picUrl + '?param=200y200'" />
-        <div class="album-name">{{ item.name }}</div>
-      </div>
-    </n-grid-item>
-  </n-grid>
+    <n-grid v-if="weekAlbums" x-gap="20" y-gap="20" :cols="5">
+      <n-grid-item v-for="(item, index) in weekAlbums" :key="index">
+        <div class="album-card">
+          <the-image :src="item.picUrl + '?param=200y200'" />
+          <div class="album-name">{{ item.name }}</div>
+        </div>
+      </n-grid-item>
+    </n-grid>
+    <n-grid x-gap="20" y-gap="20" :cols="5">
+      <n-grid-item v-for="(item, index) in monthAlbums" :key="index">
+        <div class="album-card">
+          <the-image :src="item.picUrl + '?param=200y200'" />
+          <div class="album-name">{{ item.name }}</div>
+        </div>
+      </n-grid-item>
+    </n-grid>
 </template>
 
 <script setup>
@@ -48,6 +48,7 @@ import { ref, watchEffect, reactive } from "@vue/runtime-core";
 import * as playlist from "@/api/service/playlist.js";
 
 const loadingBar = useLoadingBar();
+const showSpin = ref(true)
 
 const albumAreaMap = new Map([
   ["全部", "ALL"],
@@ -76,8 +77,8 @@ const getTopAlbum = async (params) => {
     if (res.code === 200) {
       weekAlbums.value = res.weekData;
       monthAlbums.value = res.monthData;
+      loadingBar.finish()
     }
-    loadingBar.finish()
   });
 };
 
@@ -98,5 +99,12 @@ watchEffect(() => {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+
+.area-active {
+  color: green;
+}
+.type-active {
+  color: green;
 }
 </style>
