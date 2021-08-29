@@ -49,6 +49,12 @@ export default {
         color: #303133;
         border-bottom: 2px solid #ec4141;
       }
+
+      &.router-link-active {
+        font-weight: bold;
+        color: #303133;
+        border-bottom: 2px solid #ec4141;
+      }
     }
   }
 
