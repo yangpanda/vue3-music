@@ -18,9 +18,19 @@
   display: flex;
 }
 
+.flex-col-gap-20 {
+  display: flex;
+  column-gap: 20px;
+}
+
 .col-gap-20 {
   column-gap: 20px;
 }
+
+.col-gap-10 {
+  column-gap: 10px;
+}
+
 
 .flex-vertical-center {
   display: flex;
@@ -79,4 +89,9 @@
   100% {
     opacity: 1;
   }
+}
+
+.flex-align-center {
+  display: flex;
+  align-items: center;
 }

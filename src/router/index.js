@@ -33,6 +33,12 @@ const routes = [
     component: () => import('@/views/PlaylistDetail.vue'),
   },
   {
+    path: '/album-detail/:id',
+    name: 'AlbumDetail',
+    props: true,
+    component: () => import('@/views/AlbumDetail.vue'),
+  },
+  {
     path: '/mv-detail/:id',
     name: 'MvDetail',
     props: true,

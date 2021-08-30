@@ -25,7 +25,7 @@
   </div>
     <n-grid v-if="weekAlbums" x-gap="20" y-gap="20" :cols="5">
       <n-grid-item v-for="(item, index) in weekAlbums" :key="index">
-        <div class="album-card">
+        <div class="album-card pointer" @click="toPlaylistDetail(item.id)">
           <the-image :src="item.picUrl + '?param=200y200'" />
           <div class="album-name">{{ item.name }}</div>
         </div>
@@ -33,7 +33,7 @@
     </n-grid>
     <n-grid x-gap="20" y-gap="20" :cols="5">
       <n-grid-item v-for="(item, index) in monthAlbums" :key="index">
-        <div class="album-card">
+        <div class="album-card pointer" @click="toPlaylistDetail(item.id)">
           <the-image :src="item.picUrl + '?param=200y200'" />
           <div class="album-name">{{ item.name }}</div>
         </div>
@@ -45,8 +45,10 @@
 import { useLoadingBar, NGrid, NGridItem } from "naive-ui";
 
 import { ref, watchEffect, reactive } from "@vue/runtime-core";
+import { useRouter } from "vue-router"
 import * as playlist from "@/api/service/playlist.js";
 
+const router = useRouter();
 const loadingBar = useLoadingBar();
 const showSpin = ref(true)
 
@@ -92,6 +94,10 @@ watchEffect(() => {
     limit: limit.value,
   });
 });
+
+function toPlaylistDetail(id) {
+  router.push(`/album-detail/${id}`)
+}
 </script>
 
 <style scoped>

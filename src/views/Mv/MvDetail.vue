@@ -1,5 +1,10 @@
 <template>
-  <video controls class="video" :src="data.url"></video>
+<div class="mv-detail-container flex-col-gap-20">
+  <div class="mv-detail-left">
+    <video controls class="video" :src="data.url"></video>
+  </div>
+  <div class="mv-detail-recommend"></div>
+</div>
 </template>
 
 <script>
@@ -30,9 +35,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.mv-detail-container {
+  margin: 0 auto;
+  width: 1000px;
+  padding: 20px;
+}
+.mv-detail-left {
+  flex-basis: 650px;
+}
+.mv-detail-recommend {
+  flex-grow: 1;
+}
 .video {
   width: 100%;
-  height: 100%;
 }
 </style>

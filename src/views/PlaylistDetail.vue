@@ -18,15 +18,49 @@
           <span>{{ detail.tags }}</span>
         </div>
         <div class="playlist-description">
-          <span class="label" style="white-space: nowrap;">简介： </span>
+          <span class="label" style="white-space: nowrap">简介： </span>
           <span>{{ detail.description }}</span>
         </div>
       </div>
     </div>
-    <div v-if="showSpin" style="display: flex; justify-content: center;">
-      <n-spin/>
-    </div>
-    <song-table-list v-else :songs="songs"></song-table-list>
+    <n-tabs default-value="playlist" type="line" :tabs-padding="20">
+      <n-tab-pane name="playlist" tab="歌曲列表">
+        <div v-if="showSpin" style="display: flex; justify-content: center">
+          <n-spin />
+        </div>
+        <song-table-list v-else :songs="songs"></song-table-list>
+      </n-tab-pane>
+      <n-tab-pane name="comment" tab="评论">
+      </n-tab-pane>
+      <n-tab-pane name="subsciber" tab="收藏者">
+        <div class="subscribers-list-container">
+          <n-result
+            v-if="subscribers.length === 0"
+            status="info"
+            title="貌似，啥也没有！"
+            description="生活总归带点荒谬"
+            size="huge"
+          ></n-result>
+          <n-grid v-else x-gap="20" y-gap="20" :cols="4">
+            <n-grid-item
+              class="avatar-item flex-align-center col-gap-10"
+              v-for="(item, index) in subscribers"
+              :key="index"
+            >
+              <n-avatar
+                round
+                :src="item.avatarUrl + '?param=100y100'"
+                :size="88"
+              />
+              <div class="user-info">
+                <div class="user-name">{{ item.nickname }}</div>
+                <div class="user-signature">{{ item.signature }}</div>
+              </div>
+            </n-grid-item>
+          </n-grid>
+        </div>
+      </n-tab-pane>
+    </n-tabs>
   </div>
 </template>
 
@@ -34,13 +68,20 @@
 import * as playlist from "@/api/service/playlist.js";
 import * as song from "@/api/service/song.js";
 
-import playlistBgImg from '@/assets/music.svg'
-
 import Playlist from "../model/Playlist";
 import Song from "../model/Song";
 
 import SongTableList from "@/components/SongTableList.vue";
-import { useLoadingBar, NSpin } from "naive-ui";
+import {
+  useLoadingBar,
+  NSpin,
+  NTabs,
+  NTabPane,
+  NAvatar,
+  NGrid,
+  NGridItem,
+  NResult,
+} from "naive-ui";
 
 import { ref, onMounted } from "@vue/runtime-core";
 
@@ -52,6 +93,7 @@ const loading = useLoadingBar();
 const showSpin = ref(true);
 const detail = ref({});
 const songs = ref([]);
+const subscribers = ref([]);
 
 const getSongs = async (ids) => {
   song.getSongDetail(ids.join(",")).then((res) => {
@@ -68,8 +110,9 @@ const getPlaylistDetail = async (id) => {
   showSpin.value = true;
   playlist.getPlaylistDetail(id).then((res) => {
     if (res.code === 200) {
+      console.log(res);
       detail.value = new Playlist(res.playlist);
-
+      subscribers.value = res.playlist.subscribers;
       let ids = detail.value.trackIds.map((item) => item.id);
       getSongs(ids);
     }
@@ -107,5 +150,9 @@ onMounted(getPlaylistDetail(props.id));
 }
 .playlist-description {
   display: flex;
+}
+
+.subscribers-list-container {
+  padding: 0 20px;
 }
 </style>
