@@ -1,4 +1,4 @@
-import request from "./request";
+import request from "../axios/index.js";
 
 export const getPrivatecontent = (limit = 60, offset = 0) => {
   if (limit === undefined || offset === undefined) {

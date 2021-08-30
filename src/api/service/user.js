@@ -1,4 +1,4 @@
-import request from "./request";
+import request from "../axios/index.js";
 
 export const login = (email, password) =>
   request.get(`/login?email=${email}&password=${password}`);

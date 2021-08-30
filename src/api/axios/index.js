@@ -1,41 +1,4 @@
-import axios from "axios"
-import qs from "qs"
-
-const config = {
-  baseURL: import.meta.env.VITE_API_SERVER,
-  withCredentials: true,
-  transformRequest: [
-    data => qs.stringify(data)
-  ]
-}
-
-const instance = axios.create(config)
-
-instance.interceptors.request.use(
-  config => {
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
-
-instance.interceptors.response.use(
-  response => {
-    if (response.status === 200) {
-      return response.data
-    } else if (response.status === 301) {
-      alert('请先登录')
-      return
-    } else {
-      return Promise.reject(response)
-    }
-  },
-  error => {
-    console.log('response error', error);
-    return Promise.reject(error)
-  }
-)
+import instance from './instance.js'
 
 export default {
   get: function (url, config) {

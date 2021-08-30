@@ -1,4 +1,4 @@
-import request from "./request"
+import request from "../axios/index.js";
 
 /**
  * @method 获取推荐歌单（需登录）
@@ -35,7 +35,7 @@ export const getUserPlaylists = (uid) =>
 export const getRankList = () =>
   request.get("/toplist")
 
-export const getHotPlaylistTags = () =>
+export const getPlaylistHotTags = () =>
   request.get("/playlist/hot")
 
 export const getPlaylistCat = () =>

@@ -1,4 +1,4 @@
-import request from "./request";
+import request from "../axios/index.js";
 
 export const getNewSongs = (limit) => {
   if (limit === undefined) {
