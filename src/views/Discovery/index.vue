@@ -2,7 +2,7 @@
   <div class="discovery">
     <div class="nav">
       <div class="wrapper">
-        <router-link class="personal-recommend router" to="/discovery/personal-recommend">个性推荐</router-link>
+        <router-link class="personal-recommend router" to="/discovery/personal">个性推荐</router-link>
         <router-link class="playlist router" to="/discovery/playlist">歌单</router-link>
         <router-link class="ranking router" to="/discovery/ranking">排行榜</router-link>
         <router-link class="artist router" to="/discovery/artist">歌手</router-link>
@@ -59,6 +59,9 @@ export default {
   }
 
   .content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
     min-width: 800px;
     max-width: 1000px;
     margin: 0 auto;

@@ -7,11 +7,11 @@ const routes = [
   },
   {
     path: '/discovery',
-    redirect: '/discovery/personal-recommend',
+    redirect: '/discovery/personal',
     name: 'Discovery',
     component: () => import('@/views/Discovery/index.vue'),
     children: [
-      { path: 'personal-recommend', component: () => import('@/views/Discovery/PersonalRecommend.vue') },
+      { path: 'personal', component: () => import('@/views/Discovery/Personal.vue') },
       { path: 'playlist', component: () => import('@/views/Discovery/Playlist.vue') },
       { path: 'ranking', component: () => import('@/views/Discovery/Ranking.vue') },
       { path: 'artist', component: () => import('@/views/Discovery/Artist.vue') },
