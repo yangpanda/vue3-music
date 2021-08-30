@@ -67,7 +67,7 @@ export default {
       .background {
         width: 100%;
         height: 100%;
-        background: no-repeat center/90% url(../assets/icons/cd.png);
+        background: no-repeat center/90% url(../assets/pictures/cd.png);
       }
 
       .image {
