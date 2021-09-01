@@ -1,7 +1,6 @@
 import axios from "axios"
 import qs from 'qs'
 
-
 const config = {
   baseURL: import.meta.env.VITE_API_SERVER,
   withCredentials: true,

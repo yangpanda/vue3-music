@@ -6,31 +6,58 @@
           <div class="background"></div>
           <img class="image" :src="songImage" alt="" />
         </div>
-        <div class="lyric"></div>
+        <div class="lyric">
+          <p class="lyric-line" v-for="(item, index) in lyric" :key="index">
+            {{ item.l }}
+          </p>
+        </div>
+        <div class="recommend"></div>
       </div>
       <div class="comment"></div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 
-export default {
-  name: "PlayingPage",
-  setup() {
-    const store = useStore();
-    const currentSong = computed(() => store.getters.getCurrentSong)
+import api from "@/api/index.js";
 
-    const songImage = computed(() => currentSong.value ? currentSong.value.image : "")
+const store = useStore();
+const currentSong = computed(() => store.getters.getCurrentSong);
 
-    return {
-      songImage
-    };
-  },
+const songImage = computed(() =>
+  currentSong.value ? currentSong.value.image : ""
+);
 
-};
+const lyric = ref([]);
+
+watchEffect(() => {
+  if (currentSong.value) {
+    api.song.getLyric(currentSong.value.id).then((response) => {
+      if (response.code === 200) {
+        const lrc = response.lrc.lyric;
+
+        const lrcs = lrc.split("\n");
+        lyric.value = lrcs.map((item) => {
+          let t = item.substring(item.indexOf("[") + 1, item.indexOf("]"));
+          let l = item.substring(item.indexOf("]") + 1).trim();
+          if (l == "") {
+            l = ' '
+          }
+
+          return {
+            t,
+            l,
+          };
+        });
+
+        console.log(lyric.value);
+      }
+    });
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -80,10 +107,16 @@ export default {
         border-radius: 50%;
       }
     }
-    .lyric {
-    }
   }
-  .comment {
-  }
+}
+
+.lyric {
+  height: 600px;
+  overflow-y: scroll;
+}
+.lyric-line {
+  white-space: pre-wrap;
+  font-size: 16px;
+  text-align: center;
 }
 </style>

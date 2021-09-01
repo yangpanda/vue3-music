@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     scrollToTop() {
-      this.$refs.content.scrollTo({ top: 0, behavior: "smooth" });
+      this.$refs.content.scrollTo({ top: 0, behavior: "auto" });
     },
   },
 };

@@ -11,22 +11,12 @@ export const getPrivatecontent = (limit = 60, offset = 0) => {
 export const getPersonalizedMv = () =>
   request.get(`/personalized/mv`)
 
-export const getNewMv = (limit) => {
-  if (limit === undefined) {
-    return request.get(`/mv/first`);
-  } else {
-    return request.get(`/mv/first?limit=${limit}`);
-  }
-}
+export const getNew = (params) => request.get(`/mv/first`, {params});
 
-export const getNeteaseMv = (limit, offset = 0) => {
-  if (limit === undefined) {
-    return request.get(`/mv/exclusive/rcmd`)
-  } else {
-    return request.get(`/mv/exclusive/rcmd?limit=${limit}&offset=${offset}`)
-  }
-}
+export const getNetease = (params) => request.get(`/mv/exclusive/rcmd`, {params})
 
 export const getMvDetail = (id) => {
   return request.get(`/mv/url?id=${id}`)
 }
+
+export const getTop = (params) => request.get(`/top/mv`, {params})

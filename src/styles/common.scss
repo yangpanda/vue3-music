@@ -75,10 +75,12 @@
 }
 
 .capsule-button {
+  cursor: pointer;
   border: 1px solid lightgray;
   border-radius: 999em;
-  padding: 5px 15px;
+  padding: 0 10px;
   background-color: rgb(231, 231, 231);
+  color: green;
 }
 
 @keyframes fadein {
@@ -94,4 +96,12 @@
 .flex-align-center {
   display: flex;
   align-items: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.space-between {
+  justify-content: space-between;
 }

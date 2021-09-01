@@ -1,6 +1,6 @@
 <template>
   <swipper :banners="banners"></swipper>
-  <the-section label="推荐歌单" columns="5">
+  <the-section title="推荐歌单" cols="5">
     <template #cards>
       <card-playlist
         v-for="(item, index) in personalizedPlaylists"
@@ -9,7 +9,7 @@
       />
     </template>
   </the-section>
-  <the-section label="独家放送" columns="3">
+  <the-section title="独家放送" cols="3">
     <template #cards>
       <card-private-content
         v-for="(item, index) in privateContents"
@@ -18,7 +18,7 @@
       />
     </template>
   </the-section>
-  <the-section label="最新音乐" columns="3">
+  <the-section title="最新音乐" cols="3">
     <template #cards>
       <card-song
         v-for="(item, index) in newSongs"
@@ -27,7 +27,7 @@
       />
     </template>
   </the-section>
-  <the-section label="推荐MV" columns="3">
+  <the-section title="推荐MV" cols="3">
     <template #cards>
       <card-mv
         v-for="(item, index) in personalizedMvs"
