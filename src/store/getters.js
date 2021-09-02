@@ -20,5 +20,8 @@ export default {
   },
   getCurrentSong(state) {
     return state.currentSong
+  },
+  getPlayingState(state) {
+    return state.playingState
   }
 }

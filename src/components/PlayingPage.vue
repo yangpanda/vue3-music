@@ -1,17 +1,19 @@
 <template>
   <div class="playing-page">
     <div class="wrapper">
-      <div class="top">
+      <div class="top flex space-between">
         <div class="cd">
           <div class="background"></div>
           <img class="image" :src="songImage" alt="" />
         </div>
-        <div class="lyric">
-          <p class="lyric-line" v-for="(item, index) in lyric" :key="index">
-            {{ item.l }}
-          </p>
+        <div class="lyric-container">
+          <div class="lyric-content">
+            <p class="lyric-line" v-for="(item, index) in lyric" :key="index">
+              {{ item.l }}
+            </p>
+          </div>
         </div>
-        <div class="recommend"></div>
+        <div class="recommend">ddd</div>
       </div>
       <div class="comment"></div>
     </div>
@@ -20,9 +22,14 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watchEffect, inject, onMounted } from "vue";
 
 import api from "@/api/index.js";
+
+const currentTime = inject('currentTime')
+watchEffect(() => {
+  console.log(currentTime)
+})
 
 const store = useStore();
 const currentSong = computed(() => store.getters.getCurrentSong);
@@ -81,8 +88,6 @@ watchEffect(() => {
   }
 
   .top {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
     .cd {
       position: relative;
       width: 260px;
@@ -110,13 +115,29 @@ watchEffect(() => {
   }
 }
 
-.lyric {
+.lyric-container {
+  max-width: 600px;
   height: 600px;
-  overflow-y: scroll;
+  overflow: hidden;
+}
+.lyric-content {
+  width: 100%;
+  position: relative;
+  top: 300px
 }
 .lyric-line {
   white-space: pre-wrap;
-  font-size: 16px;
+  font-size: 15px;
   text-align: center;
+  color: rgb(117, 116, 116);
+}
+.lyric-line-active {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+.recommend {
+  width: 200px;
+  height: 200px;
 }
 </style>

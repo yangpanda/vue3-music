@@ -36,12 +36,12 @@
         </div>
         <svg-icon @click="preTrack()" iconName="#icon-pre" size="24" />
         <svg-icon
-          v-if="!isPlaying"
-          @click="play()"
+          v-if="!playingState"
+          @click="methods.play()"
           iconName="#icon-play"
           size="30"
         />
-        <svg-icon v-else @click="pause()" iconName="#icon-pause" size="30" />
+        <svg-icon v-else @click="methods.pause()" iconName="#icon-pause" size="30" />
         <svg-icon @click="nextTrack()" iconName="#icon-next" size="24" />
         <svg-icon @click="toggleLyric()" iconName="#icon-lyric" size="21" />
       </div>
@@ -56,10 +56,10 @@
       <audio
         autoplay
         ref="audio"
-        :src="url"
+        :src="songUrl"
         @ended="ended()"
-        @timeupdate="getCurrentTime()"
-        @durationchange="getDuration()"
+        @timeupdate="methods.getCurrentTime()"
+        @durationchange="methods.getDuration()"
       ></audio>
     </div>
     <div class="right">
@@ -76,196 +76,182 @@
   </div>
 </template>
 
-<script>
-import * as utils from "@/utils/index.js";
-import { ref, computed, watch } from "vue";
+<script setup>
+import { ref, computed, watch, onMounted, reactive } from "vue";
 import { useStore } from "vuex";
+
+import * as utils from "@/utils/index.js";
+import api from "@/api/index.js";
+
 import TheSlider from "@/components/TheSlider.vue";
 import PlayingPage from "@/components/PlayingPage.vue";
 import ThePlaylist from "@/components/ThePlaylist.vue";
-import * as song from "@/api/service/song.js";
 
-export default {
-  name: "AudioPlayer",
-  components: {
-    TheSlider,
-    PlayingPage,
-    ThePlaylist
-  },
-  data() {
-    return {
-      volume: 0.4,
-      isPlaying: true,
-      currentTime: 0,
-      duration: 0,
-      showPlayingPage: false,
-      showPlaylist: false,
-    };
-  },
-  emits: {
-    changeCurrentTime(val) {
-      console.log(val);
-      this.currentTime = val;
-      return true;
-    },
-  },
-  setup() {
-    const store = useStore();
-    const playIndex = computed(() => store.getters.getPlayIndex);
-    const playlist = computed(() => store.getters.getPlaylist);
-    const playMode = computed(() => store.getters.getPlayMode);
-    const randomPlaylist = computed(() => store.getters.getRandomPlaylist);
-    const currentSong = computed(() => store.getters.getCurrentSong);
+const store = useStore()
 
-    const setPlayIndex = (index) => store.commit("setPlayIndex", index);
-    const setPlayMode = (mode) => store.commit("setPlayMode", mode);
-    const setCurrentSong = (song) => store.commit("setCurrentSong", song);
+const audio = ref({})
+const songUrl = ref('')
+const volume = ref(0.4)
+const currentTime = ref(0)
+const showPlayingPage = ref(false)
+const showPlaylist = ref(false)
+const duration = ref(0)
+const playingState = computed(() => store.getters.getPlayingState)
+const playIndex = computed(() => store.getters.getPlayIndex);
+const playlist = computed(() => store.getters.getPlaylist);
+const playMode = computed(() => store.getters.getPlayMode);
+const randomPlaylist = computed(() => store.getters.getRandomPlaylist);
+const currentSong = computed(() => store.getters.getCurrentSong);
 
-    const songName = computed(() =>
-      currentSong.value ? currentSong.value.name : ""
-    );
-    const songImage = computed(() =>
-      currentSong.value ? currentSong.value.image : ""
-    );
-    const songSinger = computed(() =>
-      currentSong.value ? currentSong.value.singer.join(" / ") : ""
-    );
+const setPlayingState = (state) => store.commit('setPlayingState', state)
+const setPlayIndex = (index) => store.commit("setPlayIndex", index);
+const setPlayMode = (mode) => store.commit("setPlayMode", mode);
+const setCurrentSong = (song) => store.commit("setCurrentSong", song);
 
-    const url = ref("");
-    const getSongUrl = async (id) => {
-      const res = await song.getSongsUrl(id);
-      if (res.code === 200) {
-        url.value = res.data[0].url;
-      }
-    };
-    watch(
-      () => currentSong.value,
-      () => {
-        getSongUrl(currentSong.value.id);
-      }
-    );
+const songName = computed(() =>
+  currentSong.value ? currentSong.value.name : ""
+);
+const songImage = computed(() =>
+  currentSong.value ? currentSong.value.image : ""
+);
+const songSinger = computed(() =>
+  currentSong.value ? currentSong.value.singer.join(" / ") : ""
+);
 
-    return {
-      url,
-      song,
-      songName,
-      songImage,
-      songSinger,
-      playlist,
-      randomPlaylist,
-      playIndex,
-      playMode,
-      setPlayIndex,
-      setPlayMode,
-      setCurrentSong,
-    };
-  },
-  mounted() {
-    this.$refs.audio.volume = this.volume;
-
-    this.changeMode = (() => {
-      let count = 0;
-      const audio = this.$refs.audio;
-
-      return function () {
-        count++;
-        switch (count % 3) {
-          case 0:
-            audio.loop = false;
-            this.setPlayMode("order");
-            break;
-          case 1:
-            this.setPlayMode("unorder");
-            break;
-          case 2:
-            audio.loop = true;
-            this.setPlayMode("loop");
-            break;
+watch(
+  () => currentSong.value,
+  () => {
+    api.song.getSongsUrl(currentSong.value.id)
+      .then(response => {
+        if (response.code === 200) {
+          songUrl.value = response.data[0].url
         }
-      };
-    })();
-  },
-  methods: {
-    ended() {
-      this.nextTrack();
-    },
-    play() {
-      this.isPlaying = true;
-      this.$refs.audio.play();
-    },
-    pause() {
-      this.isPlaying = false;
-      this.$refs.audio.pause();
-    },
-    nextTrack() {
-      if (this.playMode === "unorder") {
-        const index = this.randomPlaylist.indexOf(this.playIndex)
-        if (index + 1 >= this.randomPlaylist.length) {
-          this.setPlayIndex(this.randomPlaylist[0])
-        } else {
-          this.setPlayIndex(this.randomPlaylist[index + 1])
-        }
-        this.setCurrentSong(this.playlist[this.playIndex]);
-      } else {
-        this.setPlayIndex(this.playIndex + 1);
-        this.setCurrentSong(this.playlist[this.playIndex]);
-      }
-    },
-    preTrack() {
-      if (this.playMode === "unorder") {
-        const index = this.randomPlaylist.indexOf(this.playIndex)
-        if (index - 1 < 0) {
-          this.setPlayIndex(this.randomPlaylist[this.randomPlaylist.length - 1])
-        } else {
-          this.setPlayIndex(this.randomPlaylist[index - 1])
-        }
-        this.setCurrentSong(this.playlist[this.playIndex]);
-      } else {
-        this.setPlayIndex(this.playIndex - 1);
-        this.setCurrentSong(this.playlist[this.playIndex]);
-      }
-    },
-    decreaseVolume() {
-      if (this.volume > 0 && this.volume > 0.2) {
-        this.volume = this.volume - 0.1;
-        this.$refs.audio.volume = this.volume;
-        console.log(this.$refs.audio.volume);
-      }
-    },
-    increaseVolume() {
-      if (this.volume < 1) {
-        this.volume = this.volume + 0.1;
-        this.$refs.audio.volume = this.volume;
-        console.log(this.$refs.audio.volume);
-      }
-    },
-    toggleMuted() {
-      this.$refs.audio.muted = !this.$refs.audio.muted;
-    },
-    orderPlay() {
-      this.$store.state.currentSong = this.$store.state.playlists[1];
-    },
-    toggleLyric() {
-      console.log("lyric");
-    },
-    getCurrentTime() {
-      this.currentTime = ~~this.$refs.audio.currentTime;
-    },
-    setCurrentTime(sec) {
-      console.log("slider");
-      this.$refs.audio.currentTime = sec;
-    },
-    getDuration() {
-      this.duration = ~~this.$refs.audio.duration;
-    },
-    formatTime(seconds) {
-      let minute = parseInt(seconds / 60);
-      let second = utils.formatNumber(seconds - minute * 60);
+      })
+  }
+);
 
-      return minute + ":" + second;
-    },
-  },
-};
+const methods = reactive({
+  play: null,
+  pause: null,
+  getCurrentTime: null,
+  getDuration: null,
+  setCurrentTime: null
+})
+
+onMounted(() => {
+  audio.value.volume = volume.value;
+
+  methods.play = () => {
+    setPlayingState(true)
+    audio.value.play();
+  }
+
+  methods.pause = () => {
+    setPlayingState(false)
+    audio.value.pause()
+  }
+
+  methods.getCurrentTime = () => {
+    currentTime.value = ~~audio.value.currentTime;
+  }
+
+  methods.setCurrentTime = (sec) => {
+    audio.currentTime = sec;
+  }
+
+  methods.getDuration = () => {
+    duration.value = ~~audio.value.duration;
+  }
+
+  // this.changeMode = (() => {
+  //   let count = 0;
+  //   const audio = this.$refs.audio;
+
+  //   return function () {
+  //     count++;
+  //     switch (count % 3) {
+  //       case 0:
+  //         audio.loop = false;
+  //         this.setPlayMode("order");
+  //         break;
+  //       case 1:
+  //         this.setPlayMode("unorder");
+  //         break;
+  //       case 2:
+  //         audio.loop = true;
+  //         this.setPlayMode("loop");
+  //         break;
+  //     }
+  //   };
+  // })();
+})
+
+// methods: {
+//   ended() {
+//     this.nextTrack();
+//   },
+
+//   nextTrack() {
+//     if (this.playMode === "unorder") {
+//       const index = this.randomPlaylist.indexOf(this.playIndex)
+//       if (index + 1 >= this.randomPlaylist.length) {
+//         this.setPlayIndex(this.randomPlaylist[0])
+//       } else {
+//         this.setPlayIndex(this.randomPlaylist[index + 1])
+//       }
+//       this.setCurrentSong(this.playlist[this.playIndex]);
+//     } else {
+//       this.setPlayIndex(this.playIndex + 1);
+//       this.setCurrentSong(this.playlist[this.playIndex]);
+//     }
+//   },
+//   preTrack() {
+//     if (this.playMode === "unorder") {
+//       const index = this.randomPlaylist.indexOf(this.playIndex)
+//       if (index - 1 < 0) {
+//         this.setPlayIndex(this.randomPlaylist[this.randomPlaylist.length - 1])
+//       } else {
+//         this.setPlayIndex(this.randomPlaylist[index - 1])
+//       }
+//       this.setCurrentSong(this.playlist[this.playIndex]);
+//     } else {
+//       this.setPlayIndex(this.playIndex - 1);
+//       this.setCurrentSong(this.playlist[this.playIndex]);
+//     }
+//   },
+//   decreaseVolume() {
+//     if (this.volume > 0 && this.volume > 0.2) {
+//       this.volume = this.volume - 0.1;
+//       this.$refs.audio.volume = this.volume;
+//       console.log(this.$refs.audio.volume);
+//     }
+//   },
+//   increaseVolume() {
+//     if (this.volume < 1) {
+//       this.volume = this.volume + 0.1;
+//       this.$refs.audio.volume = this.volume;
+//       console.log(this.$refs.audio.volume);
+//     }
+//   },
+//   toggleMuted() {
+//     this.$refs.audio.muted = !this.$refs.audio.muted;
+//   },
+//   orderPlay() {
+//     this.$store.state.currentSong = this.$store.state.playlists[1];
+//   },
+//   toggleLyric() {
+//     console.log("lyric");
+//   },
+
+
+// }
+
+function formatTime(seconds) {
+  let minute = parseInt(seconds / 60);
+  let second = utils.formatNumber(seconds - minute * 60);
+
+  return minute + ":" + second;
+}
 </script>
 
 <style lang="scss" scoped>

@@ -44,5 +44,8 @@ export default {
   },
   setCurrentSong(state, song) {
     state.currentSong = song
+  },
+  setPlayingState(state, theState) {
+    state.playingState = theState
   }
 }

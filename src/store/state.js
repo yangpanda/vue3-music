@@ -7,4 +7,5 @@ export default {
   randomPlaylist: [],
   playMode: 'order',
   currentSong: null,
+  playingState: false,
 }

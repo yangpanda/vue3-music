@@ -52,10 +52,12 @@ export default {
     const store = useStore()
     const setCurrentSong = (song) => store.commit("setCurrentSong", song);
     const setPlayIndex = (index) => store.commit("setPlayIndex", index);
+    const setPlayingState = (state) => store.commit("setPlayingState", state)
 
     const play = () => {
       setCurrentSong(props.song)
       setPlayIndex(props.index)
+      setPlayingState(true)
       emit('play')
     }
     return {
