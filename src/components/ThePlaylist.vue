@@ -34,7 +34,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   background-color: #fff;
-  width: 450px;
+  width: 100%;
   box-shadow: -4px 0 6px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 </style>

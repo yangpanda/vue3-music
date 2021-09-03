@@ -93,6 +93,16 @@
   }
 }
 
+@keyframes fadeout {
+  100% {
+    display: block;
+  }
+
+  0% {
+    display: none;
+  }
+}
+
 .flex-align-center {
   display: flex;
   align-items: center;
@@ -104,4 +114,8 @@
 
 .space-between {
   justify-content: space-between;
+}
+
+.text-center {
+  text-align: center;
 }

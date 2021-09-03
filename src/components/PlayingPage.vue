@@ -1,13 +1,15 @@
 <template>
   <div class="playing-page">
-    <div class="wrapper">
+    <img :src="songImage" class="background-image" />
+    <div class="playing-page-content">
       <div class="top flex space-between">
-        <img :src="songImage" class="background-image" />
-        <div class="cd">
-          <div class="background"></div>
-          <img class="image" :src="songImage" alt="" />
+        <div class="cd" :class="{'cd-rotate': playingState}">
+          <div class="cd-background"></div>
+          <img class="cd-image" :src="songImage + '?param=100y100'" alt="" />
         </div>
         <div class="lyric-container">
+          <h1 class="song-title text-center">{{ songName }}</h1>
+          <div class="song-artist text-center">{{ songArtist }}</div>
           <div class="lyric-content">
             <p class="lyric-line" v-for="(item, index) in lyric" :key="index">
               {{ item.l }}
@@ -23,14 +25,10 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { ref, computed, watchEffect, inject, onMounted } from "vue";
+import { ref, computed, watchEffect, inject } from "vue";
 
 import api from "@/api/index.js";
 
-const currentTime = inject('currentTime')
-watchEffect(() => {
-  console.log(currentTime)
-})
 
 const store = useStore();
 const currentSong = computed(() => store.getters.getCurrentSong);
@@ -38,6 +36,13 @@ const currentSong = computed(() => store.getters.getCurrentSong);
 const songImage = computed(() =>
   currentSong.value ? currentSong.value.image : ""
 );
+const songName = computed(() =>
+  currentSong.value ? currentSong.value.name : ""
+);
+const songArtist = computed(() =>
+  currentSong.value ? currentSong.value.singer.join(" / ") : ""
+);
+const playingState = computed(() => store.getters.getPlayingState);
 
 const lyric = ref([]);
 
@@ -52,7 +57,7 @@ watchEffect(() => {
           let t = item.substring(item.indexOf("[") + 1, item.indexOf("]"));
           let l = item.substring(item.indexOf("]") + 1).trim();
           if (l == "") {
-            l = ' '
+            l = " ";
           }
 
           return {
@@ -68,8 +73,8 @@ watchEffect(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-@keyframes myRotate {
+<style scoped>
+@keyframes cdRotate {
   0% {
     -webkit-transform: rotate(0deg);
   }
@@ -80,49 +85,48 @@ watchEffect(() => {
     -webkit-transform: rotate(360deg);
   }
 }
-
-.playing-page {
-  .wrapper {
-    margin: 0 auto;
-    margin-top: calc(var(--header-height) + 20px);
-    max-width: 1400px;
-  }
-
-  .top {
-    position: relative;
-    .cd {
-      position: relative;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background-color: #e0dfdf;
-      animation: myRotate 10s linear infinite;
-
-      .background {
-        width: 100%;
-        height: 100%;
-        background: no-repeat center/90% url(../assets/pictures/cd.png);
-      }
-
-      .image {
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        width: 60%;
-        border-radius: 50%;
-      }
-    }
-  }
+.cd-rotate {
+  animation: cdRotate 10s linear infinite;
 }
+
 .background-image {
   display: block;
   position: absolute;
   width: 100%;
   height: 100%;
-  filter: blur(1000px);
+  filter: blur(300px);
   z-index: -1;
+}
+.playing-page-content {
+  position: relative;
+  margin: 0 auto;
+  margin-top: calc(var(--header-height) + 20px);
+  max-width: 1100px;
+  height: 600px;
+  overflow-y: scroll;
+}
+.cd {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  align-self: center;
+}
+.cd-background {
+  width: 100%;
+  height: 100%;
+  background: no-repeat center/90% url(../assets/pictures/cd.png);
+}
+.cd-image {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 60%;
+  border-radius: 50%;
 }
 
 .lyric-container {
@@ -133,21 +137,20 @@ watchEffect(() => {
 .lyric-content {
   width: 100%;
   position: relative;
-  top: 300px
+  top: 300px;
 }
 .lyric-line {
   white-space: pre-wrap;
-  font-size: 15px;
+  font-size: 16px;
   text-align: center;
-  color: rgb(117, 116, 116);
 }
 .lyric-line-active {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  color: black;
 }
 .recommend {
   width: 200px;
-  height: 200px;
+  height: 800px;
+  flex-shrink: 0;
 }
 </style>

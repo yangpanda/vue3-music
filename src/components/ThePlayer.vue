@@ -71,7 +71,11 @@
       class="playing-page"
       :class="{ 'show-playing-page': showPlayingPage }"
     ></playing-page>
-    <the-playlist v-show="showPlaylist" class="playlist" />
+    <n-drawer v-model:show="showPlaylist" placement="right" :width="600">
+      <n-drawer-content title="播放列表" body-content-style="padding: 0;">
+        <the-playlist/>
+      </n-drawer-content>
+    </n-drawer>
   </div>
 </template>
 
@@ -85,6 +89,7 @@ import api from "@/api/index.js";
 import TheSlider from "@/components/TheSlider.vue";
 import PlayingPage from "@/components/PlayingPage.vue";
 import ThePlaylist from "@/components/ThePlaylist.vue";
+import { NDrawer, NDrawerContent } from 'naive-ui'
 
 const store = useStore()
 
@@ -357,19 +362,23 @@ function formatTime(seconds) {
   }
 
   .playing-page {
-    position: absolute;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
     bottom: var(--footer-height);
     overflow: hidden;
-    height: 0;
-    z-index: calc(var(--max-z-index) - 1);
     background-color: #fff;
-    transition: height 0.5s;
+
+    transition-duration: 1s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: calc(var(--max-z-index) - 1);
   }
 
   .show-playing-page {
-    height: calc(100vh - var(--footer-height));
+    visibility: visible;
+    opacity: 1;
   }
 
   .playlist {
