@@ -2,6 +2,7 @@
   <div class="playing-page">
     <div class="wrapper">
       <div class="top flex space-between">
+        <img :src="songImage" class="background-image" />
         <div class="cd">
           <div class="background"></div>
           <img class="image" :src="songImage" alt="" />
@@ -88,6 +89,7 @@ watchEffect(() => {
   }
 
   .top {
+    position: relative;
     .cd {
       position: relative;
       width: 260px;
@@ -113,6 +115,14 @@ watchEffect(() => {
       }
     }
   }
+}
+.background-image {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  filter: blur(1000px);
+  z-index: -1;
 }
 
 .lyric-container {

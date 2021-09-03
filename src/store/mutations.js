@@ -31,7 +31,6 @@ export default {
     }
   },
   setRandomPlaylist(state) {
-    // const playlist = [...state.playlist]
     const playlist = [...Array(state.playlist.length).keys()]
 
     for (let i = 0; i < playlist.length; i++) {

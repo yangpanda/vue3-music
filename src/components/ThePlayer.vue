@@ -34,7 +34,7 @@
           />
           <svg-icon v-else iconName="#icon-play-mode-loop" size="24" />
         </div>
-        <svg-icon @click="preTrack()" iconName="#icon-pre" size="24" />
+        <svg-icon @click="methods.preTrack()" iconName="#icon-pre" size="24" />
         <svg-icon
           v-if="!playingState"
           @click="methods.play()"
@@ -42,8 +42,7 @@
           size="30"
         />
         <svg-icon v-else @click="methods.pause()" iconName="#icon-pause" size="30" />
-        <svg-icon @click="nextTrack()" iconName="#icon-next" size="24" />
-        <svg-icon @click="toggleLyric()" iconName="#icon-lyric" size="21" />
+        <svg-icon @click="methods.nextTrack()" iconName="#icon-next" size="24" />
       </div>
       <div class="progress">
         <span>{{ formatTime(currentTime) }}</span>
@@ -57,7 +56,7 @@
         autoplay
         ref="audio"
         :src="songUrl"
-        @ended="ended()"
+        @ended="methods.nextTrack()"
         @timeupdate="methods.getCurrentTime()"
         @durationchange="methods.getDuration()"
       ></audio>
@@ -135,7 +134,9 @@ const methods = reactive({
   pause: null,
   getCurrentTime: null,
   getDuration: null,
-  setCurrentTime: null
+  setCurrentTime: null,
+  nextTrack: null,
+  preTrack: null,
 })
 
 onMounted(() => {
@@ -163,6 +164,36 @@ onMounted(() => {
     duration.value = ~~audio.value.duration;
   }
 
+  methods.nextTrack = () => {
+    if (playMode.value === "unorder") {
+      const index = randomPlaylist.value.indexOf(playIndex.value)
+      if (index + 1 >= randomPlaylist.value.length) {
+        setPlayIndex(randomPlaylist.value[0])
+      } else {
+        setPlayIndex(randomPlaylist.value[index + 1])
+      }
+      setCurrentSong(playlist.value[playIndex.value]);
+    } else {
+      setPlayIndex(playIndex.value + 1);
+      setCurrentSong(playlist.value[playIndex.value]);
+    }
+  }
+
+  methods.preTrack = () => {
+    if (playMode.value === "unorder") {
+      const index = this.randomPlaylist.indexOf(playIndex.value)
+      if (index - 1 < 0) {
+        setPlayIndex(randomPlaylist.value[randomPlaylist.value.length - 1])
+      } else {
+        setPlayIndex(randomPlaylist.value[index - 1])
+      }
+      setCurrentSong(playlist.value[playIndex.value]);
+    } else {
+      setPlayIndex(playIndex.value - 1);
+      setCurrentSong(playlist.value[playIndex.value]);
+    }
+  }
+
   // this.changeMode = (() => {
   //   let count = 0;
   //   const audio = this.$refs.audio;
@@ -186,39 +217,6 @@ onMounted(() => {
   // })();
 })
 
-// methods: {
-//   ended() {
-//     this.nextTrack();
-//   },
-
-//   nextTrack() {
-//     if (this.playMode === "unorder") {
-//       const index = this.randomPlaylist.indexOf(this.playIndex)
-//       if (index + 1 >= this.randomPlaylist.length) {
-//         this.setPlayIndex(this.randomPlaylist[0])
-//       } else {
-//         this.setPlayIndex(this.randomPlaylist[index + 1])
-//       }
-//       this.setCurrentSong(this.playlist[this.playIndex]);
-//     } else {
-//       this.setPlayIndex(this.playIndex + 1);
-//       this.setCurrentSong(this.playlist[this.playIndex]);
-//     }
-//   },
-//   preTrack() {
-//     if (this.playMode === "unorder") {
-//       const index = this.randomPlaylist.indexOf(this.playIndex)
-//       if (index - 1 < 0) {
-//         this.setPlayIndex(this.randomPlaylist[this.randomPlaylist.length - 1])
-//       } else {
-//         this.setPlayIndex(this.randomPlaylist[index - 1])
-//       }
-//       this.setCurrentSong(this.playlist[this.playIndex]);
-//     } else {
-//       this.setPlayIndex(this.playIndex - 1);
-//       this.setCurrentSong(this.playlist[this.playIndex]);
-//     }
-//   },
 //   decreaseVolume() {
 //     if (this.volume > 0 && this.volume > 0.2) {
 //       this.volume = this.volume - 0.1;
@@ -239,12 +237,6 @@ onMounted(() => {
 //   orderPlay() {
 //     this.$store.state.currentSong = this.$store.state.playlists[1];
 //   },
-//   toggleLyric() {
-//     console.log("lyric");
-//   },
-
-
-// }
 
 function formatTime(seconds) {
   let minute = parseInt(seconds / 60);
