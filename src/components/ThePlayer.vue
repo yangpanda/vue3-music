@@ -182,6 +182,7 @@ onMounted(() => {
       setPlayIndex(playIndex.value + 1);
       setCurrentSong(playlist.value[playIndex.value]);
     }
+    setPlayingState(true)
   }
 
   methods.preTrack = () => {
@@ -197,6 +198,7 @@ onMounted(() => {
       setPlayIndex(playIndex.value - 1);
       setCurrentSong(playlist.value[playIndex.value]);
     }
+    setPlayingState(true)
   }
 
   // this.changeMode = (() => {

@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 
 import VueLazyload from '@jambonn/vue-lazyload'
+import CScrollbar from "c-scrollbar";
 
 import "@/styles/variables.scss"
 import "@/styles/index.scss";
@@ -60,6 +61,7 @@ app.use(VueLazyload, {
   preLoad: 1.3,
   attempt: 3,
 })
+  .use(CScrollbar)
   .use(naive)
   .use(store)
   .use(router)

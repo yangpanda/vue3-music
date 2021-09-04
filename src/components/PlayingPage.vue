@@ -1,25 +1,67 @@
 <template>
   <div class="playing-page">
-    <img :src="songImage" class="background-image" />
-    <div class="playing-page-content">
-      <div class="top flex space-between">
-        <div class="cd" :class="{'cd-rotate': playingState}">
-          <div class="cd-background"></div>
-          <img class="cd-image" :src="songImage + '?param=100y100'" alt="" />
-        </div>
-        <div class="lyric-container">
-          <h1 class="song-title text-center">{{ songName }}</h1>
-          <div class="song-artist text-center">{{ songArtist }}</div>
-          <div class="lyric-content">
-            <p class="lyric-line" v-for="(item, index) in lyric" :key="index">
-              {{ item.l }}
-            </p>
+    <img :src="songImage + '?param=200y200'" class="background-image" />
+    <c-scrollbar height="100%">
+      <div class="playing-page-content">
+        <div class="top flex space-between">
+          <div class="cd-position">
+            <div
+              class="cd"
+              :class="{
+                'cd-rotate-paused': !playingState,
+              }"
+            >
+              <div class="cd-background"></div>
+              <img
+                class="cd-image"
+                :src="songImage + '?param=100y100'"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="lyric-container">
+            <h1 class="song-title text-center" style="margin-top: 0">
+              {{ songName }}
+            </h1>
+            <div class="song-artist text-center">{{ songArtist }}</div>
+            <c-scrollbar height="500px" trigger="none">
+              <div class="lyric-content">
+                <p
+                  class="lyric-line"
+                  v-for="(item, index) in lyric"
+                  :key="index"
+                >
+                  {{ item.l }}
+                </p>
+              </div>
+            </c-scrollbar>
+          </div>
+          <div class="recommend-pos">
+            <div class="recommend">
+              <div class="similar-song flex-direc-col row-gap-10">
+                <h4 style="margin-bottom: 0">相似音乐</h4>
+                <div
+                  class="similar-song-item flex col-gap-10 align-center pointer"
+                  v-for="(item, index) in simiSongs"
+                  :key="index"
+                  @click="setCurrentSong(item)"
+                >
+                  <the-image
+                    width="50px"
+                    height="50px"
+                    :src="item.image + '?param=60y60'"
+                  ></the-image>
+                  <div class="similar-song-info">{{ item.name }}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="recommend">ddd</div>
+        <div class="comment">
+          dsfljsdjflasjdfljasljdf
+        </div>
       </div>
-      <div class="comment"></div>
-    </div>
+    </c-scrollbar>
   </div>
 </template>
 
@@ -27,12 +69,15 @@
 import { useStore } from "vuex";
 import { ref, computed, watchEffect, inject } from "vue";
 
+import Song from "@/model/Song.js";
 import api from "@/api/index.js";
 
-
 const store = useStore();
-const currentSong = computed(() => store.getters.getCurrentSong);
 
+const lyric = ref([]);
+const simiSongs = ref([]);
+
+const currentSong = computed(() => store.getters.getCurrentSong);
 const songImage = computed(() =>
   currentSong.value ? currentSong.value.image : ""
 );
@@ -44,7 +89,7 @@ const songArtist = computed(() =>
 );
 const playingState = computed(() => store.getters.getPlayingState);
 
-const lyric = ref([]);
+const setCurrentSong = (song) => store.commit("setCurrentSong", song);
 
 watchEffect(() => {
   if (currentSong.value) {
@@ -65,8 +110,12 @@ watchEffect(() => {
             l,
           };
         });
+      }
+    });
 
-        console.log(lyric.value);
+    api.song.getSimi(currentSong.value.id).then((response) => {
+      if (response.code === 200) {
+        simiSongs.value = response.songs.map((item) => new Song(item));
       }
     });
   }
@@ -85,34 +134,39 @@ watchEffect(() => {
     -webkit-transform: rotate(360deg);
   }
 }
-.cd-rotate {
-  animation: cdRotate 10s linear infinite;
-}
 
+.playing-page {
+}
 .background-image {
   display: block;
   position: absolute;
   width: 100%;
-  height: 100%;
-  filter: blur(300px);
+  height: 50%;
+  filter: blur(280px);
   z-index: -1;
 }
 .playing-page-content {
-  position: relative;
-  margin: 0 auto;
   margin-top: calc(var(--header-height) + 20px);
+  margin-left: auto;
+  margin-right: auto;
   max-width: 1100px;
-  height: 600px;
-  overflow-y: scroll;
+}
+.cd-position {
+  position: relative;
+  width: 300px;
+  flex-shrink: 0;
 }
 .cd {
-  position: relative;
+  position: absolute;
+  top: 10%;
   width: 300px;
   height: 300px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.08);
-  flex-shrink: 0;
-  align-self: center;
+  animation: cdRotate 20s linear infinite;
+}
+.cd-rotate-paused {
+  animation-play-state: paused;
 }
 .cd-background {
   width: 100%;
@@ -130,14 +184,15 @@ watchEffect(() => {
 }
 
 .lyric-container {
-  max-width: 600px;
+  min-width: 400px;
+  margin: 0 50px 0 15px;
   height: 600px;
   overflow: hidden;
 }
 .lyric-content {
   width: 100%;
   position: relative;
-  top: 300px;
+  top: 160px;
 }
 .lyric-line {
   white-space: pre-wrap;
@@ -148,9 +203,13 @@ watchEffect(() => {
   font-size: 18px;
   font-weight: bold;
 }
-.recommend {
-  width: 200px;
-  height: 800px;
+.recommend-pos {
+  position: relative;
+  width: 300px;
   flex-shrink: 0;
+}
+.recommend {
+  position: absolute;
+  top: 10%;
 }
 </style>

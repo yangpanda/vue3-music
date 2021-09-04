@@ -119,3 +119,12 @@
 .text-center {
   text-align: center;
 }
+
+.flex-direc-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-gap-10 {
+  row-gap: 10px;
+}
