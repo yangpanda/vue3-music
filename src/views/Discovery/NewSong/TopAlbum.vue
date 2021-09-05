@@ -26,7 +26,7 @@
     <n-grid v-if="weekAlbums" x-gap="20" y-gap="20" :cols="5">
       <n-grid-item v-for="(item, index) in weekAlbums" :key="index">
         <div class="album-card pointer" @click="toPlaylistDetail(item.id)">
-          <the-image :src="item.picUrl + '?param=200y200'" />
+          <the-image :src="item.picUrl + '?param=200y200'" round="large" />
           <div class="album-name">{{ item.name }}</div>
         </div>
       </n-grid-item>
@@ -34,7 +34,7 @@
     <n-grid x-gap="20" y-gap="20" :cols="5">
       <n-grid-item v-for="(item, index) in monthAlbums" :key="index">
         <div class="album-card pointer" @click="toPlaylistDetail(item.id)">
-          <the-image :src="item.picUrl + '?param=200y200'" />
+          <the-image :src="item.picUrl + '?param=200y200'" round="large" />
           <div class="album-name">{{ item.name }}</div>
         </div>
       </n-grid-item>

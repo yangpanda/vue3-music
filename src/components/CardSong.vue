@@ -13,7 +13,7 @@
       <the-image
         class="pic"
         :src="song.image + '?param=100y100'"
-        radius="4px"
+        round="normal"
       />
     </div>
     <div class="info flex">

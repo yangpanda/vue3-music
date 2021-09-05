@@ -6,8 +6,7 @@ import store from "./store";
 import VueLazyload from '@jambonn/vue-lazyload'
 import CScrollbar from "c-scrollbar";
 
-import "@/styles/variables.scss"
-import "@/styles/index.scss";
+import "@/styles/index.css";
 import "@/styles/common.scss";
 
 import 'virtual:svg-icons-register'
@@ -16,11 +15,9 @@ const app = createApp(App);
 
 import SvgIcon from "@/components/SvgIcon.vue";
 import TheImage from "@/components/TheImage.vue"
-import TheButton from "@/components/TheButton.vue"
 
 app.component("SvgIcon", SvgIcon);
 app.component("TheImage", TheImage);
-app.component("TheButton", TheButton)
 
 import {
   create,

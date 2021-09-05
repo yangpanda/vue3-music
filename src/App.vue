@@ -18,10 +18,10 @@
 				class="center"
 				has-sider
 				position="absolute"
-				style="top: 56px; bottom: 70px"
+				style="top: 56px; bottom: 80px"
 			>
 				<n-layout-sider
-					class="sidebar"
+					class="sidebar z-auto"
 					bordered
 					:native-scrollbar="false"
 					width="fit-content"
@@ -33,10 +33,11 @@
 					<n-back-top :right="40" :bottom="90"></n-back-top>
 				</n-layout-content>
 			</n-layout>
-			<n-layout-footer position="absolute">
+			<n-layout-footer bordered position="absolute">
 				<the-player />
 			</n-layout-footer>
 		</n-layout>
+    	<playing-page v-if="showPlayingPage" style="z-index: 100"/>
 	</n-loading-bar-provider>
 </template>
 
@@ -45,7 +46,10 @@ import Login from "@/components/Login.vue";
 import SearchBar from "@/components/SearchBar.vue";
 import TheSidebar from "@/components/TheSidebar.vue";
 import ThePlayer from "@/components/ThePlayer.vue";
+import PlayingPage from "@/components/PlayingPage/PlayingPage.vue";
+
 import { NLoadingBarProvider } from 'naive-ui'
+import  { mapState } from '@/lib/lib.js'
 
 import {
   NLayout,
@@ -71,8 +75,11 @@ export default {
     Login,
     SearchBar,
     NLoadingBarProvider,
+	PlayingPage
   },
   setup() {
+	const { showPlayingPage } = mapState()
+
     const content = ref(null)
     onMounted(() => {
       provide('scrollTop', computed(() => content.value.scrollTop))
@@ -80,7 +87,8 @@ export default {
     })
 
     return {
-      content
+      content,
+	  showPlayingPage
     }
   },
   provide() {

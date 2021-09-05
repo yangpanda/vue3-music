@@ -7,9 +7,9 @@
         :key="index"
         :src="banner.pic + '?param=540y200'"
         ratio="27 / 10"
-        radius="6px"
         width="540px"
         height="200px"
+        round="large"
         :class="{
           pre: index === pre,
           next: index === next,
@@ -187,7 +187,6 @@ export default {
       border-radius: 50%;
 
       &.active {
-        background-color: var(--red-color);
       }
     }
   }

@@ -2,7 +2,7 @@
   <div class="playlist-detail-container">
     <div class="playlist-detail-header">
       <div class="playlist-cover">
-        <the-image :src="detail.imgUrl" width="180px" height="180px" />
+        <the-image :src="detail.imgUrl" size="180" round="large" />
       </div>
       <div class="playlist-info">
         <div class="playlist-title">
@@ -110,7 +110,6 @@ const getPlaylistDetail = async (id) => {
   showSpin.value = true;
   playlist.getPlaylistDetail(id).then((res) => {
     if (res.code === 200) {
-      console.log(res);
       detail.value = new Playlist(res.playlist);
       subscribers.value = res.playlist.subscribers;
       let ids = detail.value.trackIds.map((item) => item.id);

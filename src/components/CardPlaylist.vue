@@ -25,7 +25,7 @@
             />
           </div>
         </transition>
-        <the-image :src="playlist.imgUrl + '?param=400y400'" radius="8px" />
+        <the-image :src="playlist.imgUrl + '?param=400y400'" round="large" />
       </div>
     </template>
   </card-base>

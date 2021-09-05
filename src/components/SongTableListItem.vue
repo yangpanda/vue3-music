@@ -34,7 +34,7 @@
 
 <script>
 import * as utils from "@/utils/index.js";
-import { useStore } from 'vuex';
+import { mapMutations } from '@/lib/lib.js';
 
 export default {
   name: "SongTableListItem",
@@ -49,11 +49,8 @@ export default {
   },
   emits: ['play'],
   setup(props, { emit }) {
-    const store = useStore()
-    const setCurrentSong = (song) => store.commit("setCurrentSong", song);
-    const setPlayIndex = (index) => store.commit("setPlayIndex", index);
-    const setPlayingState = (state) => store.commit("setPlayingState", state)
-
+    const { setCurrentSong, setPlayIndex, setPlayingState } = mapMutations()
+    
     const play = () => {
       setCurrentSong(props.song)
       setPlayIndex(props.index)
@@ -86,7 +83,6 @@ export default {
   grid-template-columns: 80px 3fr 2fr 2fr 60px;
   align-items: center;
   column-gap: 20px;
-  color: var(--text-gray-200);
   cursor: default;
 
   &:nth-child(even) {
@@ -114,7 +110,6 @@ export default {
   }
 
   .name {
-    color: var(--text-gray-400);
   }
 }
 </style>

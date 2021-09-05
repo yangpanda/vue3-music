@@ -2,7 +2,7 @@
   <div class="album-detail-container">
     <div class="album-detail-header">
       <div class="album-cover">
-        <the-image :src="album.picUrl" width="180px" height="180px" />
+        <the-image :src="album.picUrl" size="180" round="large" />
       </div>
       <div class="album-info">
         <div class="album-title">

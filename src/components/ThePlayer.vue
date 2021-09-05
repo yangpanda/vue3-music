@@ -1,27 +1,45 @@
 <template>
-  <div class="wrapper">
-    <div class="left">
-      <div class="avatar">
+  <div class="flex justify-between items-center h-20 bg-white px-5">
+    <div class="flex justify-start items-center flex-grow gap-x-3">
+      <div class="relative cursor-pointer group">
         <the-image
           :src="songImage + '?param=100y100'"
-          radius="4px"
-          width="50px"
+          size="50"
+          round="normal"
         />
         <div
-          class="toggle-playing-page"
-          @click="showPlayingPage = !showPlayingPage"
+          class="
+            absolute
+            left-0
+            top-0
+            w-full
+            h-full
+            bg-gray-400 bg-opacity-5
+            rounded
+            flex
+            justify-center
+            items-center
+            backdrop-filter backdrop-blur-sm
+            opacity-0
+            group-hover:opacity-100
+          "
+          @click="setShowPlayingPage(!showPlayingPage)"
         >
           <svg-icon iconName="#icon-arrow-up" iconColor="#f3f3f3"></svg-icon>
         </div>
       </div>
-      <div class="info">
-        <span class="title ellipsis">{{ songName }}</span>
-        <span class="artist ellipsis">{{ songSinger }}</span>
+      <div class="h-full">
+        <div class="text-base cursor-pointer overflow-ellipsis">
+          {{ songName }}
+        </div>
+        <div class="text-sm cursor-pointer overflow-ellipsis">
+          {{ songSinger }}
+        </div>
       </div>
     </div>
-    <div class="center">
-      <div class="control-buttons">
-        <div class="modes" @click="changeMode()">
+    <div class="flex flex-col items-center">
+      <div class="flex items-center gap-x-5">
+        <div class="flex justify-center items-center" @click="changeMode()">
           <svg-icon
             v-if="playMode == 'order'"
             iconName="#icon-play-mode-order"
@@ -41,39 +59,44 @@
           iconName="#icon-play"
           size="30"
         />
-        <svg-icon v-else @click="methods.pause()" iconName="#icon-pause" size="30" />
-        <svg-icon @click="methods.nextTrack()" iconName="#icon-next" size="24" />
+        <svg-icon
+          v-else
+          @click="methods.pause()"
+          iconName="#icon-pause"
+          size="30"
+        />
+        <svg-icon
+          @click="methods.nextTrack()"
+          iconName="#icon-next"
+          size="24"
+        />
       </div>
-      <div class="progress">
-        <span>{{ formatTime(currentTime) }}</span>
+      <div class="flex items-center justify-center gap-x-4">
+        <div>{{ formatTime(currentTime) }}</div>
         <the-slider
           :duration="duration"
           :currentTime="currentTime"
         ></the-slider>
-        <span>{{ formatTime(duration) }}</span>
+        <div>{{ formatTime(duration) }}</div>
       </div>
-      <audio
-        autoplay
-        ref="audio"
-        :src="songUrl"
-        @ended="methods.nextTrack()"
-        @timeupdate="methods.getCurrentTime()"
-        @durationchange="methods.getDuration()"
-      ></audio>
     </div>
-    <div class="right">
+    <div class="flex flex-grow justify-end items-center">
       <div class="volum"></div>
       <div class="song-list" @click="showPlaylist = !showPlaylist">
         <svg-icon iconName="#icon-play-list"></svg-icon>
       </div>
     </div>
-    <playing-page
-      class="playing-page"
-      :class="{ 'show-playing-page': showPlayingPage }"
-    ></playing-page>
+    <audio
+      autoplay
+      ref="audio"
+      :src="songUrl"
+      @ended="methods.nextTrack()"
+      @timeupdate="methods.getCurrentTime()"
+      @durationchange="methods.getDuration()"
+    ></audio>
     <n-drawer v-model:show="showPlaylist" placement="right" :width="600">
       <n-drawer-content title="播放列表" body-content-style="padding: 0;">
-        <the-playlist/>
+        <the-playlist />
       </n-drawer-content>
     </n-drawer>
   </div>
@@ -81,36 +104,34 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, reactive } from "vue";
-import { useStore } from "vuex";
+import { mapState, mapMutations } from "@/lib/lib.js";
 
 import * as utils from "@/utils/index.js";
 import api from "@/api/index.js";
 
 import TheSlider from "@/components/TheSlider.vue";
-import PlayingPage from "@/components/PlayingPage.vue";
 import ThePlaylist from "@/components/ThePlaylist.vue";
-import { NDrawer, NDrawerContent } from 'naive-ui'
+import { NDrawer, NDrawerContent } from "naive-ui";
 
-const store = useStore()
+const {
+  playingState,
+  playIndex,
+  playlist,
+  playMode,
+  randomPlaylist,
+  currentSong,
+  showPlayingPage,
+} = mapState();
 
-const audio = ref({})
-const songUrl = ref('')
-const volume = ref(0.4)
-const currentTime = ref(0)
-const showPlayingPage = ref(false)
-const showPlaylist = ref(false)
-const duration = ref(0)
-const playingState = computed(() => store.getters.getPlayingState)
-const playIndex = computed(() => store.getters.getPlayIndex);
-const playlist = computed(() => store.getters.getPlaylist);
-const playMode = computed(() => store.getters.getPlayMode);
-const randomPlaylist = computed(() => store.getters.getRandomPlaylist);
-const currentSong = computed(() => store.getters.getCurrentSong);
+const { setPlayingState, setPlayIndex, setCurrentSong, setShowPlayingPage } =
+  mapMutations();
 
-const setPlayingState = (state) => store.commit('setPlayingState', state)
-const setPlayIndex = (index) => store.commit("setPlayIndex", index);
-const setPlayMode = (mode) => store.commit("setPlayMode", mode);
-const setCurrentSong = (song) => store.commit("setCurrentSong", song);
+const audio = ref({});
+const songUrl = ref("");
+const volume = ref(0.4);
+const currentTime = ref(0);
+const showPlaylist = ref(false);
+const duration = ref(0);
 
 const songName = computed(() =>
   currentSong.value ? currentSong.value.name : ""
@@ -125,12 +146,11 @@ const songSinger = computed(() =>
 watch(
   () => currentSong.value,
   () => {
-    api.song.getSongsUrl(currentSong.value.id)
-      .then(response => {
-        if (response.code === 200) {
-          songUrl.value = response.data[0].url
-        }
-      })
+    api.song.getSongsUrl(currentSong.value.id).then((response) => {
+      if (response.code === 200) {
+        songUrl.value = response.data[0].url;
+      }
+    });
   }
 );
 
@@ -142,64 +162,64 @@ const methods = reactive({
   setCurrentTime: null,
   nextTrack: null,
   preTrack: null,
-})
+});
 
 onMounted(() => {
   audio.value.volume = volume.value;
 
   methods.play = () => {
-    setPlayingState(true)
+    setPlayingState(true);
     audio.value.play();
-  }
+  };
 
   methods.pause = () => {
-    setPlayingState(false)
-    audio.value.pause()
-  }
+    setPlayingState(false);
+    audio.value.pause();
+  };
 
   methods.getCurrentTime = () => {
     currentTime.value = ~~audio.value.currentTime;
-  }
+  };
 
   methods.setCurrentTime = (sec) => {
     audio.currentTime = sec;
-  }
+  };
 
   methods.getDuration = () => {
     duration.value = ~~audio.value.duration;
-  }
+  };
 
   methods.nextTrack = () => {
     if (playMode.value === "unorder") {
-      const index = randomPlaylist.value.indexOf(playIndex.value)
+      const index = randomPlaylist.value.indexOf(playIndex.value);
       if (index + 1 >= randomPlaylist.value.length) {
-        setPlayIndex(randomPlaylist.value[0])
+        setPlayIndex(randomPlaylist.value[0]);
       } else {
-        setPlayIndex(randomPlaylist.value[index + 1])
+        setPlayIndex(randomPlaylist.value[index + 1]);
       }
       setCurrentSong(playlist.value[playIndex.value]);
     } else {
       setPlayIndex(playIndex.value + 1);
       setCurrentSong(playlist.value[playIndex.value]);
     }
-    setPlayingState(true)
-  }
+    setPlayingState(true);
+  };
 
   methods.preTrack = () => {
     if (playMode.value === "unorder") {
-      const index = this.randomPlaylist.indexOf(playIndex.value)
+      const index = this.randomPlaylist.indexOf(playIndex.value);
       if (index - 1 < 0) {
-        setPlayIndex(randomPlaylist.value[randomPlaylist.value.length - 1])
+        setPlayIndex(randomPlaylist.value[randomPlaylist.value.length - 1]);
       } else {
-        setPlayIndex(randomPlaylist.value[index - 1])
+        setPlayIndex(randomPlaylist.value[index - 1]);
       }
       setCurrentSong(playlist.value[playIndex.value]);
     } else {
       setPlayIndex(playIndex.value - 1);
       setCurrentSong(playlist.value[playIndex.value]);
     }
-    setPlayingState(true)
-  }
+    setPlayingState(true);
+  };
 
   // this.changeMode = (() => {
   //   let count = 0;
@@ -222,7 +242,7 @@ onMounted(() => {
   //     }
   //   };
   // })();
-})
+});
 
 //   decreaseVolume() {
 //     if (this.volume > 0 && this.volume > 0.2) {
@@ -254,141 +274,4 @@ function formatTime(seconds) {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px;
-  background-color: #f6f6f8;
-  height: var(--footer-height);
-
-  .left {
-    display: flex;
-    flex: 1;
-    align-items: center;
-
-    .avatar {
-      position: relative;
-      margin-right: 10px;
-      cursor: pointer;
-      z-index: auto;
-
-      .toggle-playing-page {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: radial-gradient(
-          rgba(0, 0, 0, 0.2),
-          rgba(0, 0, 0, 0.4)
-        );
-        border-radius: 4px;
-        z-index: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        display: none;
-
-        &::after {
-          content: "";
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          left: 0;
-          top: 0;
-          background: inherit;
-          border-radius: 4px;
-          filter: blur(5px);
-          z-index: auto;
-        }
-      }
-
-      &:hover .toggle-playing-page {
-        display: flex;
-      }
-    }
-
-    .info {
-      display: grid;
-      grid-template-rows: 2;
-      row-gap: 8px;
-
-      span {
-        height: 1em;
-        line-height: 1em;
-      }
-
-      .title {
-        font-size: 16px;
-        cursor: default;
-      }
-
-      .artist {
-        font-size: 13px;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .control-buttons {
-      display: flex;
-      align-items: center;
-      column-gap: 20px;
-
-      .modes {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-
-    .progress {
-      display: flex;
-      column-gap: 15px;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  .right {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .playing-page {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: var(--footer-height);
-    overflow: hidden;
-    background-color: #fff;
-
-    transition-duration: 1s;
-    opacity: 0;
-    visibility: hidden;
-    z-index: calc(var(--max-z-index) - 1);
-  }
-
-  .show-playing-page {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  .playlist {
-    position: fixed;
-    right: 0;
-    top: calc(var(--header-height) + 20px);
-    bottom: var(--footer-height);
-    z-index: var(--max-z-index);
-  }
-}
 </style>

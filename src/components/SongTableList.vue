@@ -19,7 +19,7 @@
 
 <script>
 import SongTableListItem from "@/components/SongTableListItem.vue";
-import { useStore } from 'vuex';
+import { mapState, mapMutations } from '@/lib/lib.js';
 import { computed } from '@vue/runtime-core';
 
 export default {
@@ -30,11 +30,8 @@ export default {
     },
   },
   setup(props) {
-    const store = useStore()
-
-    const playlist = computed(() => store.getters.getPlaylist)
-    const setPlaylist = (list) => store.commit('setPlaylist', list)
-    const setRandomPlaylist = () => store.commit('setRandomPlaylist')
+    const { playlist } = mapState()
+    const { setPlaylist, setRandomPlaylist } = mapMutations()
 
     const onPlay = () => {
       if (!Object.is(playlist, props.songs)) {
@@ -62,7 +59,6 @@ export default {
     column-gap: 20px;
     padding: 0 20px;
     line-height: 36px;
-    color: var(--text-gray-200);
   }
 }
 </style>

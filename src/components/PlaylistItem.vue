@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
+import { mapState } from "@/lib/lib.js";
 import { computed } from "vue";
 
 export default {
@@ -26,9 +26,7 @@ export default {
     }
   },
   setup(props) {
-    const store = useStore();
-
-    const playIndex = computed(() => store.getters.getPlayIndex);
+    const {playIndex} = mapState()
 
     const playing = computed(() => props.index === playIndex.value);
 
@@ -54,6 +52,6 @@ export default {
 }
 
 .playing {
-  color: var(--red-color);
+  color: red;
 }
 </style>

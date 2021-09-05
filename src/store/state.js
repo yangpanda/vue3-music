@@ -8,4 +8,5 @@ export default {
   playMode: 'order',
   currentSong: null,
   playingState: false,
+  showPlayingPage: false,
 }

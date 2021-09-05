@@ -1,74 +1,73 @@
 <template>
   <div
-    class="image-wrapper shadow"
+    class="
+      flex flex-shrink-0
+      shadow
+      justify-center
+      item-center
+      w-full
+      bg-gray-200
+      overflow-hidden
+    "
+    :class="{
+      'rounded-none': round === 'none',
+      'rounded-sm': round === 'small',
+      rounded: round === 'normal',
+      'rounded-md': round === 'middle',
+      'rounded-lg': round === 'large',
+      'rounded-full': round === 'full',
+      'w-full': !((width && height) || size),
+    }"
     :style="{
-      borderRadius: borderRadius,
       width: imageWidth,
       height: imageHeight,
     }"
   >
-    <img class="image" v-lazy="src"/>
+    <img class="image" v-lazy="src" />
     <div
       v-if="!height"
-      class="after"
+      class="w-0 h-0"
       :style="{ paddingTop: paddingHeight }"
     ></div>
   </div>
 </template>
 
-<script>
+<script setup>
+const props = defineProps({
+  src: String,
+  ratio: {
+    type: String,
+    default: "1 / 1",
+  },
+  width: String,
+  height: String,
+  size: String,
+  round: {
+    type: String,
+    default: "none",
+  },
+});
 
-export default {
-  name: "TheImage",
-  props: {
-    src: {
-      type: String,
-    },
-    ratio: {
-      type: String,
-      default: "1 / 1",
-    },
-    radius: {
-      type: String,
-      default: "4px",
-    },
-    width: {
-      type: String,
-    },
-    height: {
-      type: String,
-    },
-  },
-  data() {
-    return {
-      paddingHeight: `calc(100% / (${this.ratio}))`,
-      borderRadius: `${this.radius}`,
-      imageWidth: `${this.width}`,
-      imageHeight: `${this.height}`,
-    };
-  },
-};
+const paddingHeight = `calc(100% / (${props.ratio}))`;
+let imageWidth = ''
+let imageHeight = ''
+
+if (props.width && props.height) {
+  imageWidth = props.width.indexOf("px")
+    ? `${props.width}`
+    : `${prop.width}px`;
+  imageHeight = props.height.indexOf("px")
+    ? `${props.height}`
+    : `${prop.height}px`;
+} else {
+  imageWidth = `${props.size}px`;
+  imageHeight = `${props.size}px`;
+}
 </script>
 
-<style lang="scss" scoped>
-.image-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+<style scoped>
+.image[lazy="loaded"] {
   width: 100%;
-  background-color: #cecbcb;
-
-  .image {
-    display: block;
-  }
-  .image[lazy=loaded] {
-    width: 100%;
-    animation: fadein 1s both;
-  }
-  .after {
-    width: 0;
-    height: 0;
-  }
+  animation: fadein 1s both;
 }
 </style>

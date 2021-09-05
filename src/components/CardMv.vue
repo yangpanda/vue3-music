@@ -4,7 +4,7 @@
       <the-image
         :src="image() + '?param=640y360'"
         ratio="16 / 9"
-        radius="6px"
+        round='normal'
       />
     </template>
   </card-base>

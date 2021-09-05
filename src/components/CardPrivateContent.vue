@@ -14,7 +14,7 @@
           class="pic"
           :src="privateContent.sPicUrl"
           ratio="16 / 9"
-          radius="6px"
+          round="middle"
         />
       </div>
     </template>
@@ -62,7 +62,7 @@ export default {
 
   .title {
     margin: 5px;
-    font-size: var(--font-size-16);
+    font-size: 16px;
     color: #606266;
   }
 }

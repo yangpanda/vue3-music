@@ -46,5 +46,8 @@ export default {
   },
   setPlayingState(state, theState) {
     state.playingState = theState
+  },
+  setShowPlayingPage(state, theState) {
+    state.showPlayingPage = theState
   }
 }

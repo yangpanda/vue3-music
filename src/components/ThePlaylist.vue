@@ -12,7 +12,7 @@
 
 <script>
 import PlaylistItem from "@/components/PlaylistItem.vue";
-import { useStore } from "vuex";
+import { mapState } from "@/lib/lib.js";
 import { computed } from "vue";
 
 export default {
@@ -21,8 +21,7 @@ export default {
     PlaylistItem,
   },
   setup() {
-    const store = useStore();
-    const playlist = computed(() => store.getters.getPlaylist);
+    const { playlist } = mapState()
 
     return {
       playlist,

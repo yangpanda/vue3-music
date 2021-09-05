@@ -52,7 +52,7 @@
 		</nav>
 		<n-grid x-gap="20" y-gap="15" :cols="6" ref="container">
 			<n-grid-item v-for="(item, index) in artists" :key="index">
-				<the-image :src="item.picUrl + '?param=300y300'"></the-image>
+				<the-image :src="item.picUrl + '?param=300y300'" round="full"></the-image>
 				<div class="footer">
 					<span class="name">{{ item.name }}</span>
 				</div>

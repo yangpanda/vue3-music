@@ -36,8 +36,8 @@
       <div class="song-img pointer" @click="play(new Song(item))">
         <the-image
           :src="item.album.picUrl + '?param=160y160'"
-          width="60px"
-          height="60px"
+          size="60"
+          round="normal"
         />
         <svg-icon
           class="play-button"
@@ -70,7 +70,7 @@ import { formatDuration } from "@/utils/index.js";
 
 import * as song from "@/api/service/song.js";
 import { ref, watchEffect, reactive } from "@vue/runtime-core";
-import { useStore } from "vuex";
+import { mapMutations } from "@/lib/lib.js";
 
 import Song from "@/model/Song.js";
 
@@ -84,9 +84,7 @@ const songTypeMap = new Map([
   ["韩国", 16],
 ]);
 
-const store = useStore();
-const setCurrentSong = (song) => store.commit("setCurrentSong", song);
-const insertSong = (song) => store.commit("insertSong", song);
+const { setCurrentSong, insertSong } = mapMutations()
 
 const songType = ref(0);
 const newSongs = ref([]);

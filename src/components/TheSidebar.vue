@@ -42,7 +42,7 @@
 import * as playlist from "@/api/service/playlist.js";
 
 import { ref, watch, computed } from "vue";
-import { useStore } from "vuex";
+import { mapState } from "@/lib/lib.js";
 
 import MenuItem from "@/components/MenuItem.vue";
 import MenuItemGroup from "@/components/MenuItemGroup.vue";
@@ -126,10 +126,8 @@ export default {
       key: "favored-playlists",
       children: favoredPlaylists,
     });
-    const store = useStore();
 
-    const loginStatus = computed(() => store.getters.isLogined);
-    const userinfo = computed(() => store.getters.getUserinfo);
+    const { logined, userinfo } = mapState()
 
     function CreateMenuOption(playlist) {
       return {
@@ -154,9 +152,9 @@ export default {
     };
 
     watch(
-      () => loginStatus.value,
+      () => logined.value,
       () => {
-        if (loginStatus.value === true) {
+        if (logined.value === true) {
           getUserPlaylists();
         } else {
           favoredPlaylists.value = []
