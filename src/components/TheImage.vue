@@ -48,14 +48,18 @@ const props = defineProps({
   },
 });
 
-const paddingHeight = `calc(100% / (${props.ratio}))`;
-let imageWidth = ''
-let imageHeight = ''
+let paddingHeight = `calc(100% / (${props.ratio}))`;
+let imageWidth = "";
+let imageHeight = "";
+
+if (props.height) {
+  paddingHeight = props.height.indexOf("px")
+    ? `${props.height}`
+    : `${prop.height}px`;
+}
 
 if (props.width && props.height) {
-  imageWidth = props.width.indexOf("px")
-    ? `${props.width}`
-    : `${prop.width}px`;
+  imageWidth = props.width.indexOf("px") ? `${props.width}` : `${prop.width}px`;
   imageHeight = props.height.indexOf("px")
     ? `${props.height}`
     : `${prop.height}px`;

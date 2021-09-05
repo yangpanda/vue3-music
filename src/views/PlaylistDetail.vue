@@ -1,39 +1,36 @@
 <template>
-  <div class="playlist-detail-container">
-    <div class="playlist-detail-header">
-      <div class="playlist-cover">
-        <the-image :src="detail.imgUrl" size="180" round="large" />
-      </div>
-      <div class="playlist-info">
-        <div class="playlist-title">
+  <div class="space-y-5">
+    <div class="flex col-gap-20 p-5">
+      <the-image class="" :src="detail.imgUrl" size="180" round="large" />
+      <div class="flex flex-col gap-y-2">
+        <div class="flex items-center gap-x-2">
           <n-tag size="small">歌单</n-tag>
-          <h2 style="margin: 0">{{ detail.name }}</h2>
+          <div class="text-xl font-semibold">{{ detail.name }}</div>
         </div>
-        <div class="playlist-user">
-          <n-avatar :src="detail.avatarUrl" circle :size="26" />
-          <span>{{ detail.creatorName }}</span>
+        <div class="flex gap-x-2 items-center">
+          <n-avatar :src="detail.avatarUrl + '?param=30y30'" circle :size="26" />
+          <div>{{ detail.creatorName }}</div>
         </div>
-        <div class="playlist-tags">
-          <span>标签： </span>
-          <span>{{ detail.tags }}</span>
+        <div class="flex gap-x-2 items-center">
+          <div>标签:</div>
+          <div>{{ detail.tags }}</div>
         </div>
-        <div class="playlist-description">
-          <span class="label" style="white-space: nowrap">简介： </span>
-          <span>{{ detail.description }}</span>
+        <div class="flex gap-x-2">
+          <div class="whitespace-nowrap">简介:</div>
+          <div>{{ detail.description }}</div>
         </div>
       </div>
     </div>
     <n-tabs default-value="playlist" type="line" :tabs-padding="20">
       <n-tab-pane name="playlist" tab="歌曲列表">
-        <div v-if="showSpin" style="display: flex; justify-content: center">
+        <div v-if="showSpin" class="flex justify-center">
           <n-spin />
         </div>
         <song-table-list v-else :songs="songs"></song-table-list>
       </n-tab-pane>
-      <n-tab-pane name="comment" tab="评论">
-      </n-tab-pane>
+      <n-tab-pane name="comment" tab="评论"> </n-tab-pane>
       <n-tab-pane name="subsciber" tab="收藏者">
-        <div class="subscribers-list-container">
+        <div class="p-5">
           <n-result
             v-if="subscribers.length === 0"
             status="info"
@@ -41,23 +38,19 @@
             description="生活总归带点荒谬"
             size="huge"
           ></n-result>
-          <n-grid v-else x-gap="20" y-gap="20" :cols="4">
-            <n-grid-item
-              class="avatar-item flex-align-center col-gap-10"
+          <div v-else class="grid md:grid-cols-2 xl:grid-cols-4 gap-y-4">
+            <div
+              class="flex gap-x-2 items-center"
               v-for="(item, index) in subscribers"
               :key="index"
             >
-              <n-avatar
-                round
-                :src="item.avatarUrl + '?param=100y100'"
-                :size="88"
-              />
-              <div class="user-info">
-                <div class="user-name">{{ item.nickname }}</div>
-                <div class="user-signature">{{ item.signature }}</div>
+              <the-image round="full" size="88" :src="item.avatarUrl + '?param=100y100'"/>
+              <div class="flex flex-col w-0 flex-grow gap-y-2">
+                <div class="overflow-hidden overflow-ellipsis whitespace-nowrap">{{ item.nickname }}</div>
+                <div class="overflow-hidden overflow-ellipsis whitespace-nowrap">{{ item.signature }}</div>
               </div>
-            </n-grid-item>
-          </n-grid>
+            </div>
+          </div>
         </div>
       </n-tab-pane>
     </n-tabs>
@@ -77,9 +70,6 @@ import {
   NSpin,
   NTabs,
   NTabPane,
-  NAvatar,
-  NGrid,
-  NGridItem,
   NResult,
 } from "naive-ui";
 
@@ -122,36 +112,4 @@ onMounted(getPlaylistDetail(props.id));
 </script>
 
 <style scoped>
-.playlist-detail-header {
-  display: flex;
-  column-gap: 20px;
-  padding: 20px;
-}
-.playlist-info {
-  display: flex;
-  flex-direction: column;
-  row-gap: 6px;
-  min-width: 820px;
-}
-.playlist-title {
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-}
-.playlist-user {
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-}
-.playlist-tags {
-  display: flex;
-  align-items: center;
-}
-.playlist-description {
-  display: flex;
-}
-
-.subscribers-list-container {
-  padding: 0 20px;
-}
 </style>

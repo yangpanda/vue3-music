@@ -37,7 +37,7 @@
 				<the-player />
 			</n-layout-footer>
 		</n-layout>
-    	<playing-page v-if="showPlayingPage" style="z-index: 100"/>
+    	<playing-page class="fixed left-0 top-0 bottom-20 right-0 border-b" v-if="showPlayingPage"/>
 	</n-loading-bar-provider>
 </template>
 

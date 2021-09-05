@@ -1,6 +1,5 @@
 <template>
   <blur-background
-    class="fixed left-0 top-0 bottom-20 right-0 border-b"
     :src="songImage"
   >
     <div class="lg:w-full xl:w-3/5 mx-auto py-5 px-5">
