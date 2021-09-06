@@ -1,70 +1,59 @@
 <template>
-  <div class="discovery">
-    <div class="nav">
-      <div class="wrapper">
-        <router-link class="personal-recommend router" to="/discovery/personal">个性推荐</router-link>
-        <router-link class="playlist router" to="/discovery/playlist">歌单</router-link>
-        <router-link class="ranking router" to="/discovery/ranking">排行榜</router-link>
-        <router-link class="artist router" to="/discovery/artist">歌手</router-link>
-        <router-link class="newest-music router" to="/discovery/new-song">最新音乐</router-link>
-      </div>
-    </div>
-    <div class="content">
-      <router-view></router-view>
-    </div>
-  </div>
+	<div class="p-5 space-y-5">
+		<div class="flex justify-center items-center gap-x-6 text-base">
+			<router-link
+				v-for="(value, key) in nav"
+				:key="key"
+				class="flex-shrink-0"
+        exact-active-class="font-bold text-lg border-b-2 border-red-500"
+				:to="'/discovery/' + key"
+				>
+        {{ value }}
+      </router-link>
+		</div>
+		<div class="content">
+			<router-view></router-view>
+		</div>
+	</div>
 </template>
 
-<script>
-export default {
-  name: "Discovery",
-};
-
+<script setup>
+const nav = {
+  'personal': '个性推荐',
+  'playlist': '歌单',
+  'ranking': '排行榜',
+  'new-song/top-song': '最新音乐'
+}
 </script>
 
 <style lang="scss" scoped>
-.discovery {
-  margin: 20px;
+.router {
+	width: 70px;
+	text-align: center;
+	display: block;
+	padding: 0 10px 10px 10px;
+	text-decoration: none;
+	color: #606266;
 
-  .nav {
-    font-size: 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
+	&.router-link-exact-active {
+		font-weight: bold;
+		color: #303133;
+		border-bottom: 2px solid #ec4141;
+	}
 
-    .wrapper {
-      display: flex;
-      justify-content: center;
-    }
+	&.router-link-active {
+		font-weight: bold;
+		color: #303133;
+		border-bottom: 2px solid #ec4141;
+	}
+}
 
-    .router {
-      width: 70px;
-      text-align: center;
-      display: block;
-      padding: 0 10px 10px 10px;
-      text-decoration: none;
-      color: #606266;
-
-      &.router-link-exact-active {
-        font-weight: bold;
-        color: #303133;
-        border-bottom: 2px solid #ec4141;
-      }
-
-      &.router-link-active {
-        font-weight: bold;
-        color: #303133;
-        border-bottom: 2px solid #ec4141;
-      }
-    }
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    row-gap: 20px;
-    min-width: 800px;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
+.content {
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+	min-width: 800px;
+	max-width: 1000px;
+	margin: 0 auto;
 }
 </style>

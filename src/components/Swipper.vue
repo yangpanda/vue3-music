@@ -62,11 +62,11 @@
     </div>
     <div class="flex justify-center col-gap-10">
       <div
-        class="cursor-pointer border h-3 w-3 rounded-full"
+        class="cursor-pointer h-3 w-3 bg-gray-200 rounded-full"
         v-for="(item, index) in banners.length"
         :key="index"
         @click="changePointer(index)"
-        :class="{ active: pointer === index }"
+        :class="{ 'bg-red-500': pointer === index }"
       ></div>
     </div>
   </div>
@@ -157,7 +157,4 @@ onBeforeUnmount(() => clearInterval(timer));
   visibility: visible;
 }
 
-.active {
-  background-color: green;
-}
 </style>

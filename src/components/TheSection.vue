@@ -1,15 +1,20 @@
 <template>
-  <section class="section">
-    <div class="section-header flex align-center space-between">
-      <div class="section-header-left flex align-center">
-        <span class="section-title">
+  <section class="space-y-4">
+    <div class="flex items-center gap-x-1.5">
+      <div class="text-xl font-bold">
           {{ title }}
-        </span>
-        <svg-icon iconName="#icon-arrow-right" size="14" iconColor="#303133" />
       </div>
+      <svg-icon iconName="#icon-arrow-right" size="14" iconColor="#303133" />
       <slot name="nav"></slot>
     </div>
-    <div class="cards-wrapper" :style="{ gridTemplateColumns: gridCols }">
+    <div class="grid gap-x-3 gap-y-3" :class="{
+      'grid-cols-2': cols == 2,
+      'grid-cols-3': cols == 3,
+      'grid-cols-4': cols == 4,
+      'grid-cols-5': cols == 5,
+      'grid-cols-6': cols == 6,
+      'grid-cols-7': cols == 7,
+    }">
       <slot name="cards"></slot>
     </div>
   </section>
@@ -22,25 +27,7 @@ const props = defineProps({
   title: String,
   cols: [Number, String],
 });
-
-const gridCols = ref(`repeat(${props.cols}, 1fr`);
 </script>
 
-<style lang="scss" scoped>
-.section {
-  display: flex;
-  flex-direction: column;
-  row-gap: 15px;
-}
-.section-title {
-  font-size: 18px;
-  color: #303133;
-  font-weight: bold;
-  margin-right: 8px;
-  line-height: 1em;
-}
-.cards-wrapper {
-  display: grid;
-  gap: 10px 20px;
-}
+<style scoped>
 </style>
