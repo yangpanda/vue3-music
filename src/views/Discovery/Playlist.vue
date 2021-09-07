@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import TheNav from '@/components/Discovery/Playlist/TheNav.vue'
+import TheNav from '@/components/Discovery/Playlist/NavBar.vue'
 
 import api from "@/api/index.js";
 import Playlist from "@/model/Playlist.js";
