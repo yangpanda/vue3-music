@@ -1,7 +1,7 @@
 <template>
-  <div class="card-wrapper">
+  <div class="space-y-3">
     <slot name="image"/>
-    <span class="card-title">{{ title }}</span>
+    <div class="card-title">{{ title }}</div>
   </div>
 </template>
 
@@ -16,15 +16,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.card-wrapper {
-  cursor: pointer;
-
-  .card-title {
-    display: inline-block;
-    font-size: 16px;
-    color: #606266;
-    margin: 5px 0 10px 5px;
-  }
-}
+<style scoped>
 </style>

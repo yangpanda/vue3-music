@@ -2,34 +2,22 @@
   <card-base :title="mv.name" @click="$router.push(`/mv-detail/${mv.id}`)">
     <template #image>
       <the-image
-        :src="image() + '?param=640y360'"
+        :src="picSrc() + '?param=640y360'"
         ratio="16 / 9"
-        round='normal'
+        round="normal"
       />
     </template>
   </card-base>
 </template>
 
-<script>
+<script setup>
 import CardBase from "@/components/CardBase.vue";
 
-export default {
-  name: "CardMv",
-  components: {
-    CardBase,
-  },
-  props: {
-    mv: {
-      type: Object,
-    },
-  },
-  methods: {
-    image() {
-      return this.mv.picUrl ?? this.mv.cover
-    }
-  }
-};
-</script>
+const props = defineProps({
+  mv: Object,
+});
 
-<style lang="scss" scoped>
-</style>
+function picSrc() {
+  return props.mv.picUrl ?? props.mv.cover;
+}
+</script>

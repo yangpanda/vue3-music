@@ -1,10 +1,12 @@
 <template>
   <section class="space-y-4">
-    <div class="flex items-center gap-x-1.5">
-      <div class="text-xl font-bold">
-          {{ title }}
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-x-1.5">
+        <div class="text-lg font-bold">
+            {{ title }}
+        </div>
+        <svg-icon iconName="#icon-arrow-right" size="14" iconColor="#303133" />
       </div>
-      <svg-icon iconName="#icon-arrow-right" size="14" iconColor="#303133" />
       <slot name="nav"></slot>
     </div>
     <div class="grid gap-x-3 gap-y-3" :class="{

@@ -38,6 +38,9 @@ export const getRankList = () =>
 export const getPlaylistHotTags = () =>
   request.get("/playlist/hot")
 
+export const getHotTags = () =>
+  request.get("/playlist/hot")
+
 export const getPlaylistCat = () =>
   request.get("/playlist/catlist")
 

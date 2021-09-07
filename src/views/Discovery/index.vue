@@ -1,6 +1,6 @@
 <template>
 	<div class="p-5 space-y-5">
-		<div class="flex justify-center items-center gap-x-6 text-base">
+		<div class="flex justify-center items-center gap-x-12 text-base">
 			<router-link
 				v-for="(value, key) in nav"
 				:key="key"
@@ -11,7 +11,7 @@
         {{ value }}
       </router-link>
 		</div>
-		<div class="content">
+		<div class="space-y-5 mx-auto w-auto max-w-screen-lg">
 			<router-view></router-view>
 		</div>
 	</div>
@@ -26,34 +26,9 @@ const nav = {
 }
 </script>
 
-<style lang="scss" scoped>
-.router {
-	width: 70px;
-	text-align: center;
-	display: block;
-	padding: 0 10px 10px 10px;
-	text-decoration: none;
-	color: #606266;
-
-	&.router-link-exact-active {
-		font-weight: bold;
-		color: #303133;
-		border-bottom: 2px solid #ec4141;
-	}
-
-	&.router-link-active {
-		font-weight: bold;
-		color: #303133;
-		border-bottom: 2px solid #ec4141;
-	}
-}
-
+<style scoped>
 .content {
-	display: flex;
-	flex-direction: column;
-	row-gap: 20px;
 	min-width: 800px;
 	max-width: 1000px;
-	margin: 0 auto;
 }
 </style>

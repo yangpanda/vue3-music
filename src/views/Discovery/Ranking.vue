@@ -1,18 +1,26 @@
 <template>
-	<div class="rank">
-		<h1>官方榜</h1>
-		<n-grid :x-gap="20" :y-gap="15" :cols="5">
-			<n-grid-item v-for="(item, index) in officialList" :key="index">
-				<card-playlist :playlist="item" />
-			</n-grid-item>
-		</n-grid>
-		<h2>全球榜</h2>
-		<n-grid :x-gap="20" :y-gap="15" :cols="5">
-			<n-grid-item v-for="(item, index) in list" :key="index">
-				<card-playlist :playlist="item" />
-			</n-grid-item>
-		</n-grid>
-	</div>
+  <div class="space-y-5">
+    <div class="space-y-4">
+      <div class="text-lg font-bold">官方榜</div>
+      <div class="grid grid-cols-5 gap-x-4 gap-y-4">
+        <card-playlist
+          v-for="(item, index) in officialList"
+          :key="index"
+          :playlist="item"
+        />
+      </div>
+    </div>
+    <div class="space-y-4">
+      <div class="text-lg font-bold">全球榜</div>
+      <div class="grid grid-cols-5 gap-x-4 gap-y-4">
+        <card-playlist
+          v-for="(item, index) in list"
+          :key="index"
+          :playlist="item"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -59,5 +67,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 </style>

@@ -74,14 +74,11 @@
 
 <script setup>
 import { ref, computed, onBeforeMount, onBeforeUnmount } from "vue";
-import api from '@/api/index.js'
 
-const banners = ref([])
-api.banner.getBanners(2).then(response => {
-  if (response.code === 200) {
-    banners.value = response.banners
-  }
-})
+const props = defineProps({
+  banners: Array,
+});
+
 
 const pointer = ref(0); // 游标
 let timer = 0;
@@ -99,7 +96,7 @@ function changePointer(index) {
 
 function forward() {
   clearInterval(timer);
-  if (pointer.value === banners.value.length - 1) {
+  if (pointer.value === props.banners.length - 1) {
     pointer.value = 0;
   } else {
     pointer.value++;
@@ -110,7 +107,7 @@ function forward() {
 function backward() {
   clearInterval(timer);
   if (pointer.value === 0) {
-    pointer.value = banners.value.length - 1;
+    pointer.value = props.banners.length - 1;
   } else {
     pointer.value--;
   }
@@ -119,14 +116,14 @@ function backward() {
 
 const pre = computed(() => {
   if (pointer.value === 0) {
-    return banners.value.length - 1;
+    return props.banners.length - 1;
   } else {
     return pointer.value - 1;
   }
 });
 
 const next = computed(() => {
-  if (pointer.value === banners.value.length - 1) {
+  if (pointer.value === props.banners.length - 1) {
     return 0;
   } else {
     return pointer.value + 1;

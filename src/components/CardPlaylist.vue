@@ -1,102 +1,75 @@
 <template>
-  <card-base
-    class="card"
-    :title="playlist.name"
-    @click="toPlaylist(playlist.id)"
-  >
+  <card-base :title="playlist.name" @click="routeToDetail()">
     <template #image>
-      <div
-        class="wrapper"
-        @mouseenter="showPlayBtn = !showPlayBtn"
-        @mouseleave="showPlayBtn = !showPlayBtn"
-      >
-        <transition name="fade">
-          <div
-            class="icon-container shadow"
-            v-if="showPlayBtn"
-            @click="playAll()"
-          >
-            <svg-icon
-              class="icon-play"
-              iconName="#icon-play-triangle"
-              iconColor="#ec4141"
-              size="24"
-              @click.stop="playAll"
-            />
-          </div>
-        </transition>
-        <the-image :src="playlist.imgUrl + '?param=400y400'" round="large" />
+      <div class="relative z-0 group">
+        <div
+          class="
+            absolute
+            right-3
+            bottom-3
+            z-10
+            flex
+            justify-center
+            items-center
+            w-9
+            h-9
+            bg-white
+            rounded-full
+            opacity-0
+            group-hover:opacity-100
+            transition-opacity
+            duration-500
+            cursor-pointer
+          "
+          @click.stop="play()"
+        >
+          <svg-icon
+            class="transform translate-x-0.5"
+            iconName="#icon-play-triangle"
+            iconColor="#ec4141"
+            size="24"
+          />
+        </div>
+        <the-image
+          class="cursor-pointer"
+          :src="picSrc() + '?param=400y400'"
+          round="large"
+        />
       </div>
     </template>
   </card-base>
 </template>
 
-<script>
+<script setup>
 import CardBase from "@/components/CardBase.vue";
+import { useRouter } from 'vue-router'
+import { mapMutations, mapState } from '@/lib/lib.js'
+
 import { getSongDetail, getPlaylistDetail } from "@/composables/usePlaylist";
 
-export default {
-  name: "CardPlaylist",
-  components: {
-    CardBase,
-  },
-  data() {
-    return {
-      showPlayBtn: false,
-    };
-  },
-  props: {
-    playlist: Object,
-  },
-  methods: {
-    toPlaylist(id) {
-      this.$router.push(`/playlist-detail/${id}`);
-    },
-    async playAll() {
-      const ids = [];
-      const playlistDetail = await getPlaylistDetail(this.playlist.id)
-      playlistDetail.trackIds.map((item) => ids.push(item.id))
+const props = defineProps({
+  playlist: Object,
+});
 
-      const songs = await getSongDetail(ids)
-      this.$store.state.playlists = songs;
-      this.$store.state.currentSong = this.$store.state.playlists[0]
-    },
-  },
-};
+const router = useRouter()
+const { setPlaylist, setCurrentSong } = mapMutations()
+const { playlist } = mapState()
+
+function routeToDetail() {
+  router.push(`/playlist-detail/${props.playlist.id}`);
+}
+
+async function play() {
+  const ids = [];
+  const playlistDetail = await getPlaylistDetail(props.playlist.id);
+  playlistDetail.trackIds.map((item) => ids.push(item.id));
+
+  const songs = await getSongDetail(ids);
+  setPlaylist(songs)
+  setCurrentSong(playlist.value[0])
+}
+
+function picSrc() {
+  return props.playlist.imgUrl
+}
 </script>
-
-<style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.card {
-  .wrapper {
-    position: relative;
-
-    .icon-container {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      z-index: 1;
-      width: 36px;
-      height: 36px;
-      background-color: #fff;
-      border-radius: 50%;
-
-      .icon-play {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translateX(-40%) translateY(-50%);
-      }
-    }
-  }
-}
-</style>

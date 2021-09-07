@@ -11,6 +11,9 @@ export const getPrivatecontent = (limit = 60, offset = 0) => {
 export const getPersonalizedMv = () =>
   request.get(`/personalized/mv`)
 
+export const getPersonalized = () =>
+  request.get(`/personalized/mv`)
+
 export const getNew = (params) => request.get(`/mv/first`, {params});
 
 export const getNetease = (params) => request.get(`/mv/exclusive/rcmd`, {params})
