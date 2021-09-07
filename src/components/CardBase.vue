@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-3">
-    <slot name="image"/>
+    <slot></slot>
     <div class="card-title">{{ title }}</div>
   </div>
 </template>

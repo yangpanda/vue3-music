@@ -1,12 +1,10 @@
 <template>
   <card-base :title="mv.name" @click="$router.push(`/mv-detail/${mv.id}`)">
-    <template #image>
-      <the-image
-        :src="picSrc() + '?param=640y360'"
-        ratio="16 / 9"
-        round="normal"
-      />
-    </template>
+    <the-image
+      :src="picSrc() + '?param=640y360'"
+      ratio="16 / 9"
+      round="normal"
+    />
   </card-base>
 </template>
 
