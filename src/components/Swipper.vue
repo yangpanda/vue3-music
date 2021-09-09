@@ -1,18 +1,13 @@
 <template>
-  <div class="swiper space-y-5">
+  <skeleton v-if="loading" class="relative h-52 z-0">
+    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded"></div>
+    <div class="absolute left-1/2 transform -translate-x-1/2 w-1/2 h-full bg-gray-200 z-20 rounded"></div>
+    <div class="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded"></div>
+  </skeleton>
+  <div v-else class="space-y-5">
     <div class="relative h-52 overflow-hidden z-0">
       <the-image
-        class="
-          absolute
-          left-1/2
-          top-1/2
-          transform
-          -translate-x-1/2 -translate-y-1/2
-          invisible
-          transition
-          duration-500
-          z-10
-        "
+        class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 invisible transition duration-500 z-10"
         v-for="(banner, index) in banners"
         :key="index"
         :src="banner.pic + '?param=540y208'"
@@ -26,35 +21,13 @@
         }"
       />
       <div
-        class="
-          absolute
-          left-0
-          top-1/2
-          transform
-          -translate-y-1/2
-          flex
-          justify-center
-          items-center
-          px-3
-          z-20
-        "
+        class="absolute left-0 top-1/2 transform -translate-y-1/2 flex justify-center items-center px-3 z-20"
         @click="backward()"
       >
         <svg-icon iconName="#icon-arrow-left" iconColor="#d8d8d8" size="30" />
       </div>
       <div
-        class="
-          absolute
-          right-0
-          top-1/2
-          transform
-          -translate-y-1/2
-          flex
-          justify-center
-          items-center
-          px-3
-          z-20
-        "
+        class="absolute right-0 top-1/2 transform -translate-y-1/2 flex justify-center items-center px-3 z-20"
         @click="forward()"
       >
         <svg-icon iconName="#icon-arrow-right" iconColor="#d8d8d8" size="30" />
@@ -73,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount, onBeforeUnmount } from "vue";
+import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from "vue";
 import api from '@/api/index.js'
 
 const banners = ref([])
@@ -82,6 +55,12 @@ api.banner.getBanners(2).then(response => {
     banners.value = response.banners
   }
 })
+
+const loading = ref(true)
+watch(
+  () => banners.value,
+  () => loading.value = false
+)
 
 const pointer = ref(0); // 游标
 let timer = 0;
@@ -159,5 +138,4 @@ onBeforeUnmount(() => clearInterval(timer));
 .center {
   visibility: visible;
 }
-
 </style>

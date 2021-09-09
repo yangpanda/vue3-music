@@ -5,11 +5,9 @@
 				v-for="(value, key) in nav"
 				:key="key"
 				class="flex-shrink-0"
-        exact-active-class="font-bold text-lg border-b-2 border-red-500"
+				exact-active-class="font-bold text-lg border-b-2 border-red-500"
 				:to="'/discovery/' + key"
-				>
-        {{ value }}
-      </router-link>
+			>{{ value }}</router-link>
 		</div>
 		<div class="space-y-5 mx-auto w-auto max-w-screen-lg">
 			<router-view></router-view>
@@ -19,10 +17,10 @@
 
 <script setup>
 const nav = {
-  'personal': '个性推荐',
-  'playlist': '歌单',
-  'ranking': '排行榜',
-  'new-song/top-song': '最新音乐'
+	'personal': '个性推荐',
+	'playlist': '歌单',
+	'ranking': '排行榜',
+	'new-song/top-song': '最新音乐'
 }
 </script>
 

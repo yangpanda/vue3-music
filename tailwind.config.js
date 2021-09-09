@@ -17,6 +17,9 @@ module.exports = {
           '50%': { transform: 'rotate(180deg)'},
           '100%': { transform: 'rotate(360deg)'},
         }
+      },
+      padding: {
+        '9/16': 'calc(100% / (16 / 9))'
       }
     },
   },

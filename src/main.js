@@ -15,9 +15,21 @@ const app = createApp(App);
 
 import SvgIcon from "@/components/SvgIcon.vue";
 import TheImage from "@/components/TheImage.vue"
+import Skeleton from "@/components/Common/Skeleton.vue"
+import SkeletonItem from "@/components/Common/SkeletonItem.vue"
+import TheButton from "@/components/Common/Button/TheButton.vue"
 
-app.component("SvgIcon", SvgIcon);
-app.component("TheImage", TheImage);
+const myComponents = {
+  'SvgIcon': SvgIcon,
+  'TheButton': TheButton,
+  'TheImage': TheImage,
+  'Skeleton': Skeleton,
+  'SkeletonItem': SkeletonItem,
+}
+
+for (let key in myComponents) {
+  app.component(key, myComponents[key])
+}
 
 import {
   create,

@@ -4,12 +4,16 @@
       <the-image class="" :src="detail.imgUrl" size="180" round="large" />
       <div class="flex flex-col gap-y-2">
         <div class="flex items-center gap-x-2">
-          <n-tag size="small">歌单</n-tag>
+          <tag>歌单</tag>
           <div class="text-xl font-semibold">{{ detail.name }}</div>
         </div>
         <div class="flex gap-x-2 items-center">
-          <n-avatar :src="detail.avatarUrl + '?param=30y30'" circle :size="26" />
+          <the-image :src="detail.avatarUrl + '?param=30y30'" round="full" size="30" />
           <div>{{ detail.creatorName }}</div>
+        </div>
+        <div class="space-x-3">
+          <the-button>播放全部</the-button>
+          <the-button>收藏</the-button>
         </div>
         <div class="flex gap-x-2 items-center">
           <div>标签:</div>
@@ -65,6 +69,8 @@ import Playlist from "../model/Playlist";
 import Song from "../model/Song";
 
 import SongTableList from "@/components/SongTableList.vue";
+import Tag from "@/components/Common/Tag.vue"
+import TheButton from "@/components/Common/Button/TheButton.vue"
 import {
   useLoadingBar,
   NSpin,
@@ -74,6 +80,7 @@ import {
 } from "naive-ui";
 
 import { ref, onMounted } from "@vue/runtime-core";
+import TheImage from "../components/TheImage.vue";
 
 const props = defineProps({
   id: String,
