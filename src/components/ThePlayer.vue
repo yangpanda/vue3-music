@@ -2,81 +2,34 @@
   <div class="flex justify-between items-center h-20 bg-white px-5">
     <div class="flex justify-start items-center flex-grow gap-x-3">
       <div class="relative cursor-pointer group">
-        <the-image
-          :src="songImage + '?param=100y100'"
-          size="50"
-          round="normal"
-        />
+        <the-image :src="songImage + '?param=100y100'" size="50" round="normal" />
         <div
-          class="
-            absolute
-            left-0
-            top-0
-            w-full
-            h-full
-            bg-gray-400 bg-opacity-5
-            rounded
-            flex
-            justify-center
-            items-center
-            backdrop-filter backdrop-blur-sm
-            opacity-0
-            group-hover:opacity-100
-          "
+          class="absolute left-0 top-0 w-full h-full bg-gray-400 bg-opacity-5 rounded flex justify-center items-center backdrop-filter backdrop-blur-sm opacity-0 group-hover:opacity-100"
           @click="setShowPlayingPage(!showPlayingPage)"
         >
           <svg-icon iconName="#icon-arrow-up" iconColor="#f3f3f3"></svg-icon>
         </div>
       </div>
       <div class="h-full">
-        <div class="text-base cursor-pointer overflow-ellipsis">
-          {{ songName }}
-        </div>
-        <div class="text-sm cursor-pointer overflow-ellipsis">
-          {{ songSinger }}
-        </div>
+        <div class="text-base cursor-pointer overflow-ellipsis">{{ songName }}</div>
+        <div class="text-sm cursor-pointer overflow-ellipsis">{{ songSinger }}</div>
       </div>
     </div>
     <div class="flex flex-col items-center">
       <div class="flex items-center gap-x-5">
         <div class="flex justify-center items-center" @click="changeMode()">
-          <svg-icon
-            v-if="playMode == 'order'"
-            iconName="#icon-play-mode-order"
-            size="24"
-          />
-          <svg-icon
-            v-else-if="playMode == 'unorder'"
-            iconName="#icon-play-mode-unorder"
-            size="24"
-          />
+          <svg-icon v-if="playMode == 'order'" iconName="#icon-play-mode-order" size="24" />
+          <svg-icon v-else-if="playMode == 'unorder'" iconName="#icon-play-mode-unorder" size="24" />
           <svg-icon v-else iconName="#icon-play-mode-loop" size="24" />
         </div>
         <svg-icon @click="methods.preTrack()" iconName="#icon-pre" size="24" />
-        <svg-icon
-          v-if="!playingState"
-          @click="methods.play()"
-          iconName="#icon-play"
-          size="30"
-        />
-        <svg-icon
-          v-else
-          @click="methods.pause()"
-          iconName="#icon-pause"
-          size="30"
-        />
-        <svg-icon
-          @click="methods.nextTrack()"
-          iconName="#icon-next"
-          size="24"
-        />
+        <svg-icon v-if="!playingState" @click="methods.play()" iconName="#icon-play" size="30" />
+        <svg-icon v-else @click="methods.pause()" iconName="#icon-pause" size="30" />
+        <svg-icon @click="methods.nextTrack()" iconName="#icon-next" size="24" />
       </div>
       <div class="flex items-center justify-center gap-x-4">
         <div>{{ formatTime(currentTime) }}</div>
-        <the-slider
-          :duration="duration"
-          :currentTime="currentTime"
-        ></the-slider>
+        <the-slider :duration="duration" :currentTime="currentTime"></the-slider>
         <div>{{ formatTime(duration) }}</div>
       </div>
     </div>

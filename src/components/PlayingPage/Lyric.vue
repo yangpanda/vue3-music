@@ -1,16 +1,14 @@
 <template>
-  <div class="space-y-8 mx-9" style="min-width: 300px">
+  <div class="h-full overflow-hidden space-y-10">
     <div class="space-y-2">
-      <h1 class="text-2xl text-center" style="margin-top: 0">
-        {{ songName }}
-      </h1>
+      <h1 class="text-2xl text-center">{{ songName }}</h1>
       <div class="text-sm text-center">{{ songArtist }}</div>
     </div>
-    <div class="text-center overflow-y-scroll space-y-5" style="height: 600px">
-      <p class="" v-for="(item, index) in lyric" :key="index">
-        {{ item.l }}
-      </p>
-    </div>
+    <scroll-bar>
+      <div class="text-center space-y-5">
+        <p class v-for="(item, index) in lyric" :key="index">{{ item.l }}</p>
+      </div>
+    </scroll-bar>
   </div>
 </template>
 

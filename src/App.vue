@@ -3,29 +3,14 @@
 		<n-layout position="absolute">
 			<n-layout-header bordered class="header">
 				<div class="ui-logo">
-					<svg-icon
-						iconName="#icon-logo"
-						iconColor="#ec4141"
-						container
-						style="margin-right: 5px"
-					/>
+					<svg-icon iconName="#icon-logo" iconColor="#ec4141" container style="margin-right: 5px" />
 					<span class="title">网易云音乐</span>
 				</div>
 				<search-bar />
 				<login />
 			</n-layout-header>
-			<n-layout
-				class="center"
-				has-sider
-				position="absolute"
-				style="top: 56px; bottom: 80px"
-			>
-				<n-layout-sider
-					class="sidebar z-auto"
-					bordered
-					:native-scrollbar="false"
-					width="fit-content"
-				>
+			<n-layout class="center" has-sider position="absolute" style="top: 56px; bottom: 80px">
+				<n-layout-sider class="sidebar z-auto" bordered :native-scrollbar="false" width="fit-content">
 					<the-sidebar />
 				</n-layout-sider>
 				<n-layout-content :native-scrollbar="false" ref="content">
@@ -37,7 +22,7 @@
 				<the-player />
 			</n-layout-footer>
 		</n-layout>
-    	<playing-page class="fixed left-0 top-0 bottom-20 right-0 border-b" v-if="showPlayingPage"/>
+		<playing-page class="fixed left-0 top-0 bottom-20 right-0 border-b" v-if="showPlayingPage" />
 	</n-loading-bar-provider>
 </template>
 
@@ -49,60 +34,60 @@ import ThePlayer from "@/components/ThePlayer.vue";
 import PlayingPage from "@/components/PlayingPage/PlayingPage.vue";
 
 import { NLoadingBarProvider } from 'naive-ui'
-import  { mapState } from '@/lib/lib.js'
+import { mapState } from '@/lib/lib.js'
 
 import {
-  NLayout,
-  NLayoutHeader,
-  NLayoutSider,
-  NLayoutContent,
-  NLayoutFooter,
-  NBackTop,
+	NLayout,
+	NLayoutHeader,
+	NLayoutSider,
+	NLayoutContent,
+	NLayoutFooter,
+	NBackTop,
 } from "naive-ui";
 import { ref, computed, provide, onMounted } from "@vue/runtime-core";
 
 
 export default {
-  components: {
-    TheSidebar,
-    ThePlayer,
-    NLayout,
-    NLayoutHeader,
-    NLayoutSider,
-    NLayoutContent,
-    NLayoutFooter,
-    NBackTop,
-    Login,
-    SearchBar,
-    NLoadingBarProvider,
-	PlayingPage
-  },
-  setup() {
-	const { showPlayingPage } = mapState()
+	components: {
+		TheSidebar,
+		ThePlayer,
+		NLayout,
+		NLayoutHeader,
+		NLayoutSider,
+		NLayoutContent,
+		NLayoutFooter,
+		NBackTop,
+		Login,
+		SearchBar,
+		NLoadingBarProvider,
+		PlayingPage
+	},
+	setup() {
+		const { showPlayingPage } = mapState()
 
-    const content = ref(null)
-    onMounted(() => {
-      provide('scrollTop', computed(() => content.value.scrollTop))
-      provide('clientHeight', computed(() => content.value.clientHeight))
-    })
+		const content = ref(null)
+		onMounted(() => {
+			provide('scrollTop', computed(() => content.value.scrollTop))
+			provide('clientHeight', computed(() => content.value.clientHeight))
+		})
 
-    return {
-      content,
-	  showPlayingPage
-    }
-  },
-  provide() {
-    return {
-      scrollToTop: this.scrollToTop,
-      scrollTop: this.scrollTop,
-      clientHeight: this.clientHeight
-    };
-  },
-  methods: {
-    scrollToTop() {
-      this.$refs.content.scrollTo({ top: 0, behavior: "auto" });
-    },
-  },
+		return {
+			content,
+			showPlayingPage
+		}
+	},
+	provide() {
+		return {
+			scrollToTop: this.scrollToTop,
+			scrollTop: this.scrollTop,
+			clientHeight: this.clientHeight
+		};
+	},
+	methods: {
+		scrollToTop() {
+			this.$refs.content.scrollTo({ top: 0, behavior: "auto" });
+		},
+	},
 };
 </script>
 

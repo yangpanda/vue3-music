@@ -3,7 +3,7 @@
     :src="songImage"
   >
     <div class="lg:w-full xl:w-3/5 mx-auto py-5 px-5">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between" style="height: 560px;">
         <rotate-cd class="w-72 h-72 flex-shrink-0" :src="songImage" :running="playingState" />
         <lyric />
         <div class="flex-shrink-0 w-64">
