@@ -1,37 +1,20 @@
 <template>
 	<n-loading-bar-provider>
-		<n-layout position="absolute">
-			<n-layout-header bordered class="header">
-				<div class="ui-logo">
-					<svg-icon iconName="#icon-logo" iconColor="#ec4141" container style="margin-right: 5px" />
-					<span class="title">网易云音乐</span>
-				</div>
-				<search-bar />
-				<login />
-			</n-layout-header>
-			<n-layout class="center" has-sider position="absolute" style="top: 56px; bottom: 80px">
-				<n-layout-sider class="sidebar z-auto" bordered :native-scrollbar="false" width="fit-content">
-					<the-sidebar />
-				</n-layout-sider>
-				<n-layout-content :native-scrollbar="false" ref="content">
-					<router-view :key="$route.fullPath"></router-view>
-					<n-back-top :right="40" :bottom="90"></n-back-top>
-				</n-layout-content>
-			</n-layout>
-			<n-layout-footer bordered position="absolute">
-				<the-player />
-			</n-layout-footer>
-		</n-layout>
-		<playing-page class="fixed left-0 top-0 bottom-20 right-0 border-b" v-if="showPlayingPage" />
+		<div class="relative w-screen h-screen z-0">
+			<div class="absolute left-0 top-0 w-full border-b z-20">
+				<app-header />
+			</div>
+			<div id="app-content" class="absolute top-14 bottom-0 w-full z-10">
+				<router-view></router-view>
+			</div>
+		</div>
 	</n-loading-bar-provider>
 </template>
 
 <script>
-import Login from "@/components/Login.vue";
-import SearchBar from "@/components/SearchBar.vue";
+import AppHeader from "@/components/AppHeader.vue"
 import TheSidebar from "@/components/TheSidebar.vue";
 import ThePlayer from "@/components/ThePlayer.vue";
-import PlayingPage from "@/components/PlayingPage/PlayingPage.vue";
 
 import { NLoadingBarProvider } from 'naive-ui'
 import { mapState } from '@/lib/lib.js'
@@ -57,10 +40,8 @@ export default {
 		NLayoutContent,
 		NLayoutFooter,
 		NBackTop,
-		Login,
-		SearchBar,
 		NLoadingBarProvider,
-		PlayingPage
+		AppHeader
 	},
 	setup() {
 		const { showPlayingPage } = mapState()
@@ -91,19 +72,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 20px;
-	height: 56px;
-
-	.ui-logo {
-		display: flex;
-		align-items: center;
-		font-size: 18px;
-		cursor: pointer;
-	}
-}
+<style scoped>
 </style>

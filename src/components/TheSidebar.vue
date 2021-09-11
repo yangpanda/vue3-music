@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <scroll-bar>
     <menu-item
       v-for="(item, index) in staticMenuOption"
       :key="index"
@@ -16,7 +16,6 @@
         @click="$router.push(item.path)"
       />
     </menu-item-group>
-
     <sub-menu :label="personalPlaylistsOption.label">
       <menu-item
         v-for="(item, index) in personalPlaylistsOption.children"
@@ -35,7 +34,7 @@
         @click="$router.push(item.key)"
       />
     </sub-menu>
-  </div>
+  </scroll-bar>
 </template>
 
 <script>
@@ -138,6 +137,7 @@ export default {
     }
 
     const getUserPlaylists = async () => {
+      console.log('dkdflajlf')
       if (userinfo.value) {
         let res = await playlist.getUserPlaylists(userinfo.value.id);
         res.playlist.forEach((item) => {
@@ -162,6 +162,7 @@ export default {
         }
       }
     );
+    console.log(logined.value)
 
     return {
       staticMenuOption,
@@ -181,13 +182,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.menu {
-  width: 240px;
-}
-@media screen and (min-width: 1300px) {
-  .menu {
-    width: 300px;
-  }
-}
+<style scoped>
 </style>

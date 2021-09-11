@@ -1,33 +1,29 @@
 <template>
-  <blur-background
-    :src="songImage"
-  >
-    <div class="lg:w-full xl:w-3/5 mx-auto py-5 px-5">
-      <div class="flex items-center justify-between" style="height: 560px;">
-        <rotate-cd class="w-72 h-72 flex-shrink-0" :src="songImage" :running="playingState" />
-        <lyric />
-        <div class="flex-shrink-0 w-64">
-          <div class="flex flex-col row-gap-10">
-            <div class="text-lg">相似音乐</div>
-            <div
-              class="flex col-gap-10 items-center cursor-pointer"
-              v-for="(item, index) in simiSongs"
-              :key="index"
-              @click="setCurrentSong(item)"
-            >
-              <the-image
-                size="50"
-                :src="item.image + '?param=60y60'"
-                round="normal"
-              />
-              <div>{{ item.name }}</div>
+  <scroll-bar>
+    <blur-background :src="songImage">
+      <div class="lg:w-full xl:w-3/5 mx-auto py-5 px-5">
+        <div class="flex items-center justify-between" style="height: 560px;">
+          <rotate-cd class="w-72 h-72 flex-shrink-0" :src="songImage" :running="playingState" />
+          <lyric />
+          <div class="flex-shrink-0 w-64">
+            <div class="flex flex-col row-gap-10">
+              <div class="text-lg">相似音乐</div>
+              <div
+                class="flex col-gap-10 items-center cursor-pointer"
+                v-for="(item, index) in simiSongs"
+                :key="index"
+                @click="setCurrentSong(item)"
+              >
+                <the-image size="50" :src="item.image + '?param=60y60'" round="normal" />
+                <div>{{ item.name }}</div>
+              </div>
             </div>
           </div>
         </div>
+        <comment class="w-4/5 mx-auto" :comments="comments" />
       </div>
-      <comment class="w-4/5 mx-auto" :comments="comments" />
-    </div>
-  </blur-background>
+    </blur-background>
+  </scroll-bar>
 </template>
 
 <script setup>
@@ -41,12 +37,13 @@ import BlurBackground from "./BlurBackground.vue";
 import RotateCd from "./RotateCd.vue";
 import Lyric from "./Lyric.vue";
 import Comment from "@/components/Comment.vue";
+import ScrollBar from "../ScrollBar.vue";
 
 const simiSongs = ref([]);
 const comments = ref([]);
 const hotComments = ref([]);
 
-const { 
+const {
   currentSong,
   playingState,
 } = mapState()

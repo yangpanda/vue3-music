@@ -1,33 +1,22 @@
 <template>
   <div class="wrapper">
-    <n-button
-      text
-      v-if="!loginStatus"
-      @click="showLoginPanel = !showLoginPanel"
-    >
-      登录
-    </n-button>
+    <n-button text v-if="!loginStatus" @click="showLoginPanel = !showLoginPanel">登录</n-button>
     <div v-else class="user-info">
-      <n-avatar
-        :size="30"
-        round
-        :src="userinfo.avatar"
-        style="cursor: pointer"
-      />
+      <n-avatar :size="30" round :src="userinfo.avatar" style="cursor: pointer" />
       <n-popover trigger="click" placement="bottom-end" style="width: 300px">
         <template #trigger>
           <n-button text icon-placement="right">
             <template #icon>
-              <n-icon><icon-arrow-down /></n-icon>
+              <n-icon>
+                <icon-arrow-down />
+              </n-icon>
             </template>
             {{ userinfo.nickname }}
           </n-button>
         </template>
         <div class="dropdown">
           <div>
-            <div>
-              
-            </div>
+            <div></div>
             <n-button>签到</n-button>
           </div>
           <div>个人信息设置</div>

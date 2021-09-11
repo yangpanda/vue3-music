@@ -1,8 +1,8 @@
 <template>
   <skeleton v-if="loading" class="relative h-52 z-0">
-    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded"></div>
-    <div class="absolute left-1/2 transform -translate-x-1/2 w-1/2 h-full bg-gray-200 z-20 rounded"></div>
-    <div class="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded"></div>
+    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded-lg"></div>
+    <div class="absolute left-1/2 transform -translate-x-1/2 w-1/2 h-full bg-gray-200 z-20 rounded-lg"></div>
+    <div class="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded-lg"></div>
   </skeleton>
   <div v-else class="space-y-5">
     <div class="relative h-52 overflow-hidden z-0">
