@@ -3,18 +3,18 @@
     <div class="front">
       <span class="index">{{ formatIndex(index + 1) }}</span>
       <div class="buttons" style="cursor: pointer">
-        <!-- <svg-icon v-if="isPlayling" iconName="#icon-voice-playing" size="20" iconColor="#ec4141" /> -->
+        <!-- <svg-icon v-if="isPlayling" name="voice-playing" size="20" color="#ec4141" /> -->
         <svg-icon
           v-if="!isLiked(song.id)"
-          iconName="#icon-love"
+          name="love"
           size="20"
-          iconColor="#909399"
+          color="#909399"
         />
         <svg-icon
           v-else
-          iconName="#icon-love-selected"
+          name="love-selected"
           size="20"
-          iconColor="#ec4141"
+          color="#ec4141"
         />
       </div>
     </div>

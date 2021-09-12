@@ -41,7 +41,7 @@
         />
         <svg-icon
           class="play-button"
-          iconName="#icon-play-triangle"
+          name="play-triangle"
           iconColor="#ec4141"
           size="30"
         />
@@ -63,8 +63,8 @@ import {
   NIcon,
   useLoadingBar,
 } from "naive-ui";
-import { PlayCircleOutlineRound as PlayIcon } from "@vicons/material";
-import { FolderPlus as SubIcon } from "@vicons/tabler";
+// import { PlayCircleOutlineRound as PlayIcon } from "@vicons/material";
+// import { FolderPlus as SubIcon } from "@vicons/tabler";
 
 import { formatDuration } from "@/utils/index.js";
 

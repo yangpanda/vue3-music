@@ -4,7 +4,7 @@
       flex flex-shrink-0
       shadow
       justify-center
-      item-center
+      items-center
       w-full
       bg-gray-200
       overflow-hidden

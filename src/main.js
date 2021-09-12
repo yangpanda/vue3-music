@@ -4,7 +4,6 @@ import router from "./router";
 import store from "./store";
 
 import VueLazyload from '@jambonn/vue-lazyload'
-import CScrollbar from "c-scrollbar";
 
 import "@/styles/index.css";
 import "@/styles/common.scss";
@@ -36,9 +35,6 @@ for (let key in myComponents) {
 import {
   create,
   NTag,
-  NLayout,
-  NLayoutContent,
-  NLayoutHeader,
   NSpace,
   NAvatar,
   NFormItemRow,
@@ -54,9 +50,6 @@ const naive = create({
   components: [
     NElement,
     NTag,
-    NLayout,
-    NLayoutContent,
-    NLayoutHeader,
     NSpace,
     NAvatar,
     NFormItemRow,
@@ -72,7 +65,6 @@ app.use(VueLazyload, {
   preLoad: 1.3,
   attempt: 3,
 })
-  .use(CScrollbar)
   .use(naive)
   .use(store)
   .use(router)

@@ -1,6 +1,6 @@
 <template>
   <div class="menu-item-group">
-    <div class="menu-item-group-title">
+    <div class="cursor-default h-12 leading-12 px-5 text-gray-400">
       {{ label }}
     </div>
     <slot></slot>
@@ -18,15 +18,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.menu-item-group {
-  .menu-item-group-title {
-    cursor: default;
-    margin-top: 6px;
-    height: 36px;
-    line-height: 36px;
-    color: #9ea4aa;
-    padding: 0 20px;
-  }
-}
+<style scoped>
 </style>

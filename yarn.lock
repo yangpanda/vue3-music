@@ -171,7 +171,7 @@
   resolved "https://repo.huaweicloud.com/repository/npm/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
-"@types/svgo@^2.3.0":
+"@types/svgo@^2.3.1":
   version "2.4.0"
   resolved "https://repo.huaweicloud.com/repository/npm/@types/svgo/-/svgo-2.4.0.tgz#d0421e0f563cd4726fa8261066f16d399e665b2e"
   integrity sha512-tkdgLUK9/7MYXOCjjDjhD09zRYpplCe0M1hhmYubBRrsD0EUdhOPtjzr/ObvNfXpd6vLqsrqzdODoI2v5RB2yA==
@@ -187,46 +187,6 @@
   integrity sha512-yEJzHoxf6SyQGhBhIYGXQDSCkJjB6HohDShto7m8vaKg9Yp0Yn8+71J9eakh2bnPg6BfsH9PRMhiRTZnd4eXGQ==
   dependencies:
     "@types/yargs-parser" "*"
-
-"@vicons/antd@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/antd/-/antd-0.11.0.tgz#3d28952d028aed712dca61cb81dbdb11454c5542"
-  integrity sha512-XRkUMJzfjr3Q5S6xbAg4ALI90DIGNhZdbVW6SejFi6EgxB5bts3YMMcM4HbF77vdQX5bhxgju3Hd3uP97OgvAQ==
-
-"@vicons/carbon@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/carbon/-/carbon-0.11.0.tgz#510e01e883a73b1d4343a3eb1d10141446463abe"
-  integrity sha512-+Wkl8wOP1GR7jS+OKcsJ58NnZr4i+BZhbpLRtgpZQui1zFpYjoWinwvYKLjGKJ/oiR10Q237cBDjGwmMSzXqTg==
-
-"@vicons/fa@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/fa/-/fa-0.11.0.tgz#dc6780b25b7943734e7c75d74df2f4443b0572ae"
-  integrity sha512-Mlv4sxlghqAPu+RM+6w0/GIcsQFK/fx1syw1HkABS6MJRLwHOqbmImCYZQam7OMAYhZBs82YpY5cp2NFSgwkOA==
-
-"@vicons/fluent@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/fluent/-/fluent-0.11.0.tgz#84f3cda255539cb96f45c89c1601e2892d79826f"
-  integrity sha512-5sbdKLijk5/PBtsapDjBodskSCrfOsqOlpCbXQ33pZmY0VZ62N46Yq6SFJXHyUgFhjvReRrFe4wCGVAktchHFg==
-
-"@vicons/ionicons4@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/ionicons4/-/ionicons4-0.11.0.tgz#a60f5ead661d473f17103ad0051ce82ad771bbe6"
-  integrity sha512-2wgc2WZiQhR5AwNfiJcjxjNb910QBqeEYFXnZ0IJtfSgSUPH7lX6HEXegly3zqvLA0dmdUvyo2kI9lF/2PSbnQ==
-
-"@vicons/ionicons5@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/ionicons5/-/ionicons5-0.11.0.tgz#54185bfa572a09df70094db1954f28bfbf1363ed"
-  integrity sha512-4IWamqtXUsuCdlW6NQc2xyoJ+PUXGMwzSrppQbdVCYg0pjYld89jOfLOIkuTWq8o2XUa+Q1/78jzWBtXMTojNg==
-
-"@vicons/material@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/material/-/material-0.11.0.tgz#2c209121f3ff6a46450f4968397df6c3008df8d1"
-  integrity sha512-ZQVs6Z5AjSSKqeN4GrG+5fRbi4rbvLwio06Nsjs5NGDuHCB57QHN2rwkooxeoRUbiFT4GCCKatsoWbjqE6BSZg==
-
-"@vicons/tabler@^0.11.0":
-  version "0.11.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vicons/tabler/-/tabler-0.11.0.tgz#9eb0579c00caa3040c2c1cf9e5c0c76ba1204fb3"
-  integrity sha512-ijVUphdgqTde22/4+hlZ9j2AQutpxd3piOW4cWovcnS/ELlMc/4di2/0SDxsJ6282VdZoE9Xv0dI1iSr0XKPEg==
 
 "@vitejs/plugin-legacy@^1.4.4":
   version "1.5.1"
@@ -539,13 +499,6 @@ bytes@^3.0.0:
   version "3.1.0"
   resolved "https://repo.huaweicloud.com/repository/npm/bytes/-/bytes-3.1.0.tgz#f6cf7933a360e0588fa9fde85651cdc7f805d1f6"
   integrity sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==
-
-c-scrollbar@^1.0.1:
-  version "1.0.1"
-  resolved "https://repo.huaweicloud.com/repository/npm/c-scrollbar/-/c-scrollbar-1.0.1.tgz#13422cfec14e3a9108bcc2f6419d6acbe082a912"
-  integrity sha512-ANMpG6ac9kIhCejlSchvN1zgaeb3HXFal4/8aEUXlLjglugt35kc9wKE5JTBn76cgZ+85ILQ8S3GQNJLKZRf4g==
-  dependencies:
-    vue "^3.0.0"
 
 cache-base@^1.0.1:
   version "1.0.1"
@@ -2377,7 +2330,7 @@ svg-baker@1.7.0:
     query-string "^4.3.2"
     traverse "^0.6.6"
 
-svgo@^2.3.0:
+svgo@^2.3.1:
   version "2.5.0"
   resolved "https://repo.huaweicloud.com/repository/npm/svgo/-/svgo-2.5.0.tgz#3c9051b606d85a02fcb59f459b19970d2cc2c9bf"
   integrity sha512-FSdBOOo271VyF/qZnOn1PgwCdt1v4Dx0Sey+U1jgqm1vqRYjPGdip0RGrFW6ItwtkBB8rHgHk26dlVr0uCs82Q==
@@ -2542,18 +2495,18 @@ vfonts@^0.1.0:
   resolved "https://repo.huaweicloud.com/repository/npm/vfonts/-/vfonts-0.1.0.tgz#c16af37ca044b2725ae55553049280efbe6222a9"
   integrity sha512-vQBcvntBlnAPonAkGNM8iJ9NxE3PucA+V2W95xiN75YJKxirLJvOws2kEyOEO45T4N+YTbQOCR2m77Y05pfVhQ==
 
-vite-plugin-svg-icons@^0.7.1:
-  version "0.7.1"
-  resolved "https://repo.huaweicloud.com/repository/npm/vite-plugin-svg-icons/-/vite-plugin-svg-icons-0.7.1.tgz#35d4f2818c13a34a4a68884db537f0b8c2e1f174"
-  integrity sha512-yUUxIrXnsJLtYiaw3/ad7D1r/A9ULYirlE7lphcBUWWTKAy5nJ3JJO2XLcr9PuymApkt1oohkHHq5MVMu4+aeg==
+vite-plugin-svg-icons@^1.0.4:
+  version "1.0.4"
+  resolved "https://repo.huaweicloud.com/repository/npm/vite-plugin-svg-icons/-/vite-plugin-svg-icons-1.0.4.tgz#9f20feff4b3bfbdcf5401d3efa75d4813f27dc22"
+  integrity sha512-sRneOwVRA6F2zfNKtmwTQl4WwtrdzFq8REO5elX9rd9vC5gNxJ5v4TNlm8cHWGCwvLuxCu5lrnhEU2rcg8izgg==
   dependencies:
-    "@types/svgo" "^2.3.0"
+    "@types/svgo" "^2.3.1"
     cors "^2.8.5"
     debug "^4.3.2"
     etag "^1.8.1"
     fs-extra "^10.0.0"
     svg-baker "1.7.0"
-    svgo "^2.3.0"
+    svgo "^2.3.1"
 
 vite@^2.4.4:
   version "2.5.2"
@@ -2581,7 +2534,7 @@ vue-router@^4.0.9:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.14"
 
-vue@^3.0.0, vue@^3.2.2:
+vue@^3.2.2:
   version "3.2.6"
   resolved "https://repo.huaweicloud.com/repository/npm/vue/-/vue-3.2.6.tgz#c71445078751f458648fd8fb3a2da975507d03d2"
   integrity sha512-Zlb3LMemQS3Xxa6xPsecu45bNjr1hxO8Bh5FUmE0Dr6Ot0znZBKiM47rK6O7FTcakxOnvVN+NTXWJF6u8ajpCQ==

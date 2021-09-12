@@ -5,8 +5,8 @@
 					class="flex items-center justify-center absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full w-7 h-7"
 				>
 					<svg-icon
-						iconName="#icon-play-triangle"
-						iconColor="#ec4141"
+						name="play-triangle"
+						color="#ec4141"
 						size="18"
 						class="transform translate-x-0.5"
 						@click="play(song)"

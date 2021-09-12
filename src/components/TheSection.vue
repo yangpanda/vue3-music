@@ -5,7 +5,7 @@
         <div class="text-lg font-bold">
             {{ title }}
         </div>
-        <svg-icon iconName="#icon-arrow-right" size="14" iconColor="#303133" />
+        <svg-icon name="arrow-right" size="14" color="#303133" />
       </div>
       <slot name="nav"></slot>
     </div>

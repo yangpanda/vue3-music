@@ -8,7 +8,6 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "c-scrollbar": "^1.0.1",
     "qs": "^6.10.1",
     "vue": "^3.2.2",
     "vue-router": "^4.0.9",
@@ -17,14 +16,6 @@
   "devDependencies": {
     "@jambonn/vue-lazyload": "^1.0.8",
     "@rollup/plugin-alias": "^3.1.2",
-    "@vicons/antd": "^0.11.0",
-    "@vicons/carbon": "^0.11.0",
-    "@vicons/fa": "^0.11.0",
-    "@vicons/fluent": "^0.11.0",
-    "@vicons/ionicons4": "^0.11.0",
-    "@vicons/ionicons5": "^0.11.0",
-    "@vicons/material": "^0.11.0",
-    "@vicons/tabler": "^0.11.0",
     "@vitejs/plugin-legacy": "^1.4.4",
     "@vitejs/plugin-vue": "^1.2.4",
     "@vue/compiler-sfc": "^3.2.2",
@@ -35,6 +26,6 @@
     "sass": "^1.37.5",
     "tailwindcss": "^2.2.9",
     "vite": "^2.4.4",
-    "vite-plugin-svg-icons": "^0.7.1"
+    "vite-plugin-svg-icons": "^1.0.4"
   }
 }

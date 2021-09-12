@@ -24,13 +24,13 @@
         class="absolute left-0 top-1/2 transform -translate-y-1/2 flex justify-center items-center px-3 z-20"
         @click="backward()"
       >
-        <svg-icon iconName="#icon-arrow-left" iconColor="#d8d8d8" size="30" />
+        <svg-icon name="arrow-left" color="#d8d8d8" size="30" />
       </div>
       <div
         class="absolute right-0 top-1/2 transform -translate-y-1/2 flex justify-center items-center px-3 z-20"
         @click="forward()"
       >
-        <svg-icon iconName="#icon-arrow-right" iconColor="#d8d8d8" size="30" />
+        <svg-icon name="arrow-right" color="#d8d8d8" size="30" />
       </div>
     </div>
     <div class="flex justify-center col-gap-10">

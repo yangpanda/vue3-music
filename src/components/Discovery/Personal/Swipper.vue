@@ -40,7 +40,7 @@
         "
         @click="backward()"
       >
-        <svg-icon iconName="#icon-arrow-left" iconColor="#d8d8d8" size="30" />
+        <svg-icon name="arrow-left" color="#d8d8d8" size="30" />
       </div>
       <div
         class="
@@ -57,7 +57,7 @@
         "
         @click="forward()"
       >
-        <svg-icon iconName="#icon-arrow-right" iconColor="#d8d8d8" size="30" />
+        <svg-icon name="arrow-right" color="#d8d8d8" size="30" />
       </div>
     </div>
     <div class="flex justify-center col-gap-10">

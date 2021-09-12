@@ -8,7 +8,7 @@
           <n-button text icon-placement="right">
             <template #icon>
               <n-icon>
-                <icon-arrow-down />
+                <!-- <icon-arrow-down /> -->
               </n-icon>
             </template>
             {{ userinfo.nickname }}
@@ -81,7 +81,7 @@ import {
   NCard,
 } from "naive-ui";
 import { ref } from "vue";
-import { ChevronDown as IconArrowDown } from '@vicons/ionicons5'
+// import { ChevronDown as IconArrowDown } from '@vicons/ionicons5'
 
 export default {
   name: "Login",
@@ -94,7 +94,6 @@ export default {
     NTabs,
     NTabPane,
     NCard,
-    IconArrowDown
   },
   setup() {
     const { showLoginPanel, userinfo, loginStatus, login, logout } =

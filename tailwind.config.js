@@ -1,4 +1,6 @@
-const { routeLocationKey } = require("vue-router");
+const {
+  routeLocationKey
+} = require("vue-router");
 
 module.exports = {
   purge: ['./index.html', './src/**/*.{vue, js}'],
@@ -13,13 +15,22 @@ module.exports = {
       },
       keyframes: {
         'cd-rotate': {
-          '0%': { transform: 'rotate(0deg)'},
-          '50%': { transform: 'rotate(180deg)'},
-          '100%': { transform: 'rotate(360deg)'},
+          '0%': {
+            transform: 'rotate(0deg)'
+          },
+          '50%': {
+            transform: 'rotate(180deg)'
+          },
+          '100%': {
+            transform: 'rotate(360deg)'
+          },
         }
       },
       padding: {
         '9/16': 'calc(100% / (16 / 9))'
+      },
+      lineHeight: {
+        '12': '3rem',
       }
     },
   },
