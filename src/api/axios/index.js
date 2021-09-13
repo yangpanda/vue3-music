@@ -15,9 +15,9 @@ export default {
         })
     })
   },
-  post: function (url, data, config) {
+  post: function ({url, data, config} = {}) {
     return new Promise((resolve, reject) => {
-      instance.post(url + `&timestamp=${Date.now()}`, data, config)
+      instance.post(url, data, config)
         .then(response => {
           if (response.code === 200) {
             resolve(response)

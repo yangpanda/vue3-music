@@ -1,18 +1,14 @@
 <template>
   <div class="wrapper">
-    <n-button text v-if="!loginStatus" @click="showLoginPanel = !showLoginPanel">登录</n-button>
+    <n-button text v-if="!logined" @click="showLoginPanel = !showLoginPanel">登录</n-button>
     <div v-else class="user-info">
       <n-avatar :size="30" round :src="userinfo.avatar" style="cursor: pointer" />
       <n-popover trigger="click" placement="bottom-end" style="width: 300px">
         <template #trigger>
-          <n-button text icon-placement="right">
-            <template #icon>
-              <n-icon>
-                <!-- <icon-arrow-down /> -->
-              </n-icon>
-            </template>
+          <div class="flex items-center gap-x-1 cursor-pointer">
             {{ userinfo.nickname }}
-          </n-button>
+            <svg-icon name="arrow-down" size="14" />
+          </div>
         </template>
         <div class="dropdown">
           <div>
@@ -68,52 +64,88 @@
   </n-modal>
 </template>
 
-<script>
-import { useUserLogin } from "@/composables/useUser.js";
+<script setup>
 import {
   NModal,
   NForm,
   NFormItemRow,
   NInput,
-  NMenu,
   NTabs,
   NTabPane,
   NCard,
 } from "naive-ui";
-import { ref } from "vue";
-// import { ChevronDown as IconArrowDown } from '@vicons/ionicons5'
+import { ref, watch, onMounted } from "vue";
+import { mapState, mapMutations } from "@/lib/lib.js"
+import api from "@/api/index.js"
+import User from "@/model/User.js"
+import Playlist from "../model/Playlist";
 
-export default {
-  name: "Login",
-  components: {
-    NModal,
-    NForm,
-    NFormItemRow,
-    NInput,
-    NMenu,
-    NTabs,
-    NTabPane,
-    NCard,
-  },
-  setup() {
-    const { showLoginPanel, userinfo, loginStatus, login, logout } =
-      useUserLogin();
+const showLoginPanel = ref(false)
+const { userinfo, logined } = mapState()
+const { setUserinfo, setLogined, setLikedSongs, setUserPlaylists } = mapMutations()
 
-    const modelRef = ref({
-      email: null,
-      password: null,
-    });
+const login = async (model) => {
+  const res = await api.user.login(model.email, model.password)
+  if (res.code === 200) {
+    setUserinfo(new User(res.profile))
+    setLogined(true)
+    showLoginPanel.value = false
+  }
+}
 
-    return {
-      model: modelRef,
-      showLoginPanel,
-      userinfo,
-      loginStatus,
-      login,
-      logout,
-    };
-  },
-};
+const logout = async () => {
+  const res = await api.user.logout()
+  if (res.code === 200) {
+    setUserinfo(null)
+    setLogined(false)
+    setUserPlaylists(null)
+  }
+}
+
+const getLikedSongs = async () => {
+  const res = await api.user.getLikedSongs()
+  if (res.code === 200) {
+    setLikedSongs(new Set(res.ids))
+  }
+}
+
+const getUserPlaylists = () => {
+  api.playlist.getUserPlaylists(userinfo.value.id).then(response => {
+    if (response.code === 200) {
+      setUserPlaylists(response.playlist.map(item => new Playlist(item)))
+    }
+  })
+}
+
+watch(
+  () => logined.value,
+  () => {
+  if (logined.value) {
+    getLikedSongs()
+    getUserPlaylists()
+  } else {
+    setLogined(false)
+  }
+})
+
+const getLoginStatus = async () => {
+  const res = await api.user.getLoginStatus()
+  if (res.data.code === 200) {
+    if (res.data.profile) {
+      setUserinfo(new User(res.data.profile))
+      setLogined(true)
+    } else {
+      console.log('未登录');
+    }
+  }
+}
+
+onMounted(getLoginStatus)
+
+const model = ref({
+  email: null,
+  password: null,
+});
 </script>
 
 <style lang="scss" scoped>

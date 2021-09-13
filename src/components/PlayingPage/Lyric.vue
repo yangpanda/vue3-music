@@ -1,14 +1,10 @@
 <template>
   <div class="h-full overflow-hidden space-y-10">
-    <div class="space-y-2">
-      <h1 class="text-2xl text-center">{{ songName }}</h1>
-      <div class="text-sm text-center">{{ songArtist }}</div>
-    </div>
-    <scroll-bar>
-      <div class="text-center space-y-5">
+    <n-scrollbar>
+      <div class="text-center space-y-5 px-5">
         <p class v-for="(item, index) in lyric" :key="index">{{ item.l }}</p>
       </div>
-    </scroll-bar>
+    </n-scrollbar>
   </div>
 </template>
 
@@ -16,15 +12,9 @@
 import { mapState } from "@/lib/lib.js";
 import api from "@/api/index.js";
 import { ref, computed, watchEffect } from "vue";
+import { NScrollbar } from 'naive-ui'
 
 const { currentSong } = mapState()
-
-const songName = computed(() =>
-  currentSong.value ? currentSong.value.name : ""
-);
-const songArtist = computed(() =>
-  currentSong.value ? currentSong.value.singer.join(" / ") : ""
-);
 const lyric = ref([]);
 
 watchEffect(() => {

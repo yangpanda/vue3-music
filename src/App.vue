@@ -8,8 +8,8 @@
 				<router-view></router-view>
 			</div>
 			<div
-				class="absolute left-0 bottom-20 w-full h-0 border-b transition-all duration-500 z-30 bg-white"
-				:class="{ 'h-full pt-20': showPlayingPage }"
+				class="absolute left-0 bottom-20 w-full h-0 transition-all duration-500 z-30 bg-white"
+				:class="{ 'h-full pt-20 border-b': showPlayingPage }"
 			>
 				<playing-page></playing-page>
 			</div>

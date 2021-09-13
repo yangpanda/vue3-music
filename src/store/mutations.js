@@ -1,5 +1,5 @@
 export default {
-  setLoginStatus(state, status) {
+  setLogined(state, status) {
     state.logined = status
   },
   setUserinfo(state, info) {
@@ -8,8 +8,8 @@ export default {
   setPlaylist(state, list) {
     state.playlist = list
   },
-  setLikedSongList(state, list) {
-    state.likedSongList = list
+  setLikedSongs(state, songs) {
+    state.likedSongs = songs
   },
   setPlayIndex(state, index) {
     if (state.playlist.length === index) {
@@ -49,5 +49,8 @@ export default {
   },
   setShowPlayingPage(state, theState) {
     state.showPlayingPage = theState
+  },
+  setUserPlaylists(state, playlists) {
+    state.userPlaylists = playlists
   }
 }

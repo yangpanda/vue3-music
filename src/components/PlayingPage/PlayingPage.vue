@@ -1,7 +1,11 @@
 <template>
-  <scroll-bar>
-    <blur-background :src="songImage">
-      <div class="lg:w-full xl:w-3/5 mx-auto py-5 px-5">
+  <div ref="container" class="relative h-full w-full z-0">
+    <n-scrollbar ref="scrollbar">
+      <div class="relative lg:w-full xl:w-3/5 mx-auto py-5 px-5 space-y-10">
+        <div class="h-14 space-y-2">
+          <div class="text-2xl font-medium text-center">{{ songName }}</div>
+          <div class="text-center">{{ songArtist }}</div>
+        </div>
         <div class="flex items-center justify-between" style="height: 560px;">
           <rotate-cd class="w-72 h-72 flex-shrink-0" :src="songImage" :running="playingState" />
           <lyric />
@@ -22,26 +26,28 @@
         </div>
         <comment class="w-4/5 mx-auto" :comments="comments" />
       </div>
-    </blur-background>
-  </scroll-bar>
+      <n-back-top v-if="scrollbar && container" right="20" bottom="100" :to="container"></n-back-top>
+    </n-scrollbar>
+  </div>
 </template>
 
 <script setup>
 import { mapState, mapMutations } from "@/lib/lib.js"
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watch } from "vue";
 
 import Song from "@/model/Song.js";
 import api from "@/api/index.js";
 
-import BlurBackground from "./BlurBackground.vue";
 import RotateCd from "./RotateCd.vue";
 import Lyric from "./Lyric.vue";
 import Comment from "@/components/Comment.vue";
-import ScrollBar from "../ScrollBar.vue";
+import { NScrollbar, NBackTop } from 'naive-ui'
 
 const simiSongs = ref([]);
 const comments = ref([]);
 const hotComments = ref([]);
+const scrollbar = ref(null)
+const container = ref(null)
 
 const {
   currentSong,
@@ -55,9 +61,16 @@ const {
 const songImage = computed(() =>
   currentSong.value ? currentSong.value.image : ""
 );
+const songName = computed(() =>
+  currentSong.value ? currentSong.value.name : ""
+);
+const songArtist = computed(() =>
+  currentSong.value ? currentSong.value.singer.join(" / ") : ""
+);
 
-watchEffect(() => {
-  if (currentSong.value) {
+watch(
+  () => currentSong.value,
+  () => {
     api.song.getSimi(currentSong.value.id).then((response) => {
       if (response.code === 200) {
         simiSongs.value = response.songs.map((item) => new Song(item));
@@ -75,9 +88,5 @@ watchEffect(() => {
           comments.value = response.comments;
         }
       });
-  }
-});
+  });
 </script>
-
-<style scoped>
-</style>

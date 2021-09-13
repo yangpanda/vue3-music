@@ -21,7 +21,7 @@ export default {
     classObject() {
       return {
         'cursor-pointer': true,
-        'bg-gray-100 px-2 border rounded-sm': this.type === 'default' && !this.text,
+        'bg-gray-100 px-2 py-px border rounded': this.type === 'default' && !this.text,
         'bg-red-100 text-red-500 px-2 border-red-200 rounded-full': this.type === 'capsule' || this.isActive,
       }
     }

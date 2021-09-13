@@ -1,13 +1,14 @@
 <template>
-  <div class="relative z-0 h-full w-full">
+  <div ref="container" class="relative z-0 h-full w-full">
     <div class="absolute top-0 bottom-20 w-full flex">
       <div class="sidebar h-full border-r flex-shrink-0">
         <the-sidebar></the-sidebar>
       </div>
       <div class="h-full flex-grow">
-        <scroll-bar>
+        <n-scrollbar>
           <router-view :key="$route.fullPath"></router-view>
-        </scroll-bar>
+          <n-back-top v-if="container" :right="20" :bottom="100" :to="container"/>
+        </n-scrollbar>
       </div>
     </div>
     <div class="absolute bottom-0 w-full border-t z-20">
@@ -19,8 +20,10 @@
 <script setup>
 import TheSidebar from "@/components/TheSidebar.vue";
 import ThePlayer from "@/components/ThePlayer.vue";
-import PlayingPage from "@/components/PlayingPage/PlayingPage.vue";
+import { NScrollbar, NBackTop } from "naive-ui"
+import { ref } from 'vue'
 
+const container = ref(null)
 </script>
 
 <style scoped>

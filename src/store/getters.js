@@ -6,8 +6,8 @@ export default {
   getUserinfo(state) {
     return state.userinfo
   },
-  getLikedSongList(state) {
-    return state.likedSongList
+  getLikedSongs(state) {
+    return state.likedSongs
   },
   getPlayIndex(state) {
     return state.playIndex
@@ -29,5 +29,8 @@ export default {
   },
   getShowPlayingPage(state) {
     return state.showPlayingPage
+  },
+  getUserPlaylists(state) {
+    return state.userPlaylist
   }
 }

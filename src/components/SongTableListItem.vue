@@ -66,7 +66,7 @@ export default {
       return utils.formatNumber(num);
     },
     isLiked(id) {
-      const likedSongs = this.$store.state.likedSongList
+      const likedSongs = this.$store.state.likedSongs
       return likedSongs
         ? likedSongs.has(id)
         : false;

@@ -17,7 +17,7 @@ import TheImage from "@/components/TheImage.vue"
 import Skeleton from "@/components/Common/Skeleton.vue"
 import SkeletonItem from "@/components/Common/SkeletonItem.vue"
 import TheButton from "@/components/Common/Button/TheButton.vue"
-import ScrollBar from "@/components/ScrollBar.vue";
+// import ScrollBar from "@/components/ScrollBar.vue";
 
 const myComponents = {
   'SvgIcon': SvgIcon,
@@ -25,7 +25,7 @@ const myComponents = {
   'TheImage': TheImage,
   'Skeleton': Skeleton,
   'SkeletonItem': SkeletonItem,
-  'ScrollBar': ScrollBar,
+  // 'ScrollBar': ScrollBar,
 }
 
 for (let key in myComponents) {

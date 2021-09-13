@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex justify-between items-center h-12 px-5">
-      <div class="flex gap-x-1 items-center cursor-pointer" @click="collapsed = !collapsed">
-        <div class="text-gray-400  hover:text-black">
+      <div class="flex gap-x-1 items-center cursor-pointer text-gray-400 group" @click="collapsed = !collapsed">
+        <div class="group-hover:text-black">
           {{ label }}
         </div>
         <svg-icon v-if="!collapsed" name="arrow-right" size="10" />

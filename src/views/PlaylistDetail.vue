@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-5">
-    <div class="flex col-gap-20 p-5">
-      <the-image class="" :src="detail.imgUrl" size="180" round="large" />
-      <div class="flex flex-col gap-y-2">
+    <div class="flex gap-x-5 p-5">
+      <the-image class :src="detail.imgUrl" size="180" round="large" />
+      <div class="flex flex-col gap-y-3">
         <div class="flex items-center gap-x-2">
           <tag>歌单</tag>
           <div class="text-xl font-semibold">{{ detail.name }}</div>
@@ -32,7 +32,11 @@
         </div>
         <song-table-list v-else :songs="songs"></song-table-list>
       </n-tab-pane>
-      <n-tab-pane name="comment" tab="评论"> </n-tab-pane>
+      <n-tab-pane name="comment" tab="评论">
+        <div class="px-5">
+          <comment :comments="comments" />
+        </div>
+      </n-tab-pane>
       <n-tab-pane name="subsciber" tab="收藏者">
         <div class="p-5">
           <n-result
@@ -48,10 +52,12 @@
               v-for="(item, index) in subscribers"
               :key="index"
             >
-              <the-image round="full" size="88" :src="item.avatarUrl + '?param=100y100'"/>
+              <the-image round="full" size="88" :src="item.avatarUrl + '?param=100y100'" />
               <div class="flex flex-col w-0 flex-grow gap-y-2">
                 <div class="overflow-hidden overflow-ellipsis whitespace-nowrap">{{ item.nickname }}</div>
-                <div class="overflow-hidden overflow-ellipsis whitespace-nowrap">{{ item.signature }}</div>
+                <div
+                  class="overflow-hidden overflow-ellipsis whitespace-nowrap"
+                >{{ item.signature }}</div>
               </div>
             </div>
           </div>
@@ -62,8 +68,7 @@
 </template>
 
 <script setup>
-import * as playlist from "@/api/service/playlist.js";
-import * as song from "@/api/service/song.js";
+import api from "@/api/index.js"
 
 import Playlist from "../model/Playlist";
 import Song from "../model/Song";
@@ -80,7 +85,7 @@ import {
 } from "naive-ui";
 
 import { ref, onMounted } from "@vue/runtime-core";
-import TheImage from "../components/TheImage.vue";
+import Comment from "../components/Comment.vue";
 
 const props = defineProps({
   id: String,
@@ -91,11 +96,15 @@ const showSpin = ref(true);
 const detail = ref({});
 const songs = ref([]);
 const subscribers = ref([]);
+const comments = ref([])
 
 const getSongs = async (ids) => {
-  song.getSongDetail(ids.join(",")).then((res) => {
+  // console.log(ids.length)
+
+  api.song.getSongDetail(ids.slice(0, 500).join(",")).then((res) => {
     if (res.code === 200) {
-      songs.value = res.songs.map((item) => new Song(item));
+      // console.log(res)
+      songs.value.push(...res.songs.map((item) => new Song(item)));
       loading.finish();
       showSpin.value = false;
     }
@@ -105,8 +114,9 @@ const getSongs = async (ids) => {
 const getPlaylistDetail = async (id) => {
   loading.start();
   showSpin.value = true;
-  playlist.getPlaylistDetail(id).then((res) => {
+  api.playlist.getPlaylistDetail(id).then((res) => {
     if (res.code === 200) {
+      // console.log(res)
       detail.value = new Playlist(res.playlist);
       subscribers.value = res.playlist.subscribers;
       let ids = detail.value.trackIds.map((item) => item.id);
@@ -115,8 +125,15 @@ const getPlaylistDetail = async (id) => {
   });
 };
 
-onMounted(getPlaylistDetail(props.id));
-</script>
+onMounted(() => {
+  getPlaylistDetail(props.id)
 
-<style scoped>
-</style>
+  api.comment.ofPlaylist({
+    id: props.id
+  }).then(response => {
+    if (response.code === 200) {
+      comments.value = response.comments
+    }
+  })
+});
+</script>

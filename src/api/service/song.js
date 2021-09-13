@@ -9,7 +9,7 @@ export const getNewSongs = (limit) => {
 }
 
 export const getSongDetail = (ids) =>
-  request.get(`/song/detail?ids=${ids}`);
+  request.get(`/song/detail`, {params: {ids}});
 
 export const getSongsUrl = (ids) =>
   request.get(`/song/url?id=${ids}`);
