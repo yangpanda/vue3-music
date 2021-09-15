@@ -27,10 +27,12 @@
     </div>
     <n-tabs default-value="playlist" type="line" :tabs-padding="20">
       <n-tab-pane name="playlist" tab="歌曲列表">
-        <div v-if="showSpin" class="flex justify-center">
-          <n-spin />
+        <div class="space-y-5 mb-5">
+            <song-table-list :songs="songs"></song-table-list>
+            <div class="w-full flex justify-center">
+              <n-pagination v-model:page="page" :page-count="pageCount" @update-page="backTop()" />
+            </div>
         </div>
-        <song-table-list v-else :songs="songs"></song-table-list>
       </n-tab-pane>
       <n-tab-pane name="comment" tab="评论">
         <div class="px-5">
@@ -69,58 +71,58 @@
 
 <script setup>
 import api from "@/api/index.js"
-
 import Playlist from "../model/Playlist";
 import Song from "../model/Song";
-
-import SongTableList from "@/components/SongTableList.vue";
-import Tag from "@/components/Common/Tag.vue"
-import TheButton from "@/components/Common/Button/TheButton.vue"
+import _ from 'lodash'
+import { ref, onMounted, watchEffect, inject } from "@vue/runtime-core";
 import {
-  useLoadingBar,
   NSpin,
   NTabs,
   NTabPane,
   NResult,
+  NPagination
 } from "naive-ui";
-
-import { ref, onMounted } from "@vue/runtime-core";
+import SongTableList from "@/components/SongTableList.vue";
+import Tag from "@/components/Common/Tag.vue"
+import TheButton from "@/components/Common/Button/TheButton.vue"
 import Comment from "../components/Comment.vue";
 
 const props = defineProps({
   id: String,
 });
 
-const loading = useLoadingBar();
-const showSpin = ref(true);
+const backTop = inject("backTop");
+
+const page = ref(1);
+const pageCount = ref(0);
+const pageSize = 100
+const songIdChunks = ref([])
 const detail = ref({});
 const songs = ref([]);
 const subscribers = ref([]);
 const comments = ref([])
 
 const getSongs = async (ids) => {
-  // console.log(ids.length)
-
-  api.song.getSongDetail(ids.slice(0, 500).join(",")).then((res) => {
-    if (res.code === 200) {
-      // console.log(res)
-      songs.value.push(...res.songs.map((item) => new Song(item)));
-      loading.finish();
-      showSpin.value = false;
-    }
-  });
+  api.song.getSongDetail(ids)
+    .then(response => {
+      if (response.code === 200) {
+        songs.value = response.songs.map(item => new Song(item))
+      }
+    })
 };
 
 const getPlaylistDetail = async (id) => {
-  loading.start();
-  showSpin.value = true;
   api.playlist.getPlaylistDetail(id).then((res) => {
     if (res.code === 200) {
-      // console.log(res)
       detail.value = new Playlist(res.playlist);
       subscribers.value = res.playlist.subscribers;
-      let ids = detail.value.trackIds.map((item) => item.id);
-      getSongs(ids);
+      const ids = detail.value.trackIds.map((item) => item.id);
+      pageCount.value = Math.ceil(ids.length / pageSize)
+      songIdChunks.value = _.chunk(ids, pageSize)
+
+      watchEffect(() => {
+        getSongs(songIdChunks.value[page.value - 1].join(','))
+      })
     }
   });
 };
