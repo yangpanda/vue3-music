@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-5">
+  <div ref="self" class="space-y-5">
     <div class="flex gap-x-5 p-5">
       <the-image class :src="detail.imgUrl" size="180" round="large" />
       <div class="flex flex-col gap-y-3">
@@ -27,11 +27,8 @@
     </div>
     <n-tabs default-value="playlist" type="line" :tabs-padding="20">
       <n-tab-pane name="playlist" tab="歌曲列表">
-        <div class="space-y-5 mb-5">
-            <song-table-list :songs="songs"></song-table-list>
-            <div class="w-full flex justify-center">
-              <n-pagination v-model:page="page" :page-count="pageCount" @update-page="backTop()" />
-            </div>
+        <div>
+          <song-table-list :songs="songs"></song-table-list>
         </div>
       </n-tab-pane>
       <n-tab-pane name="comment" tab="评论">
@@ -73,6 +70,7 @@
 import api from "@/api/index.js"
 import Playlist from "../model/Playlist";
 import Song from "../model/Song";
+import { getScrollParent } from "@/utils/index.js"
 import _ from 'lodash'
 import { ref, onMounted, watchEffect, inject } from "@vue/runtime-core";
 import {
@@ -91,12 +89,15 @@ const props = defineProps({
   id: String,
 });
 
+const self = ref(null)
+
 const backTop = inject("backTop");
 
-const page = ref(1);
-const pageCount = ref(0);
+const distance = 50;
+
 const pageSize = 100
 const songIdChunks = ref([])
+let counter = 1
 const detail = ref({});
 const songs = ref([]);
 const subscribers = ref([]);
@@ -106,7 +107,7 @@ const getSongs = async (ids) => {
   api.song.getSongDetail(ids)
     .then(response => {
       if (response.code === 200) {
-        songs.value = response.songs.map(item => new Song(item))
+        songs.value.push(...response.songs.map(item => new Song(item)))
       }
     })
 };
@@ -117,15 +118,12 @@ const getPlaylistDetail = async (id) => {
       detail.value = new Playlist(res.playlist);
       subscribers.value = res.playlist.subscribers;
       const ids = detail.value.trackIds.map((item) => item.id);
-      pageCount.value = Math.ceil(ids.length / pageSize)
       songIdChunks.value = _.chunk(ids, pageSize)
-
-      watchEffect(() => {
-        getSongs(songIdChunks.value[page.value - 1].join(','))
-      })
+      getSongs(songIdChunks.value[0].join(','))
     }
   });
 };
+
 
 onMounted(() => {
   getPlaylistDetail(props.id)
@@ -137,5 +135,18 @@ onMounted(() => {
       comments.value = response.comments
     }
   })
+
+  const scroll = getScrollParent(self.value)
+  function loadMore() {
+    if ((scroll.scrollTop + scroll.clientHeight) >= (scroll.scrollHeight - distance)) {
+      scroll.removeEventListener('scroll', loadMore)
+      if (counter < songIdChunks.value.length) {
+        getSongs(songIdChunks.value[counter].join(','))
+        counter += 1
+      }
+      scroll.addEventListener('scroll', loadMore)
+    }
+  }
+  scroll.addEventListener('scroll', loadMore)
 });
 </script>

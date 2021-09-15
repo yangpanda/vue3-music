@@ -27,8 +27,6 @@ const container = ref(null)
 const scrollbar = ref(null)
 
 provide('backTop', () => scrollbar.value.scrollTo({top: 0}))
-onMounted(() => {
-})
 </script>
 
 <style scoped>
