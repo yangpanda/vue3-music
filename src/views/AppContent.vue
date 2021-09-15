@@ -5,7 +5,7 @@
         <the-sidebar></the-sidebar>
       </div>
       <div class="h-full flex-grow">
-        <n-scrollbar>
+        <n-scrollbar ref="scrollbar">
           <router-view :key="$route.fullPath"></router-view>
           <n-back-top v-if="container" :right="20" :bottom="100" :to="container"/>
         </n-scrollbar>
@@ -21,9 +21,14 @@
 import TheSidebar from "@/components/TheSidebar.vue";
 import ThePlayer from "@/components/ThePlayer.vue";
 import { NScrollbar, NBackTop } from "naive-ui"
-import { ref } from 'vue'
+import { ref, provide, onMounted } from 'vue'
 
 const container = ref(null)
+const scrollbar = ref(null)
+
+provide('backTop', () => scrollbar.value.scrollTo({top: 0}))
+onMounted(() => {
+})
 </script>
 
 <style scoped>

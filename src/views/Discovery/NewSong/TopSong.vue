@@ -7,9 +7,7 @@
         v-for="(type, name) in Object.fromEntries(songTypeMap)"
         :key="type"
         @click="songType = type"
-      >
-        {{ name }}
-      </n-button>
+      >{{ name }}</n-button>
     </div>
     <n-button-group>
       <n-button>
@@ -34,22 +32,11 @@
     <div class="song-item" v-for="(item, index) in newSongs" :key="index">
       <div class="song-index">{{ index + 1 }}</div>
       <div class="song-img pointer" @click="play(new Song(item))">
-        <the-image
-          :src="item.album.picUrl + '?param=160y160'"
-          size="60"
-          round="normal"
-        />
-        <svg-icon
-          class="play-button"
-          name="play-triangle"
-          iconColor="#ec4141"
-          size="30"
-        />
+        <the-image :src="item.album.picUrl + '?param=160y160'" size="60" round="normal" />
+        <svg-icon class="play-button" name="play-triangle" iconColor="#ec4141" size="30" />
       </div>
       <div class="song-name ellipsis">{{ item.name }}</div>
-      <div class="song-singer ellipsis">
-        {{ generateArtists(item.artists) }}
-      </div>
+      <div class="song-singer ellipsis">{{ generateArtists(item.artists) }}</div>
       <div class="song-album ellipsis">{{ item.album.name }}</div>
       <div class="song-duration">{{ formatDuration(item.duration) }}</div>
     </div>
@@ -63,8 +50,6 @@ import {
   NIcon,
   useLoadingBar,
 } from "naive-ui";
-// import { PlayCircleOutlineRound as PlayIcon } from "@vicons/material";
-// import { FolderPlus as SubIcon } from "@vicons/tabler";
 
 import { formatDuration } from "@/utils/index.js";
 

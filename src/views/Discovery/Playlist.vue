@@ -46,7 +46,7 @@
       <card-playlist v-for="(item, index) in playlists" :key="index" :playlist="item" />
     </div>
     <div class="flex justify-center">
-      <n-pagination v-model:page="page" :page-count="pageCount" @update-page="scrollToTop()" />
+      <n-pagination v-model:page="page" :page-count="pageCount" @update-page="backTop()" />
     </div>
   </div>
 </template>
@@ -58,7 +58,6 @@ import Tag from '@/components/Common/Tag.vue'
 import api from "@/api/index.js";
 import Playlist from "@/model/Playlist.js";
 import { ref, watchPostEffect, onMounted, inject } from "vue";
-import axios from "axios";
 
 import CardPlaylist from "@/components/CardPlaylist.vue";
 import {
@@ -67,7 +66,7 @@ import {
   useLoadingBar,
 } from "naive-ui";
 
-const scrollToTop = inject("scrollToTop");
+const backTop = inject("backTop");
 
 const loadingBar = useLoadingBar();
 const loading = ref(true)
