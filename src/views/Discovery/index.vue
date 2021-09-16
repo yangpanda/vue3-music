@@ -1,4 +1,5 @@
 <template>
+<n-scrollbar>
 	<div class="p-5 space-y-5">
 		<div class="flex justify-center items-center gap-x-12 text-base">
 			<router-link
@@ -13,9 +14,11 @@
 			<router-view></router-view>
 		</div>
 	</div>
+</n-scrollbar>
 </template>
 
 <script setup>
+import { NScrollbar } from 'naive-ui'
 const nav = {
 	'personal': '个性推荐',
 	'playlist': '歌单',

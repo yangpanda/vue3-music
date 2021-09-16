@@ -87,6 +87,7 @@ const { setUserinfo, setLogined, setLikedSongs, setUserPlaylists } = mapMutation
 const login = async (model) => {
   const res = await api.user.login(model.email, model.password)
   if (res.code === 200) {
+    console.log(res)
     setUserinfo(new User(res.profile))
     setLogined(true)
     showLoginPanel.value = false
