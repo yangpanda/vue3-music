@@ -46,7 +46,7 @@
       <card-playlist v-for="(item, index) in playlists" :key="index" :playlist="item" />
     </div>
     <div class="flex justify-center">
-      <n-pagination v-model:page="page" :page-count="pageCount" @update-page="backTop()" />
+      <n-pagination v-model:page="page" :page-count="pageCount" @update-page="backToTop()" />
     </div>
   </div>
 </template>
@@ -63,12 +63,11 @@ import CardPlaylist from "@/components/CardPlaylist.vue";
 import {
   NPagination,
   NBadge,
-  useLoadingBar,
 } from "naive-ui";
 
-const backTop = inject("backTop");
+// inject
+const backToTop = inject("backToTop");
 
-const loadingBar = useLoadingBar();
 const loading = ref(true)
 const hotTags = ref([]);
 const playlists = ref([]);
@@ -80,8 +79,6 @@ const page = ref(1);
 const pageCount = ref(0);
 
 onMounted(() => {
-  loadingBar.start();
-
   Promise.allSettled([
     api.playlist.getPlaylistHotTags(),
     api.playlist.getPlaylistCat(),
@@ -107,7 +104,6 @@ onMounted(() => {
     );
 
     watchPostEffect(() => {
-      loadingBar.start();
       loading.value = true;
 
       api.playlist
@@ -127,7 +123,6 @@ onMounted(() => {
             );
           }
 
-          loadingBar.finish();
           loading.value = false;
         });
     });

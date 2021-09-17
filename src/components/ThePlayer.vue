@@ -48,23 +48,29 @@
       @durationchange="methods.getDuration()"
     ></audio>
     <n-drawer v-model:show="showPlaylist" placement="right" :width="600">
-      <n-drawer-content title="播放列表" body-content-style="padding: 0;">
-        <the-playlist />
+      <n-drawer-content title="播放列表" body-content-style="padding: 0;" :native-scrollbar="false">
+        <playlist-item
+          class="item"
+          v-for="(item, index) in playlist"
+          :key="index"
+          :song="item"
+          :index="index"
+        />
       </n-drawer-content>
     </n-drawer>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, reactive } from "vue";
-import { mapState, mapMutations } from "@/lib/lib.js";
-
 import * as utils from "@/utils/index.js";
 import api from "@/api/index.js";
 
-import TheSlider from "@/components/TheSlider.vue";
-import ThePlaylist from "@/components/ThePlaylist.vue";
+import { ref, computed, watch, onMounted, reactive } from "vue";
+import { mapState, mapMutations } from "@/lib/lib.js";
+
 import { NDrawer, NDrawerContent } from "naive-ui";
+import TheSlider from "@/components/TheSlider.vue";
+import PlaylistItem from "@/components/PlaylistItem.vue"
 
 const {
   playingState,
@@ -225,6 +231,3 @@ function formatTime(seconds) {
   return minute + ":" + second;
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

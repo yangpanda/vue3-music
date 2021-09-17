@@ -1,10 +1,10 @@
 export default {
   userinfo: null,
   logined: null,
-  playlist: [],
   likedSongs: null, // Set
   userPlaylists: [],
   playIndex: 0,
+  playlist: [],
   randomPlaylist: [],
   playMode: 'order',
   currentSong: null,

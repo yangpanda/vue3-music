@@ -23,13 +23,8 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
-
 const props = defineProps({
   title: String,
   cols: [Number, String],
 });
 </script>
-
-<style scoped>
-</style>

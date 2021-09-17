@@ -150,7 +150,6 @@ const handleScroll = _.throttle(function (event) {
   const clientHeight = () => scrollbar.clientHeight
 
   if ((scrollTop() + clientHeight()) >= (scrollHeight() - distance)) {
-    console.log('loadmore')
     if (counter < songIdChunks.value.length) {
       getSongs(songIdChunks.value[counter].join(','))
       counter += 1
