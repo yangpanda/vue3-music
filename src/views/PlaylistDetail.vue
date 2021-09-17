@@ -1,6 +1,6 @@
 <template>
   <n-scrollbar @scroll="handleScroll($event)">
-    <div class="space-y-5">
+    <div ref="container" class="relative space-y-5">
       <div class="flex gap-x-5 p-5">
         <the-image class :src="detail.imgUrl" size="180" round="large" />
         <div class="flex flex-col gap-y-3">
@@ -70,6 +70,7 @@
           </div>
         </n-tab-pane>
       </n-tabs>
+      <n-back-top v-if="container" :right="20" :bottom="100" :to="container"></n-back-top>
     </div>
   </n-scrollbar>
 </template>
@@ -95,6 +96,8 @@ import Comment from "../components/Comment.vue";
 const props = defineProps({
   id: String,
 });
+
+const container = ref(null)
 
 // data refs
 const detail = ref({});

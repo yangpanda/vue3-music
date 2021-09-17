@@ -1,10 +1,12 @@
 <template>
-<div class="mv-detail-container flex-col-gap-20">
-  <div class="mv-detail-left">
-    <video controls class="video" :src="data.url"></video>
-  </div>
-  <div class="mv-detail-recommend"></div>
-</div>
+  <n-scrollbar>
+    <div class="mv-detail-container flex-col-gap-20">
+      <div class="mv-detail-left">
+        <video controls class="video" :src="data.url"></video>
+      </div>
+      <div class="mv-detail-recommend"></div>
+    </div>
+  </n-scrollbar>
 </template>
 
 <script>

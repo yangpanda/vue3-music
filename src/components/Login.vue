@@ -32,7 +32,7 @@
             <n-form-item-row path="password" label="密码">
               <n-input
                 type="password"
-                show-password-toggle
+                showPasswordOn="click"
                 placeholder="密码"
                 label="密码"
                 v-model:value="model.password"
@@ -49,7 +49,7 @@
             <n-form-item-row path="password" label="密码">
               <n-input
                 type="password"
-                show-password-toggle
+                showPasswordOn="click"
                 placeholder="密码"
                 label="密码"
                 v-model:value="model.password"
@@ -88,6 +88,8 @@ const login = async (model) => {
   const res = await api.user.login(model.email, model.password)
   if (res.code === 200) {
     console.log(res)
+    window.localStorage.setItem('cookie', res.cookie)
+    window.localStorage.setItem('token', res.token)
     setUserinfo(new User(res.profile))
     setLogined(true)
     showLoginPanel.value = false

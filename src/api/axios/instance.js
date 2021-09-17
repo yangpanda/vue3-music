@@ -2,7 +2,7 @@ import axios from "axios"
 import qs from 'qs'
 
 const config = {
-  baseURL: import.meta.env.VITE_API_SERVER,
+  baseURL: '/api',
   withCredentials: true,
   transformRequest: [
     data => qs.stringify(data)
