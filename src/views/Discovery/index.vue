@@ -1,7 +1,7 @@
 <template>
 	<n-scrollbar ref="scrollbarRef">
 		<div ref="contentRef" class="p-5 space-y-5">
-			<div class="flex justify-center items-center gap-x-12 text-base">
+			<div class="flex justify-center items-start gap-x-12 text-base">
 				<router-link
 					v-for="(value, key) in nav"
 					:key="key"

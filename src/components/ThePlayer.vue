@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between items-center h-20 bg-white px-5">
-    <div class="flex justify-start items-center flex-grow gap-x-3">
+    <div class="flex justify-start items-center flex-shrink-0 gap-x-3 w-64">
       <div class="relative cursor-pointer group">
         <the-image :src="songImage + '?param=100y100'" size="50" round="normal" />
         <div
@@ -15,7 +15,7 @@
         <div class="text-sm cursor-pointer overflow-ellipsis">{{ songSinger }}</div>
       </div>
     </div>
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center flex-shrink flex-grow">
       <div class="flex items-center gap-x-5">
         <div class="flex justify-center items-center" @click="changeMode()">
           <svg-icon v-if="playMode == 'order'" name="play-mode-order" size="24" />
@@ -29,12 +29,16 @@
       </div>
       <div class="flex items-center justify-center gap-x-4">
         <div>{{ formatTime(currentTime) }}</div>
-        <the-slider :duration="duration" :currentTime="currentTime"></the-slider>
+        <div style="width: 360px;">
+          <n-slider :step="1" :tooltip="false" :max="duration" :value="currentTime" />
+        </div>
         <div>{{ formatTime(duration) }}</div>
       </div>
     </div>
-    <div class="flex flex-grow justify-end items-center">
-      <div class="volum"></div>
+    <div class="flex flex-shrink-0 justify-end items-center w-64 gap-x-5">
+      <div class="volum">
+        <svg-icon name="voice-playing" />
+      </div>
       <div class="song-list" @click="showPlaylist = !showPlaylist">
         <svg-icon name="play-list"></svg-icon>
       </div>
@@ -64,13 +68,12 @@
 <script setup>
 import * as utils from "@/utils/index.js";
 import api from "@/api/index.js";
-
 import { ref, computed, watch, onMounted, reactive } from "vue";
 import { mapState, mapMutations } from "@/lib/lib.js";
 
-import { NDrawer, NDrawerContent } from "naive-ui";
-import TheSlider from "@/components/TheSlider.vue";
+import { NDrawer, NDrawerContent, NSlider } from "naive-ui";
 import PlaylistItem from "@/components/PlaylistItem.vue"
+import SvgIcon from "./SvgIcon.vue";
 
 const {
   playingState,

@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper">
-    <div class="content">
+  <n-scrollbar>
+    <div ref="contentRef" class="max-w-screen-lg mx-auto px-5 my-5 space-y-5">
       <the-section title="最新MV" cols="4">
         <template #cards>
           <card-mv v-for="(item, index) in newMvs" :key="index" :mv="item" />
@@ -13,19 +13,13 @@
               :key="index"
               @click="newMvArea = value"
               :class="{ 'capsule-button': newMvArea === value }"
-            >
-              {{ value }}
-            </div>
+            >{{ value }}</div>
           </nav>
         </template>
       </the-section>
       <the-section title="网易出品" cols="4">
         <template #cards>
-          <card-mv
-            v-for="(item, index) in neteaseMvs"
-            :key="index"
-            :mv="item"
-          />
+          <card-mv v-for="(item, index) in neteaseMvs" :key="index" :mv="item" />
         </template>
       </the-section>
       <the-section title="MV排行榜" cols="4">
@@ -46,14 +40,13 @@
               :key="index"
               @click="topMvArea = value"
               :class="{ 'capsule-button': topMvArea === value }"
-            >
-              {{ value }}
-            </div>
+            >{{ value }}</div>
           </nav>
         </template>
       </the-section>
     </div>
-  </div>
+    <n-back-top v-if="contentRef" :right="20" :bottom="100" :to="contentRef"></n-back-top>
+  </n-scrollbar>
 </template>
 
 <script setup>
@@ -66,6 +59,7 @@ import api from "@/api/index.js";
 import { onMounted, ref, watchPostEffect } from "vue";
 
 const loadingBar = useLoadingBar();
+const contentRef = ref(null)
 
 const Areas = ["内地", "港台", "欧美", "日本", "韩国"];
 const newMvArea = ref("内地");
@@ -128,17 +122,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  margin: 20px;
-
-  .content {
-    display: grid;
-    row-gap: 20px;
-    min-width: 800px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-}
 .nav-active {
   background-color: green;
 }
