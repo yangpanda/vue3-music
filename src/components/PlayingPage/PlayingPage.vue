@@ -65,7 +65,7 @@ const songName = computed(() =>
   currentSong.value ? currentSong.value.name : ""
 );
 const songArtist = computed(() =>
-  currentSong.value ? currentSong.value.singer.join(" / ") : ""
+  currentSong.value ? currentSong.value.singer : []
 );
 
 watch(

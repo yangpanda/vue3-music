@@ -4,11 +4,10 @@ import router from "./router";
 import store from "./store";
 
 import VueLazyload from '@jambonn/vue-lazyload'
+import 'virtual:svg-icons-register'
 
 import "@/styles/index.css";
-import "@/styles/common.scss";
-
-import 'virtual:svg-icons-register'
+import "@/styles/common.css";
 
 const app = createApp(App);
 
@@ -17,6 +16,7 @@ import TheImage from "@/components/TheImage.vue"
 import Skeleton from "@/components/Common/Skeleton.vue"
 import SkeletonItem from "@/components/Common/SkeletonItem.vue"
 import TheButton from "@/components/Common/Button/TheButton.vue"
+import SvgButton from "@/components/SvgButton.vue"
 
 const myComponents = {
   'SvgIcon': SvgIcon,
@@ -24,6 +24,7 @@ const myComponents = {
   'TheImage': TheImage,
   'Skeleton': Skeleton,
   'SkeletonItem': SkeletonItem,
+  'SvgButton': SvgButton,
 }
 
 for (let key in myComponents) {

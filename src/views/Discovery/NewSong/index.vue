@@ -1,8 +1,16 @@
 <template>
-  <div class="new-song-container">
-    <div class="new-song-nav">
-      <router-link class="new-song-nav-link clear-a capsule-button" to="/discovery/new-song/top-song/">新歌速递</router-link>
-      <router-link class="new-song-nav-link clear-a capsule-button" to="/discovery/new-song/top-album">新碟上架</router-link>
+  <div class="flex flex-col justify-center">
+    <div class="border rounded-full mx-auto">
+      <router-link
+        class="inline-block px-5 py-1 rounded-full"
+        active-class="bg-gray-400 text-white"
+        to="/discovery/new-song/top-song/"
+      >新歌速递</router-link>
+      <router-link
+        class="inline-block px-5 py-1 rounded-full"
+        active-class="bg-gray-400 text-white"
+        to="/discovery/new-song/top-album"
+      >新碟上架</router-link>
     </div>
     <router-view></router-view>
   </div>
@@ -10,16 +18,3 @@
 
 <script setup>
 </script>
-
-<style scoped>
-.new-song-nav {
-  display: flex;
-  justify-content: center;
-}
-.new-song-nav-link:hover {
-  color: green;
-}
-.router-link-active {
-  color: green;
-}
-</style>

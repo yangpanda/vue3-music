@@ -1,5 +1,5 @@
 <template>
-  <swipper></swipper>
+  <the-swipper></the-swipper>
   <section-playlist />
   <section-private-content />
   <section-song />
@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import Swipper from "@/components/Swipper.vue";
+import TheSwipper from "@/components/TheSwipper.vue";
 import SectionPlaylist from "@/components/Discovery/Personal/SectionPlaylist.vue"
 import SectionPrivateContent from "@/components/Discovery/Personal/SectionPrivateContent.vue"
 import SectionSong from "@/components/Discovery/Personal/SectionSong.vue"

@@ -1,40 +1,33 @@
 <template>
-  <div class="song-table-list-item" @dblclick="play(index)">
+  <div class="list-item" @dblclick="play(index)">
     <div class="front">
-      <span class="index">{{ formatIndex(index + 1) }}</span>
-      <div class="buttons" style="cursor: pointer">
-        <!-- <svg-icon v-if="isPlayling" name="voice-playing" size="20" color="#ec4141" /> -->
-        <svg-icon
-          v-if="!isLiked(song.id)"
-          name="love"
-          size="20"
-          color="#909399"
-        />
-        <svg-icon
-          v-else
-          name="love-selected"
-          size="20"
-          color="#ec4141"
-        />
+      <span class="w-8 text-right">{{ formatIndex(index + 1) }}</span>
+      <div class="flex items-center" style="cursor: pointer">
+        <svg-icon v-if="!isLiked(song.id)" name="love" size="20" color="#909399" />
+        <svg-icon v-else name="love-selected" size="20" color="#ec4141" />
       </div>
     </div>
-    <div class="name ellipsis">{{ song.name }}</div>
-    <div class="artist ellipsis">
-      <a class="link" v-for="(item, index) in song.singer" :key="index">
-        <span v-if="index > 0" style="cursor: default"> / </span>
-        {{ item }}
-      </a>
+    <div class="ellipsis">{{ song.name }}</div>
+    <div class="ellipsis space-x-3">
+      <a
+        class="ellipsis cursor-pointer text-gray-500 hover:text-black"
+        v-for="(artist, index) in song.singer"
+        :key="index"
+        @click="router.push(`/artist-detail/${artist.id}`)"
+      >{{ artist.name }}</a>
     </div>
-    <div class="album ellipsis">
-      <a class="link">{{ song.album }}</a>
-    </div>
-    <div class="duration">{{ song.duration }}</div>
+    <div
+      class="ellipsis cursor-pointer text-gray-500 hover:text-black"
+      @click="router.push(`/album-detail/${song.album.id}`)"
+    >{{ song.album.name }}</div>
+    <div class="text-gray-500">{{ song.duration }}</div>
   </div>
 </template>
 
 <script>
 import * as utils from "@/utils/index.js";
 import { mapMutations } from '@/lib/lib.js';
+import { useRouter } from 'vue-router'
 
 export default {
   name: "SongTableListItem",
@@ -50,7 +43,8 @@ export default {
   emits: ['play'],
   setup(props, { emit }) {
     const { setCurrentSong, setPlayIndex, setPlayingState } = mapMutations()
-    
+    const router = useRouter()
+
     const play = () => {
       setCurrentSong(props.song)
       setPlayIndex(props.index)
@@ -59,6 +53,7 @@ export default {
     }
     return {
       play,
+      router,
     }
   },
   methods: {
@@ -75,41 +70,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.song-table-list-item {
-  padding: 0 20px;
-  height: 42px;
-  display: grid;
+<style lang="postcss" scoped>
+.list-item {
+  @apply h-10 grid items-center gap-x-5 px-5;
+  @apply cursor-default odd:bg-gray-100 hover:bg-gray-200;
   grid-template-columns: 80px 3fr 2fr 2fr 60px;
-  align-items: center;
-  column-gap: 20px;
-  cursor: default;
+}
 
-  &:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.09);
-  }
-
-  .front {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .index {
-      width: 2em;
-      text-align: right;
-    }
-
-    .buttons {
-      display: flex;
-      align-items: center;
-    }
-  }
-
-  .name {
-  }
+.front {
+  @apply flex items-center justify-between;
 }
 </style>

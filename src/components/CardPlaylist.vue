@@ -1,13 +1,8 @@
 <template>
   <card-base :title="name()" @click="routeToDetail()">
-    <div class="relative z-0 group">
-      <div
-        class="absolute right-3 bottom-3 z-10 flex justify-center items-center w-9 h-9 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 cursor-pointer"
-        @click.stop="play()"
-      >
-        <svg-icon class="transform translate-x-0.5" name="play-triangle" color="#ec4141" size="24" />
-      </div>
+    <div class="relative group">
       <the-image class="cursor-pointer" :src="imgUrl() + '?param=400y400'" round="large" />
+			<svg-button class="play-btn" name="play-triangle" color="#ec4141" :size="28" box :triangle="true"></svg-button>
     </div>
   </card-base>
 </template>
@@ -51,3 +46,10 @@ async function play() {
   setPlayingState(true)
 }
 </script>
+
+<style scoped lang="postcss">
+.play-btn {
+  @apply absolute right-3 bottom-3;
+  @apply opacity-0 group-hover:opacity-100 transition-opacity duration-500 cursor-pointer;
+}
+</style>

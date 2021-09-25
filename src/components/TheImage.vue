@@ -1,14 +1,6 @@
 <template>
   <div
-    class="
-      flex flex-shrink-0
-      shadow
-      justify-center
-      items-center
-      w-full
-      bg-gray-200
-      overflow-hidden
-    "
+    class="flex flex-shrink-0 shadow justify-center items-center w-full bg-gray-200 overflow-hidden"
     :class="{
       'rounded-none': round === 'none',
       'rounded-sm': round === 'small',
@@ -24,11 +16,7 @@
     }"
   >
     <img class="image" v-lazy="src" />
-    <div
-      v-if="!height"
-      class="w-0 h-0"
-      :style="{ paddingTop: paddingHeight }"
-    ></div>
+    <div v-if="!height" class="w-0 h-0" :style="{ paddingTop: paddingHeight }"></div>
   </div>
 </template>
 

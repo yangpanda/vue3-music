@@ -16,7 +16,7 @@ export default defineConfig({
     viteSvgIcons({
       iconDirs: [resolve('src/assets/icons/svg')],
       symbolId: 'icon-[name]'
-    })
+    }),
   ],
   resolve: {
     alias: [

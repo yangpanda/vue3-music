@@ -1,6 +1,6 @@
 <template>
-  <div class="song-table-list">
-    <div class="song-table-list-header">
+  <div>
+    <div class="list-header">
       <div class="index"></div>
       <div class="title">音乐标题</div>
       <div class="artist">歌手</div>
@@ -20,7 +20,6 @@
 <script>
 import SongTableListItem from "@/components/SongTableListItem.vue";
 import { mapState, mapMutations } from '@/lib/lib.js';
-import { computed } from '@vue/runtime-core';
 
 export default {
   name: "SongTableList",
@@ -50,15 +49,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.song-table-list {
-  .song-table-list-header {
-    height: 36px;
-    display: grid;
-    grid-template-columns: 80px 3fr 2fr 2fr 60px;
-    column-gap: 20px;
-    padding: 0 20px;
-    line-height: 36px;
-  }
+<style lang="postcss" scoped>
+.list-header {
+  @apply grid items-center gap-x-5 px-5 h-10 cursor-default;
+  grid-template-columns: 80px 3fr 2fr 2fr 60px;
 }
 </style>

@@ -151,7 +151,7 @@ const model = ref({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .user-info {
   display: flex;
   align-items: center;

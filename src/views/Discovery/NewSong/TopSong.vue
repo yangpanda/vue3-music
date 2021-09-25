@@ -33,7 +33,7 @@
       <div class="song-index">{{ index + 1 }}</div>
       <div class="song-img pointer" @click="play(new Song(item))">
         <the-image :src="item.album.picUrl + '?param=160y160'" size="60" round="normal" />
-        <svg-icon class="play-button" name="play-triangle" iconColor="#ec4141" size="30" />
+        <svg-button class="play-button" name="play-triangle" box triangle color="#ec4141" />
       </div>
       <div class="song-name ellipsis">{{ item.name }}</div>
       <div class="song-singer ellipsis">{{ generateArtists(item.artists) }}</div>

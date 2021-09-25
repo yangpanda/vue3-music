@@ -1,30 +1,30 @@
 <template>
-		<div class="flex items-center col-gap-10 hover:bg-gray-100 rounded cursor-default p-1">
-			<div class="relative z-0">
-				<div
-					class="flex items-center justify-center absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full w-7 h-7"
-				>
-					<svg-icon
-						name="play-triangle"
-						color="#ec4141"
-						size="18"
-						class="transform translate-x-0.5"
-						@click="play(song)"
-					/>
-				</div>
-				<the-image class="pic" :src="song.image + '?param=50y50'" size="50" round="normal" />
-			</div>
-			<div class="w-0 flex flex-col flex-grow space-y-1">
-				<div class="overflow-ellipsis overflow-hidden whitespace-nowrap">{{ song.name }}</div>
-				<div
-					class="overflow-hidden overflow-ellipsis whitespace-nowrap text-xs cursor-pointer text-gray-400 hover:text-gray-500"
-				>{{ song.singer.join(" & ") }}</div>
+	<div class="card-wrapper">
+		<div class="relative">
+			<the-image :src="song.al.picUrl + '?param=50y50'" size="50" round="normal" />
+			<svg-button
+				class="play-btn"
+				name="play-triangle"
+				color="#ec4141"
+				box
+				:triangle="true"
+				@click="play(song)"
+			/>
+		</div>
+		<div class="info-wrapper">
+			<div class="title">{{ song.name }}</div>
+			<div class="artist-wrapper">
+				<a class="artist" v-for="artist in song.ar" @click="toArtistDetail(artist.id)">{{ artist.name }}</a>
 			</div>
 		</div>
+	</div>
 </template>
 
 <script setup>
 import { mapMutations } from "@/lib/lib.js"
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps({
 	song: Object
@@ -39,4 +39,35 @@ function play(song) {
 	setCurrentSong(song)
 	insertSong(song)
 }
+
+function toArtistDetail(id) {
+	router.push(`/artist-detail/${id}`)
+}
 </script>
+
+<style scoped lang="postcss">
+.card-wrapper {
+	@apply flex items-center gap-x-3;
+	@apply rounded cursor-default p-1;
+	@apply hover:bg-gray-100;
+}
+.play-btn {
+	@apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+}
+.info-wrapper {
+	@apply flex flex-col flex-grow;
+	@apply w-0 space-y-1;
+}
+
+.title {
+	@apply overflow-ellipsis overflow-hidden whitespace-nowrap;
+}
+
+.artist-wrapper {
+	@apply overflow-hidden overflow-ellipsis whitespace-nowrap;
+	@apply text-xs text-gray-400 space-x-1.5;
+}
+.artist {
+	@apply hover:text-gray-500 cursor-pointer;
+}
+</style>

@@ -12,43 +12,60 @@
       </div>
       <div class="h-full">
         <div class="text-base cursor-pointer overflow-ellipsis">{{ songName }}</div>
-        <div class="text-sm cursor-pointer overflow-ellipsis">{{ songSinger }}</div>
+        <div class="text-sm cursor-pointer overflow-ellipsis">
+          <span v-for="artist in songSinger" @click="router.push(`/artist-detail/${artist.id}`)">{{ artist.name }}</span>
+        </div>
       </div>
     </div>
-    <div class="flex flex-col items-center flex-shrink flex-grow">
+    <div class="flex flex-col justify-center items-center flex-shrink flex-grow h-full gap-y-1">
       <div class="flex items-center gap-x-5">
         <div class="flex justify-center items-center" @click="changeMode()">
-          <svg-icon v-if="playMode == 'order'" name="play-mode-order" size="24" />
-          <svg-icon v-else-if="playMode == 'unorder'" name="play-mode-unorder" size="24" />
-          <svg-icon v-else name="play-mode-loop" size="24" />
+          <svg-button v-if="playMode == 'order'" name="play-mode-order" />
+          <svg-button v-else-if="playMode == 'unorder'" name="play-mode-unorder" />
+          <svg-button v-else name="play-mode-loop" />
         </div>
-        <svg-icon @click="methods.preTrack()" name="pre" size="24" />
-        <svg-icon v-if="!playingState" @click="methods.play()" name="play" size="30" />
-        <svg-icon v-else @click="methods.pause()" name="pause" size="30" />
-        <svg-icon @click="methods.nextTrack()" name="next" size="24" />
+        <svg-button @click="methods.preTrack()" name="pre" />
+        <svg-button v-if="!playingState" @click="methods.play()" name="play" box />
+        <svg-button v-else @click="methods.pause()" name="pause" box />
+        <svg-button @click="methods.nextTrack()" name="next" />
       </div>
       <div class="flex items-center justify-center gap-x-4">
         <div>{{ formatTime(currentTime) }}</div>
         <div style="width: 360px;">
-          <n-slider :step="1" :tooltip="false" :max="duration" :value="currentTime" />
+          <n-slider
+            :step="1"
+            :tooltip="false"
+            :max="duration"
+            v-model:value="currentTime"
+            @update-value="methods.setCurrentTime($event)"
+          />
         </div>
         <div>{{ formatTime(duration) }}</div>
       </div>
     </div>
     <div class="flex flex-shrink-0 justify-end items-center w-64 gap-x-5">
-      <div class="volum">
-        <svg-icon name="voice-playing" />
+      <div class="flex items-center gap-x-2">
+        <div class="cursor-pointer" @click="muted = !muted">
+          <svg-button v-if="!muted" name="volume" />
+          <svg-button v-else="muted" name="mute" />
+        </div>
+        <n-slider
+          :tooltip="false"
+          :min="0"
+          :max="1"
+          :step="0.1"
+          v-model:value="volume"
+          style="height: 20px; width: 100px;"
+        />
       </div>
-      <div class="song-list" @click="showPlaylist = !showPlaylist">
-        <svg-icon name="play-list"></svg-icon>
-      </div>
+      <svg-button name="menu" @click="showPlaylist = !showPlaylist" />
     </div>
     <audio
       autoplay
       ref="audio"
       :src="songUrl"
-      @ended="methods.nextTrack()"
       @timeupdate="methods.getCurrentTime()"
+      @ended="methods.nextTrack()"
       @durationchange="methods.getDuration()"
     ></audio>
     <n-drawer v-model:show="showPlaylist" placement="right" :width="600">
@@ -70,11 +87,13 @@ import * as utils from "@/utils/index.js";
 import api from "@/api/index.js";
 import { ref, computed, watch, onMounted, reactive } from "vue";
 import { mapState, mapMutations } from "@/lib/lib.js";
+import { useRouter } from 'vue-router'
 
 import { NDrawer, NDrawerContent, NSlider } from "naive-ui";
 import PlaylistItem from "@/components/PlaylistItem.vue"
 import SvgIcon from "./SvgIcon.vue";
 
+const router = useRouter()
 const {
   playingState,
   playIndex,
@@ -88,12 +107,13 @@ const {
 const { setPlayingState, setPlayIndex, setCurrentSong, setShowPlayingPage } =
   mapMutations();
 
-const audio = ref({});
+const muted = ref(false)
 const songUrl = ref("");
-const volume = ref(0.4);
+const volume = ref(0.3);
 const currentTime = ref(0);
 const showPlaylist = ref(false);
 const duration = ref(0);
+const audio = ref({});
 
 const songName = computed(() =>
   currentSong.value ? currentSong.value.name : ""
@@ -102,7 +122,7 @@ const songImage = computed(() =>
   currentSong.value ? currentSong.value.image : ""
 );
 const songSinger = computed(() =>
-  currentSong.value ? currentSong.value.singer.join(" / ") : ""
+  currentSong.value ? currentSong.value.singer : []
 );
 
 watch(
@@ -115,6 +135,20 @@ watch(
     });
   }
 );
+
+watch(
+  () => volume.value,
+  () => {
+    audio.value.volume = volume.value
+  }
+)
+
+watch(
+  () => muted.value,
+  () => {
+    audio.value.muted = muted.value
+  }
+)
 
 const methods = reactive({
   play: null,
@@ -144,7 +178,8 @@ onMounted(() => {
   };
 
   methods.setCurrentTime = (sec) => {
-    audio.currentTime = sec;
+    console.log('lll')
+    audio.value.currentTime = sec;
   };
 
   methods.getDuration = () => {

@@ -26,6 +26,7 @@ const nav = {
 	'personal': '个性推荐',
 	'playlist': '歌单',
 	'ranking': '排行榜',
+	'artist': '歌手',
 	'new-song/top-song': '最新音乐'
 }
 const scrollbarRef = ref(null)

@@ -31,11 +31,15 @@ module.exports = {
       },
       lineHeight: {
         '12': '3rem',
-      }
+      },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      visibility: ['group-hover'],
+      backgroundColor: ['odd'],
+
+    },
   },
   plugins: [],
 }

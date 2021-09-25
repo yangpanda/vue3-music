@@ -121,7 +121,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .nav-active {
   background-color: green;
 }

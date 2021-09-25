@@ -38,6 +38,12 @@ const routes = [
         component: () => import('@/views/AlbumDetail.vue'),
       },
       {
+        path: '/artist-detail/:id',
+        name: 'ArtistDetail',
+        props: true,
+        component: () => import('@/views/ArtistDetail.vue'),
+      },
+      {
         path: '/fm',
         name: 'FM',
         component: () => import('@/views/FM.vue')

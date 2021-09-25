@@ -3,7 +3,7 @@
     <div class="name ellipsis">{{ song.name }}</div>
     <div class="artist ellipsis">
       <a class="link" v-for="(item, index) in song.singer" :key="index">
-        <span v-if="index > 0" style="cursor: default"> / </span>
+        <span v-if="index > 0" style="cursor: default">/</span>
         {{ item }}
       </a>
     </div>
@@ -26,7 +26,7 @@ export default {
     }
   },
   setup(props) {
-    const {playIndex} = mapState()
+    const { playIndex } = mapState()
 
     const playing = computed(() => props.index === playIndex.value);
 
@@ -37,7 +37,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .wrapper {
   display: grid;
   grid-template-columns: 3fr 2fr 50px;

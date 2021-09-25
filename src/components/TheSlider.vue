@@ -81,7 +81,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .slider {
   position: relative;
   height: 4px;

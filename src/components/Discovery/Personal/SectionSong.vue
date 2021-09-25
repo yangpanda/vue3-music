@@ -43,7 +43,9 @@ api.song
   .then((songsId) => {
     api.song.getSongDetail(songsId.join(",")).then((response) => {
       if (response.code === 200) {
-        songs.value = response.songs.map((item) => new Song(item));
+        console.log(response)
+        // songs.value = response.songs.map((item) => new Song(item));
+        songs.value = response.songs;
       }
     });
   });

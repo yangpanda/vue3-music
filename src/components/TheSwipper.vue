@@ -1,18 +1,19 @@
 <template>
-  <div class="swiper space-y-5">
+  <skeleton v-if="loading" class="relative h-52 z-0">
+    <div
+      class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded-lg"
+    ></div>
+    <div
+      class="absolute left-1/2 transform -translate-x-1/2 w-1/2 h-full bg-gray-200 z-20 rounded-lg"
+    ></div>
+    <div
+      class="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/2 h-full scale-y-90 bg-gray-200 z-10 rounded-lg"
+    ></div>
+  </skeleton>
+  <div v-else class="space-y-5">
     <div class="relative h-52 overflow-hidden z-0">
       <the-image
-        class="
-          absolute
-          left-1/2
-          top-1/2
-          transform
-          -translate-x-1/2 -translate-y-1/2
-          invisible
-          transition
-          duration-500
-          z-10
-        "
+        class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 invisible transition duration-500 z-10"
         v-for="(banner, index) in banners"
         :key="index"
         :src="banner.pic + '?param=540y208'"
@@ -26,41 +27,19 @@
         }"
       />
       <div
-        class="
-          absolute
-          left-0
-          top-1/2
-          transform
-          -translate-y-1/2
-          flex
-          justify-center
-          items-center
-          px-3
-          z-20
-        "
+        class="absolute left-0 top-1/2 transform -translate-y-1/2 flex justify-center items-center px-3 z-20"
         @click="backward()"
       >
-        <svg-icon name="arrow-left" color="#d8d8d8" size="30" />
+        <svg-button name="arrow-left" color="#d8d8d8" :size="30" />
       </div>
       <div
-        class="
-          absolute
-          right-0
-          top-1/2
-          transform
-          -translate-y-1/2
-          flex
-          justify-center
-          items-center
-          px-3
-          z-20
-        "
+        class="absolute right-0 top-1/2 transform -translate-y-1/2 flex justify-center items-center px-3 z-20"
         @click="forward()"
       >
-        <svg-icon name="arrow-right" color="#d8d8d8" size="30" />
+        <svg-button name="arrow-right" color="#d8d8d8" :size="30" />
       </div>
     </div>
-    <div class="flex justify-center col-gap-10">
+    <div class="flex justify-center gap-x-3">
       <div
         class="cursor-pointer h-3 w-3 bg-gray-200 rounded-full"
         v-for="(item, index) in banners.length"
@@ -73,12 +52,21 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount, onBeforeUnmount } from "vue";
+import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from "vue";
+import api from '@/api/index.js'
 
-const props = defineProps({
-  banners: Array,
-});
+const banners = ref([])
+api.banner.getBanners(2).then(response => {
+  if (response.code === 200) {
+    banners.value = response.banners
+  }
+})
 
+const loading = ref(true)
+watch(
+  () => banners.value,
+  () => loading.value = false
+)
 
 const pointer = ref(0); // 游标
 let timer = 0;
@@ -96,7 +84,7 @@ function changePointer(index) {
 
 function forward() {
   clearInterval(timer);
-  if (pointer.value === props.banners.length - 1) {
+  if (pointer.value === banners.value.length - 1) {
     pointer.value = 0;
   } else {
     pointer.value++;
@@ -107,7 +95,7 @@ function forward() {
 function backward() {
   clearInterval(timer);
   if (pointer.value === 0) {
-    pointer.value = props.banners.length - 1;
+    pointer.value = banners.value.length - 1;
   } else {
     pointer.value--;
   }
@@ -116,14 +104,14 @@ function backward() {
 
 const pre = computed(() => {
   if (pointer.value === 0) {
-    return props.banners.length - 1;
+    return banners.value.length - 1;
   } else {
     return pointer.value - 1;
   }
 });
 
 const next = computed(() => {
-  if (pointer.value === props.banners.length - 1) {
+  if (pointer.value === banners.value.length - 1) {
     return 0;
   } else {
     return pointer.value + 1;
@@ -134,7 +122,7 @@ onBeforeMount(() => updateTimer());
 onBeforeUnmount(() => clearInterval(timer));
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .pre {
   visibility: visible;
   right: auto;
@@ -156,5 +144,4 @@ onBeforeUnmount(() => clearInterval(timer));
 .center {
   visibility: visible;
 }
-
 </style>
