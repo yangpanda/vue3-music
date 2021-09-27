@@ -11,3 +11,6 @@ export const getSimi = (id) =>
 
 export const getAlbum = (params) =>
   request.get('/artist/album', { params: params})
+
+export const getMv = (id) =>
+  request.get('/artist/mv', { params: {id} })

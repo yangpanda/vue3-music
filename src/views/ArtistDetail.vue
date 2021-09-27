@@ -13,13 +13,15 @@
         </div>
       </div>
       <n-tabs type="line">
-        <n-tab-pane name="album" tab="专辑">专辑</n-tab-pane>
-        <n-tab-pane name="mv" tab="MV">MV</n-tab-pane>
+        <n-tab-pane name="album" tab="专辑">
+          <album-list :id="id" />
+        </n-tab-pane>
+        <n-tab-pane name="mv" tab="MV">
+          <mv :id="id"></mv>
+        </n-tab-pane>
         <n-tab-pane name="description" tab="歌手详情">{{ artist.description }}</n-tab-pane>
         <n-tab-pane name="similar-artist" tab="相似歌手">
-          <div class="grid grid-cols-6 gap-5 mx-auto">
-            <card-artist v-for="item in simi" :artist="item"></card-artist>
-          </div>
+          <similar-artist :id="id"></similar-artist>
         </n-tab-pane>
       </n-tabs>
     </div>
@@ -31,7 +33,9 @@ import api from '@/api/index.js'
 import { ref } from 'vue'
 import Artist from '@/model/Artist.js'
 import { NTabs, NTabPane, NScrollbar } from 'naive-ui'
-import CardArtist from '@/components/CardArtist.vue'
+import AlbumList from '@/components/ArtistDetail/AlbumList.vue'
+import SimilarArtist from '@/components/ArtistDetail/SimilarArtist.vue'
+import Mv from '@/components/ArtistDetail/Mv.vue'
 
 export default {
   props: {
@@ -40,38 +44,23 @@ export default {
   components: {
     NTabs,
     NTabPane,
-    CardArtist,
     NScrollbar,
+    AlbumList,
+    SimilarArtist,
+    Mv,
   },
   setup(props) {
     const artist = ref(new Artist())
-    const simi = ref([])
-    const album = ref([])
 
     api.artist.getDetail(props.id)
       .then(response => {
         if (response.code === 200) {
-          console.log(response.data)
           artist.value = new Artist(response.data.artist)
         }
       })
 
-    api.artist.getSimi(props.id)
-      .then(response => {
-        if (response.code === 200) {
-          simi.value = response.artists.map(item => new Artist(item))
-        }
-      })
-
-    api.artist.getAlbum({id: props.id})
-      .then(res => {
-        if (res.code === 200) {
-          console.log(res)
-        }
-      })
     return {
       artist,
-      simi
     }
   }
 }
