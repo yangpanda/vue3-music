@@ -1,50 +1,45 @@
 <template>
-  <card-base :title="name()" @click="routeToDetail()">
+  <card-base :title="playlist.name" @click="toPlaylistDetail(playlist.id)">
     <div class="relative group">
-      <the-image class="cursor-pointer" :src="imgUrl() + '?param=400y400'" round="large" />
-			<svg-button class="play-btn" name="play-triangle" color="#ec4141" :size="28" box :triangle="true"></svg-button>
+      <the-image class="cursor-pointer" :src="playlist.imgUrl + '?param=400y400'" round="large" />
+      <svg-button
+        class="play-btn"
+        name="play-triangle"
+        color="#ec4141"
+        :size="28"
+        box
+        triangle
+        @click.stop="playAll(playlist.id)"
+      />
     </div>
   </card-base>
 </template>
 
-<script setup>
-import api from "@/api/index.js";
+<script>
+import Playlist from "../model/Playlist";
+import useRouterMethods from "../composables/router-methods";
+import usePlaylistMethods from "../composables/playlist-methods";
 import CardBase from "@/components/CardBase.vue";
-import { useRouter } from 'vue-router'
-import { mapMutations, mapState } from '@/lib/lib.js'
 
-const router = useRouter()
-const {
-  setPlaylist,
-  setCurrentSong,
-  setPlayingState
-} = mapMutations()
-const {
-  playlist
-} = mapState()
+export default {
+  name: 'CardPlaylist',
+  components: {
+    CardBase
+  },
+  props: {
+    playlist: new Playlist(),
+  },
+  setup() {
+    const { toPlaylistDetail } = useRouterMethods()
+    const { playAll } = usePlaylistMethods()
 
-const props = defineProps({
-  playlist: Object,
-});
-
-const imgUrl = () => props.playlist.imgUrl
-const name = () => props.playlist.name
-
-function routeToDetail() {
-  router.push(`/playlist-detail/${props.playlist.id}`);
+    return {
+      toPlaylistDetail,
+      playAll,
+    }
+  }
 }
 
-// TODO: 歌曲数太多的情况
-async function play() {
-  const detail = await api.playlist.getPlaylistDetail(props.playlist.id)
-  const songs = await api.song.getSongDetail(
-    detail.trackIds.map(item => item.id).join(',')
-  )
-
-  setPlaylist(songs)
-  setCurrentSong(playlist.value[0])
-  setPlayingState(true)
-}
 </script>
 
 <style scoped lang="postcss">
