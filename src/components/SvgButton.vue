@@ -16,7 +16,7 @@ const props = defineProps({
 
 <style scoped lang="postcss">
 .wrapper {
-  @apply flex justify-center items-center cursor-pointer shadow;
+  @apply flex justify-center items-center cursor-pointer;
 }
 
 .box {
