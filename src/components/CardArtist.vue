@@ -1,8 +1,9 @@
 <template>
-  <div class="cursor-pointer space-y-3" @click="router.push(`/artist-detail/${artist.id}`)">
-    <the-image :src="artist.cover + '?param=300y300'" round="full"></the-image>
-    <div class="text-center">
-      <span class="name">{{ artist.name }}</span>
+  <div :class="$style.card" @click="router.push(`/artist-detail/${artist.id}`)">
+    <the-image class="cursor-pointer" :src="artist.cover + '?param=300y300'" round="normal"></the-image>
+    <div :class="$style.title">
+      <span class="cursor-pointer">{{ artist.name }}</span>
+      <span></span>
     </div>
   </div>
 </template>
@@ -23,3 +24,16 @@ export default {
   }
 }
 </script>
+
+<style module>
+.card {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap-sm);
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>

@@ -1,19 +1,18 @@
 <template>
   <n-scrollbar>
-    <div ref="contentRef" class="max-w-screen-lg mx-auto px-5 my-5 space-y-5">
+    <div ref="contentRef" :class="$style.mvWrap">
       <the-section title="最新MV" cols="4">
         <template #cards>
           <card-mv v-for="(item, index) in newMvs" :key="index" :mv="item" />
         </template>
         <template #nav>
-          <nav class="flex col-gap-20 align-center">
-            <div
-              class="nav-item pointer"
+          <nav :class="$style.nav">
+            <span
               v-for="(value, index) in Areas"
               :key="index"
               @click="newMvArea = value"
-              :class="{ 'capsule-button': newMvArea === value }"
-            >{{ value }}</div>
+              :class="[$style.navItem, newMvArea === value ? $style.active : '']"
+            >{{ value }}</span>
           </nav>
         </template>
       </the-section>
@@ -33,14 +32,13 @@
           />
         </template>
         <template #nav>
-          <nav class="flex col-gap-20 align-center">
-            <div
-              class="pointer nav-item"
+          <nav :class="$style.nav">
+            <span
               v-for="(value, index) in Areas"
               :key="index"
               @click="topMvArea = value"
-              :class="{ 'capsule-button': topMvArea === value }"
-            >{{ value }}</div>
+              :class="[$style.navItem, topMvArea === value ? $style.active : '']"
+            >{{ value }}</span>
           </nav>
         </template>
       </the-section>
@@ -52,13 +50,11 @@
 <script setup>
 import TheSection from "@/components/TheSection.vue";
 import CardMv from "@/components/CardMv.vue";
-import { useLoadingBar } from "naive-ui";
 
 import api from "@/api/index.js";
 
 import { onMounted, ref, watchPostEffect } from "vue";
 
-const loadingBar = useLoadingBar();
 const contentRef = ref(null)
 
 const Areas = ["内地", "港台", "欧美", "日本", "韩国"];
@@ -70,8 +66,6 @@ const neteaseMvs = ref([]);
 const topMvs = ref([]);
 
 onMounted(() => {
-  loadingBar.start();
-
   Promise.all([
     api.mv.getNew({
       area: newMvArea.value,
@@ -114,15 +108,33 @@ onMounted(() => {
         })
         .then((response) => {
           newMvs.value = response.data;
-          loadingBar.finish();
         });
     });
   });
 });
 </script>
 
-<style lang="postcss" scoped>
-.nav-active {
-  background-color: green;
+<style module>
+.mvWrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap-lg);
+  max-width: 110rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.nav {
+  display: flex;
+  column-gap: var(--gap-lg);
+  align-items: center;
+}
+.navItem {
+  cursor: pointer;
+}
+.active {
+  width: 2em;
+  background-color: rgba(3, 105, 3, 0.5);
+  border-radius: 9999rem;
+  padding: 0 10px;
 }
 </style>

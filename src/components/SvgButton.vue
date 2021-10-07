@@ -1,7 +1,7 @@
 <template>
-  <div :class="['wrapper', box ? 'box' : '']">
-    <svg-icon :class="triangle ? 'triangle' : ''" :name="name" :size="size" :color="color" />
-  </div>
+  <span :class="[$style.wrap, box ? $style.box : '']">
+    <svg-icon :class="triangle ? $style.triangle : ''" :name="name" :size="size" :color="color" />
+  </span>
 </template>
 
 <script setup>
@@ -14,15 +14,19 @@ const props = defineProps({
 })
 </script>
 
-<style scoped lang="postcss">
-.wrapper {
-  @apply flex justify-center items-center cursor-pointer;
+<style module>
+.wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
-
 .box {
-  @apply bg-gray-200 bg-opacity-90 p-1 rounded-full;
+  background-color: rgba(220, 220, 220, 0.8);
+  padding: .3em;
+  border-radius: 50%;
 }
 .triangle {
-  @apply transform translate-x-px
+  transform: translateX(1.5px);
 }
 </style>

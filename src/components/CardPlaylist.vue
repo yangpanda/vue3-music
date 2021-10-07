@@ -1,9 +1,9 @@
 <template>
   <card-base :title="playlist.name" @click="toPlaylistDetail(playlist.id)">
-    <div class="relative group">
-      <the-image class="cursor-pointer" :src="playlist.imgUrl + '?param=400y400'" round="large" />
+    <div :class="$style.imageBox">
+      <the-image :src="playlist.imgUrl + '?param=400y400'" round="large" />
       <svg-button
-        class="play-btn"
+        :class="$style.btnPlay"
         name="play-triangle"
         color="#ec4141"
         :size="28"
@@ -42,9 +42,20 @@ export default {
 
 </script>
 
-<style scoped lang="postcss">
-.play-btn {
-  @apply absolute right-3 bottom-3;
-  @apply opacity-0 group-hover:opacity-100 transition-opacity duration-500 cursor-pointer;
+<style module>
+.imageBox {
+  position: relative;
+  cursor: pointer;
+}
+.btnPlay {
+  position: absolute;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 500ms;
+}
+.imageBox:hover .btnPlay {
+  opacity: 100;
 }
 </style>

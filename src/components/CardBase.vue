@@ -1,7 +1,7 @@
 <template>
-  <div class="space-y-3">
+  <div :class="$style.card">
     <slot></slot>
-    <div>{{ title }}</div>
+    <div :class="$style.title">{{ title }}</div>
   </div>
 </template>
 
@@ -15,3 +15,14 @@ export default {
   },
 };
 </script>
+
+<style module>
+.card {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap-sm);
+}
+.title {
+  cursor: pointer;
+}
+</style>

@@ -2,6 +2,10 @@ import { useRouter } from "vue-router";
 
 export default function useRouterMethods() {
   const router = useRouter()
+
+  const toHome = () => {
+    router.push('/')
+  }
   
   const toPlaylistDetail = (id) => {
     router.push({
@@ -12,7 +16,27 @@ export default function useRouterMethods() {
     });
   }
 
+  const toArtistDetail = (id) => {
+    router.push({
+      name: 'ArtistDetail',
+      params: {
+        id
+      }
+    })
+  }
+  const toAlbumDetail = (id) => {
+    router.push({
+      name: 'AlbumDetail',
+      params: {
+        id
+      }
+    })
+  }
+
   return {
-    toPlaylistDetail
+    toHome,
+    toPlaylistDetail,
+    toAlbumDetail,
+    toArtistDetail,
   }
 }

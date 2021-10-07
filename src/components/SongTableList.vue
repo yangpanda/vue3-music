@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="list-header">
+    <div :class="$style.header">
       <div class="index"></div>
       <div class="title">音乐标题</div>
       <div class="artist">歌手</div>
@@ -49,9 +49,13 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
-.list-header {
-  @apply grid items-center gap-x-5 px-5 h-10 cursor-default;
+<style module>
+.header {
+  display: grid;
   grid-template-columns: 80px 3fr 2fr 2fr 60px;
+  column-gap: var(--gap-lg);
+  padding: 0 2rem;
+  cursor: default;
+  height: 3.2rem;
 }
 </style>

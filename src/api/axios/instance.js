@@ -2,6 +2,7 @@ import axios from "axios"
 import qs from 'qs'
 
 const config = {
+  // baseURL: 'http://1.117.249.80:3000',
   baseURL: '/api',
   withCredentials: true,
   transformRequest: [

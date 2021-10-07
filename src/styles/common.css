@@ -2,7 +2,6 @@
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1;
   }
@@ -12,12 +11,77 @@
   100% {
     display: block;
   }
-
   0% {
     display: none;
   }
 }
 
+.text-sm {
+  font-size: 1.2rem;
+}
+
+.text-base {
+  font-size: 1.4rem;
+}
+
+.text-md {
+  font-size: 1.6rem;
+}
+
+.text-lg {
+  font-size: 1.8rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .ellipsis {
-  @apply overflow-hidden overflow-ellipsis whitespace-nowrap
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.shadow {
+  box-shadow: 0 0 4px 0 rgba(120, 120, 120, .5);
+}
+
+.rounded-sm {
+  border-radius: 0.2rem;
+}
+
+.rounded {
+  border-radius: 0.4rem;
+}
+
+.rounded-lg {
+  border-radius: 0.6rem;
+}
+
+.rounded-md {
+  border-radius: 0.8rem;
+}
+
+.rounded-full {
+  border-radius: 100%;
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.grid-cols-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.grid-cols-7 {
+  grid-template-columns: repeat(7, 1fr);
 }

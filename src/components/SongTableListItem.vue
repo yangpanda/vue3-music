@@ -1,33 +1,33 @@
 <template>
-  <div class="list-item" @dblclick="play(index)">
-    <div class="front">
-      <span class="w-8 text-right">{{ formatIndex(index + 1) }}</span>
-      <div class="flex items-center" style="cursor: pointer">
+  <div :class="$style.songListItem" @dblclick="play(index)">
+    <div :class="$style.front">
+      <span :class="$style.index">{{ formatIndex(index + 1) }}</span>
+      <div :class="$style.btn">
         <svg-icon v-if="!isLiked(song.id)" name="love" size="20" color="#909399" />
         <svg-icon v-else name="love-selected" size="20" color="#ec4141" />
       </div>
     </div>
-    <div class="ellipsis">{{ song.name }}</div>
-    <div class="ellipsis space-x-3">
+    <div :class="[$style.title, 'ellipsis']">{{ song.name }}</div>
+    <div :class="['ellipsis', $style.artistBox]">
       <a
-        class="ellipsis cursor-pointer text-gray-500 hover:text-black"
+        :class="$style.artist"
         v-for="(artist, index) in song.singer"
         :key="index"
-        @click="router.push(`/artist-detail/${artist.id}`)"
+        @click="toArtistDetail(artist.id)"
       >{{ artist.name }}</a>
     </div>
     <div
-      class="ellipsis cursor-pointer text-gray-500 hover:text-black"
-      @click="router.push(`/album-detail/${song.album.id}`)"
+      :class="[$style.album, 'ellipsis']"
+      @click="toAlbumDetail(song.album.id)"
     >{{ song.album.name }}</div>
-    <div class="text-gray-500">{{ song.duration }}</div>
+    <div>{{ song.duration }}</div>
   </div>
 </template>
 
 <script>
 import * as utils from "@/utils/index.js";
 import { mapMutations } from '@/lib/lib.js';
-import { useRouter } from 'vue-router'
+import useRouterMethods from '@/composables/router-methods';
 
 export default {
   name: "SongTableListItem",
@@ -43,7 +43,7 @@ export default {
   emits: ['play'],
   setup(props, { emit }) {
     const { setCurrentSong, setPlayIndex, setPlayingState } = mapMutations()
-    const router = useRouter()
+    const { toArtistDetail, toAlbumDetail } = useRouterMethods()
 
     const play = () => {
       setCurrentSong(props.song)
@@ -53,7 +53,8 @@ export default {
     }
     return {
       play,
-      router,
+      toArtistDetail,
+      toAlbumDetail,
     }
   },
   methods: {
@@ -70,14 +71,57 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
-.list-item {
-  @apply h-10 grid items-center gap-x-5 px-5;
-  @apply cursor-default odd:bg-gray-100 hover:bg-gray-200;
-  grid-template-columns: 80px 3fr 2fr 2fr 60px;
+<style module>
+.songListItem {
+  height: 4rem;
+  display: grid;
+  grid-template-columns: 8rem 3fr 2fr 2fr 60px;
+  align-items: center;
+  column-gap: var(--gap-lg);
+  padding: 0 2rem;
+  cursor: default;
+  color: rgba(120, 120, 120, 1);
+}
+.songListItem:nth-of-type(odd) {
+  background-color: rgba(220, 220, 220, 0.4);
+}
+.songListItem:hover {
+  background-color: rgba(230, 230, 230, 1);
+}
+.front {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.index {
+  width: 3.2rem;
+  text-align: center;
 }
 
-.front {
-  @apply flex items-center justify-between;
+.title {
+  color: #18191c;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.artistBox {
+  display: flex;
+  align-items: center;
+  column-gap: var(--gap-sm);
+}
+.artist {
+  cursor: pointer;
+}
+.artist:hover {
+  color: #18191c;
+}
+.album {
+  cursor: pointer;
+}
+.album:hover {
+  color: #18191c;
 }
 </style>

@@ -1,78 +1,80 @@
 <template>
-  <n-scrollbar @scroll="handleScroll($event)">
-    <div ref="container" class="relative space-y-5">
-      <div class="flex gap-x-5 p-5">
-        <the-image class :src="detail.imgUrl" size="180" round="large" />
-        <div class="flex flex-col gap-y-3">
-          <div class="flex items-center gap-x-2">
-            <tag>歌单</tag>
-            <div class="text-xl font-semibold">{{ detail.name }}</div>
-          </div>
-          <div class="flex gap-x-2 items-center">
-            <the-image :src="detail.avatarUrl + '?param=30y30'" round="full" size="30" />
-            <div>{{ detail.creatorName }}</div>
-          </div>
-          <div class="space-x-3">
-            <the-button>播放全部</the-button>
-            <the-button>收藏</the-button>
-          </div>
-          <div class="flex gap-x-2 items-center">
-            <div>标签:</div>
-            <div>{{ detail.tags }}</div>
-          </div>
-          <div class="flex gap-x-2">
-            <div class="whitespace-nowrap">简介:</div>
-            <div>{{ detail.description }}</div>
-          </div>
-        </div>
-      </div>
-      <n-tabs default-value="playlist" type="line" :tabs-padding="20">
-        <n-tab-pane name="playlist" tab="歌曲列表">
-          <div>
-            <song-table-list :songs="songs"></song-table-list>
-            <div class="flex justify-center my-5">
-              <n-spin v-if="showSpin" />
-              <div v-else class="text-center">没有更多了......</div>
+  <div :class="$style.playlistDetail">
+    <n-scrollbar @scroll="handleScroll($event)">
+      <div ref="container" :class="$style.wrap">
+        <div :class="$style.header">
+          <the-image class :src="detail.imgUrl" size="180" round="large" />
+          <div :class="$style.info">
+            <div :class="[$style.title, $style.layout]">
+              <n-tag size="small">歌单</n-tag>
+              <div class="text-lg">{{ detail.name }}</div>
+            </div>
+            <div :class="[creator, $style.layout]">
+              <the-image :src="detail.avatarUrl + '?param=26y26'" round="full" size="26" />
+              <div>{{ detail.creatorName }}</div>
+            </div>
+            <div :class="[creator, $style.layout]">
+              <the-button>播放全部</the-button>
+              <the-button>收藏</the-button>
+            </div>
+            <div :class="[creator, $style.layout]">
+              <div>标签:</div>
+              <div>{{ detail.tags }}</div>
+            </div>
+            <div :class="$style.description">
+              <div>简介:</div>
+              <div>{{ detail.description }}</div>
             </div>
           </div>
-        </n-tab-pane>
-        <n-tab-pane name="comment" tab="评论">
-          <div class="px-5">
-            <comment :comments="comments" />
-          </div>
-        </n-tab-pane>
-        <n-tab-pane name="subsciber" tab="收藏者">
-          <div class="p-5">
-            <n-result
-              v-if="subscribers.length === 0"
-              status="info"
-              title="貌似，啥也没有！"
-              description="生活总归带点荒谬"
-              size="huge"
-            ></n-result>
-            <div v-else class="grid md:grid-cols-2 xl:grid-cols-4 gap-y-4">
-              <div
-                class="flex gap-x-2 items-center"
-                v-for="(item, index) in subscribers"
-                :key="index"
-              >
-                <the-image round="full" size="88" :src="item.avatarUrl + '?param=100y100'" />
-                <div class="flex flex-col w-0 flex-grow gap-y-2">
-                  <div
-                    class="overflow-hidden overflow-ellipsis whitespace-nowrap"
-                  >{{ item.nickname }}</div>
-                  <div
-                    class="overflow-hidden overflow-ellipsis whitespace-nowrap"
-                  >{{ item.signature }}</div>
+        </div>
+        <n-tabs default-value="playlist" type="line" :tabs-padding="20">
+          <n-tab-pane name="playlist" tab="歌曲列表">
+            <div>
+              <song-table-list :songs="songs"></song-table-list>
+              <div :class="$style.loading">
+                <n-spin v-if="showSpin" />
+                <span v-else class>没有更多了......</span>
+              </div>
+            </div>
+          </n-tab-pane>
+          <n-tab-pane name="comment" tab="评论">
+            <div :class="$style.comment">
+              <comment-item v-for="item in comments" :comment="item"></comment-item>
+            </div>
+          </n-tab-pane>
+          <n-tab-pane name="subsciber" tab="收藏者">
+            <div class="">
+              <n-result
+                v-if="subscribers.length === 0"
+                status="info"
+                title="貌似，啥也没有！"
+                description="生活总归带点荒谬"
+                size="huge"
+              ></n-result>
+              <div v-else :class="$style.subscriberBox">
+                <div
+                  :class="$style.cardSubscriber"
+                  v-for="(item, index) in subscribers"
+                  :key="index"
+                >
+                  <the-image round="full" size="88" :src="item.avatarUrl + '?param=100y100'" />
+                  <div :class="$style.subscriberInfo">
+                    <div
+                      class="ellipsis"
+                    >{{ item.nickname }}</div>
+                    <div
+                      class="ellipsis"
+                    >{{ item.signature }}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </n-tab-pane>
-      </n-tabs>
-      <n-back-top v-if="container" :right="20" :bottom="100" :to="container"></n-back-top>
-    </div>
-  </n-scrollbar>
+          </n-tab-pane>
+        </n-tabs>
+        <n-back-top v-if="container" :right="20" :bottom="100" :to="container"></n-back-top>
+      </div>
+    </n-scrollbar>
+  </div>
 </template>
 
 <script setup>
@@ -82,6 +84,7 @@ import Song from "../model/Song";
 import _ from 'lodash'
 import { ref, onMounted, onUnmounted } from "vue";
 import {
+  NTag,
   NSpin,
   NTabs,
   NTabPane,
@@ -89,9 +92,8 @@ import {
   NScrollbar,
 } from "naive-ui";
 import SongTableList from "@/components/SongTableList.vue";
-import Tag from "@/components/Common/Tag.vue"
 import TheButton from "@/components/Common/Button/TheButton.vue"
-import Comment from "../components/Comment.vue";
+import CommentItem from "../components/CommentItem.vue";
 
 const props = defineProps({
   id: String,
@@ -168,3 +170,86 @@ onUnmounted(() => {
   handleScroll.cancel()
 })
 </script>
+
+<style module>
+.playlistDetail {
+  width: 100%;
+  height: 100%;
+}
+.wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap-lg);
+}
+.header {
+  display: flex;
+  padding: 2rem 2rem 0 2rem;
+  column-gap: var(--gap-lg);
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap-sm);
+}
+.layout {
+  display: flex;
+  align-items: center;
+  column-gap: var(--gap-sm);
+}
+.description {
+  display: flex;
+  column-gap: var(--gap-sm);
+}
+.title {
+}
+
+.creator {
+}
+
+.btns {
+}
+
+.tags {
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap-lg);
+  padding: 0 4rem;
+}
+.subscriberBox {
+  display: grid;
+  row-gap: var(--gap-lg);
+  column-gap: var(--gap-lg);
+  padding: 2rem;
+}
+@media screen and (min-width: 900px) {
+  .subscriberBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (min-width: 1200px) {
+  .subscriberBox {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.cardSubscriber {
+  display: flex;
+  column-gap: var(--gap-sm);
+  align-items: center;
+}
+.subscriberInfo {
+  width: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap-sm);
+}
+</style>
