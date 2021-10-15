@@ -1,6 +1,6 @@
 <template>
   <n-scrollbar>
-    <div class="py-2">
+    <div>
       <menu-item
         v-for="(item, index) in staticMenuOption"
         :key="index"
@@ -45,10 +45,13 @@ import MenuGroup from "@/components/menu/MenuGroup.vue";
 import SubMenu from "@/components/menu/SubMenu.vue";
 import { NScrollbar } from "naive-ui"
 
-import { ref, computed } from "vue";
-import { mapState } from "@/lib/lib.js";
+import { ref, computed, watchEffect, nextTick } from "vue";
+import { mapState, mapMutations } from "@/lib/lib.js";
+import api from '@/api/index.js'
+import Playlist from '@/model/Playlist.js'
 
-const { userinfo, userPlaylists } = mapState()
+const { userinfo, userPlaylists, logined } = mapState()
+const { setUserPlaylists } = mapMutations()
 
 const staticMenuOption = [{
   path: "/",
@@ -76,24 +79,25 @@ const staticPersonalMenuOption = {
   label: "我的音乐",
   type: "group",
   key: "personal",
-  children: [{
-    path: "/history",
-    label: "最近播放",
-    key: "history",
-    iconName: "history",
-  },
-  {
-    path: "/radio",
-    label: "我的电台",
-    key: "history",
-    iconName: "radio",
-  },
-  {
-    path: "/collections",
-    label: "我的收藏",
-    key: "collection",
-    iconName: "collections",
-  },
+  children: [
+    {
+      path: "/history",
+      label: "最近播放",
+      key: "history",
+      iconName: "history",
+    },
+    {
+      path: "/radio",
+      label: "我的电台",
+      key: "history",
+      iconName: "radio",
+    },
+    {
+      path: "/collections",
+      label: "我的收藏",
+      key: "collection",
+      iconName: "collections",
+    },
   ],
 };
 
@@ -106,7 +110,7 @@ function CreateMenuOption(playlist) {
 }
 
 const createdPlaylists = computed(() => {
-  if (userPlaylists.value != null) {
+  if (userPlaylists.value) {
     const arr = userPlaylists.value.filter(item => item.creator.userId === userinfo.value.id)
     return arr.map(item => CreateMenuOption(item))
   } else {
@@ -133,7 +137,26 @@ const favoredPlaylistsOption = ref({
   key: "favored-playlists",
   children: favoredPlaylists,
 });
+
+const getUserPlaylists = () => {
+  api.playlist.getUserPlaylists(userinfo.value.id)
+    .then(response => {
+      if (response.code === 200) {
+        setUserPlaylists(response.playlist.map(item => new Playlist(item)))
+      }
+    })
+}
+
+watchEffect(
+  () => {
+    if (logined.value) {
+      getUserPlaylists()
+    } else {
+      setUserPlaylists(null)
+    }
+  }
+)
 </script>
 
-<style scoped>
+<style module>
 </style>

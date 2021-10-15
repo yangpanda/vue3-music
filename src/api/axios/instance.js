@@ -25,6 +25,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     if (response.status === 200) {
+      // console.log(response)
       return response.data
     } else if (response.status === 301) {
       console.log('出错了，可能是没登录')

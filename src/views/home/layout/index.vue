@@ -84,13 +84,13 @@ export default {
   left: 0;
   bottom: 0;
   background-color: white;
-  width: 0;
+  width: 100%;
   height: 0;
   transition-property: all;
-  transition-duration: 500ms;
+  transition-duration: 1000ms;
 }
 .active {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
 }
 

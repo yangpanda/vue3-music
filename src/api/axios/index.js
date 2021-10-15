@@ -6,9 +6,10 @@ export default {
       instance.get(url, config)
         .then(response => {
           // 接口不一致 login/status 返回数据最外层是 data，code 在 data 中
-          if (response.code === 200 || response.data.code === 200) {
+          // if (response.code === 200) {
+            // if (response.code === 200 || response.data.code === 200) {
             resolve(response)
-          }
+          // }
         })
         .catch(error => {
           reject(error)

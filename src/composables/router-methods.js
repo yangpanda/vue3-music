@@ -6,6 +6,10 @@ export default function useRouterMethods() {
   const toHome = () => {
     router.push('/')
   }
+
+  const toLogin = () => {
+    router.push('/login')
+  }
   
   const toPlaylistDetail = (id) => {
     router.push({
@@ -35,6 +39,7 @@ export default function useRouterMethods() {
 
   return {
     toHome,
+    toLogin,
     toPlaylistDetail,
     toAlbumDetail,
     toArtistDetail,
