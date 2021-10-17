@@ -45,6 +45,12 @@ const routes = [
             component: () => import('@/views/Mv/index.vue'),
             children: [
             ]
+          },
+          {
+            path: '/search',
+            name: 'SearchPage',
+            props: true,
+            component: () => import('@/views/home/layout/search/index.vue')
           }
         ]
       },

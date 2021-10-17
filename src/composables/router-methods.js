@@ -20,6 +20,15 @@ export default function useRouterMethods() {
     });
   }
 
+  const toSearch = (words) => {
+    router.push({
+      name: 'SearchPage',
+      params: {
+        words
+      }
+    })
+  }
+
   const toArtistDetail = (id) => {
     router.push({
       name: 'ArtistDetail',
@@ -43,5 +52,6 @@ export default function useRouterMethods() {
     toPlaylistDetail,
     toAlbumDetail,
     toArtistDetail,
+    toSearch,
   }
 }
