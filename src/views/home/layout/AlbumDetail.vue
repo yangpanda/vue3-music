@@ -32,7 +32,7 @@
 import * as song from "@/api/service/song.js";
 import * as albumApi from "@/api/service/album.js";
 
-import Song from "../model/Song";
+import Song from "../../../model/Song";
 
 import SongTableList from "@/components/SongTableList.vue";
 import {
@@ -40,10 +40,6 @@ import {
   NSpin,
   NTabs,
   NTabPane,
-  NAvatar,
-  NGrid,
-  NGridItem,
-  NResult,
 } from "naive-ui";
 
 import { ref, onMounted } from "@vue/runtime-core";

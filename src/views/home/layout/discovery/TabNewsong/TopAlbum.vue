@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { useLoadingBar, NGrid, NGridItem } from "naive-ui";
+import { NGrid, NGridItem } from "naive-ui";
 
 import { ref, watchEffect, reactive } from "@vue/runtime-core";
 import { useRouter } from "vue-router"

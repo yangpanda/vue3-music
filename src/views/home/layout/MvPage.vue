@@ -82,10 +82,8 @@ onMounted(() => {
     [newMvs.value, neteaseMvs.value, topMvs.value] = results.map(
       (item) => item.data
     );
-    loadingBar.finish();
 
     watchPostEffect(() => {
-      loadingBar.start();
 
       api.mv
         .getTop({
@@ -94,13 +92,10 @@ onMounted(() => {
         })
         .then((response) => {
           topMvs.value = response.data;
-          loadingBar.finish();
         });
     });
 
     watchPostEffect(() => {
-      loadingBar.start();
-
       api.mv
         .getNew({
           area: newMvArea.value,

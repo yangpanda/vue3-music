@@ -30,12 +30,11 @@
         </div>
       </n-popover>
       <div :class="$style.navRight">
-        <the-tag
+        <span
           v-for="(tag, index) in hotTags"
           :key="index"
-          :checked="cat.name === tag.name"
           @click="cat = tag"
-        >{{ tag.name }}</the-tag>
+        >{{ tag.name }}</span>
       </div>
     </div>
     <div :class="[$style.content, loading ? $style.loading : '']">
@@ -48,8 +47,6 @@
 </template>
 
 <script setup>
-import TheTag from '@/components/TheTag.vue'
-
 import api from "@/api/index.js";
 import Playlist from "@/model/Playlist.js";
 import { ref, watchPostEffect, onMounted, inject } from "vue";

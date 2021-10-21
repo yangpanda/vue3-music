@@ -19,12 +19,7 @@
             </div>
           </template>
           <div class="dropdown">
-            <div>
-              <div></div>
-              <n-button>签到</n-button>
-            </div>
-            <div>个人信息设置</div>
-            <div @click="logout">退出登录</div>
+            <n-button block @click="logout">退出登录</n-button>
           </div>
         </n-popover>
       </div>
@@ -33,8 +28,8 @@
 </template>
 
 <script>
-import Login from "@/components/Login.vue";
 import SearchBar from "@/components/SearchBar.vue";
+import { NButton, NAvatar, NPopover } from 'naive-ui'
 import useRouterMethods from '@/composables/router-methods.js'
 import { mapState, mapMutations } from "@/lib/lib.js"
 import { onMounted } from "vue";
@@ -44,8 +39,10 @@ import User from '@/model/User.js'
 export default {
   name: 'AppHeader',
   components: {
-    Login,
     SearchBar,
+    NButton,
+    NAvatar,
+    NPopover,
   },
   setup() {
     const { userinfo, logined } = mapState()
@@ -57,6 +54,7 @@ export default {
 
     const checkLoginStatus = () => {
       api.user.loginStatus().then(res => {
+        console.log(res)
         if (res.data.profile && res.data.account) {
           setUserinfo(new User(res.data.profile))
           setLogined(true)

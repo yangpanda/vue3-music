@@ -77,8 +77,8 @@
 
 <script setup>
 import api from "@/api/index.js"
-import Playlist from "../model/Playlist";
-import Song from "../model/Song";
+import Playlist from "../../../model/Playlist";
+import Song from "../../../model/Song";
 import _ from 'lodash'
 import { ref, onMounted, onUnmounted } from "vue";
 import {
@@ -91,7 +91,7 @@ import {
   NScrollbar,
 } from "naive-ui";
 import SongTableList from "@/components/SongTableList.vue";
-import CommentItem from "../components/CommentItem.vue";
+import CommentItem from "../../../components/CommentItem.vue";
 
 const props = defineProps({
   id: String,
