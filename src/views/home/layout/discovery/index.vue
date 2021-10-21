@@ -1,17 +1,12 @@
 <template>
 	<div :class="$style.discovery">
-		<div :class="$style.tabBox">
-			<n-tag
-				checkable
-				v-for="tab in tabs"
-				@click="currentTab = tab"
-				:checked="currentTab === tab"
-			>{{ tab.name }}</n-tag>
+		<div :class="$style.nav">
+			<n-menu @update:value="handleUpdateValue" mode="horizontal" :options="menuOptions" />
 		</div>
 		<div :class="$style.content">
 			<n-scrollbar ref="scrollbarRef">
-				<div :class="$style.componentBox">
-					<component :is="currentTab.component"></component>
+				<div :class="$style.viewBox">
+					<router-view></router-view>
 				</div>
 				<n-back-top v-if="scrollbarRef" :right="20" :bottom="100" :to="backtopRef"></n-back-top>
 			</n-scrollbar>
@@ -21,50 +16,86 @@
 </template>
 
 <script>
-import { NScrollbar, NBackTop, NTag } from 'naive-ui'
-import TabPersonal from './TabPersonal.vue'
-import TabPlaylist from './TabPlaylist.vue'
-import TabArtist from './TabArtist.vue'
-import TabRank from './TabRank.vue'
-import TabNewsong from './TabNewsong/index.vue'
-import { ref, provide, shallowRef } from 'vue'
+import { NScrollbar, NBackTop, NMenu } from 'naive-ui'
+import { ref, provide, h, resolveComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
-const tabs = [
+const menuOptions = [
 	{
-		name: '个性推荐',
-		component: shallowRef(TabPersonal),
+		key: 'Personal',
+		label: () =>
+			h(
+				resolveComponent('router-link'),
+				{
+					to: {
+						name: 'Personal',
+					}
+				},
+				{ default: () => '个性推荐' }
+			),
 	},
 	{
-		name: '歌单',
-		component: TabPlaylist,
+		key: 'Playlist',
+		label: () =>
+			h(
+				resolveComponent('router-link'),
+				{
+					to: {
+						name: 'Playlist',
+					}
+				},
+				{ default: () => '歌单' }
+			),
 	},
 	{
-		name: '排行榜',
-		component: TabRank,
+		key: 'Rank',
+		label: () =>
+			h(
+				resolveComponent('router-link'),
+				{
+					to: {
+						name: 'Rank',
+					}
+				},
+				{ default: () => '排行榜' }
+			),
 	},
 	{
-		name: '歌手',
-		component: TabArtist,
+		key: 'Artist',
+		label: () =>
+			h(
+				resolveComponent('router-link'),
+				{
+					to: {
+						name: 'Artist',
+					}
+				},
+				{ default: () => '歌手' }
+			),
 	},
 	{
-		name: '最新音乐',
-		component: TabNewsong,
-	}
+		key: 'Newsong',
+		label: () =>
+			h(
+				resolveComponent('router-link'),
+				{
+					to: {
+						name: 'Newsong',
+					}
+				},
+				{ default: () => '最新音乐' }
+			),
+	},
 ]
 
 export default {
 	components: {
 		NScrollbar,
 		NBackTop,
-		NTag,
-	},
-	data() {
-		return {
-			tabs,
-			currentTab: tabs[0],
-		}
+		NMenu,
 	},
 	setup() {
+		const router = useRouter()
 		const scrollbarRef = ref(null)
 		const backtopRef = ref(null)
 
@@ -77,9 +108,17 @@ export default {
 				})
 		)
 
+		const handleUpdateValue = (key) => {
+			router.push({
+				name: key,
+			})
+		}
+
 		return {
 			scrollbarRef,
 			backtopRef,
+			menuOptions,
+			handleUpdateValue,
 		}
 	}
 }
@@ -89,7 +128,11 @@ export default {
 .discovery {
 	width: 100%;
 	height: 100%;
-	padding: 2rem 0;
+	padding: 0 0 2rem 0;
+}
+.nav {
+	display: flex;
+	justify-content: center;
 }
 .tabBox {
 	display: flex;
@@ -101,7 +144,7 @@ export default {
 .content {
 	height: calc(100% - 3rem);
 }
-.componentBox {
+.viewBox {
 	max-width: 110rem;
 	margin: 0 auto;
 	padding: 0 2rem 2rem;
