@@ -47,13 +47,7 @@
           <svg-button v-else="muted" name="mute" />
         </div>
         <div :class="$style.volumeSlider">
-          <n-slider
-            :tooltip="false"
-            :min="0"
-            :max="1"
-            :step="0.1"
-            v-model:value="volume"
-          />
+          <n-slider :tooltip="false" :min="0" :max="1" :step="0.1" v-model:value="volume" />
         </div>
       </div>
       <svg-button name="menu" @click="showPlaylist = !showPlaylist" />

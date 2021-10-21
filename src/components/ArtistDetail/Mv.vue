@@ -1,5 +1,5 @@
 <template>
-  <div class="grid lg:grid-cols-3 xl:grid-cols-5 gap-5 mx-auto">
+  <div :class="$style.mvCardBox">
     <card-mv v-for="item in mvs" :mv="item"></card-mv>
   </div>
 </template>
@@ -32,3 +32,12 @@ export default {
   }
 }
 </script>
+
+<style module>
+.mvCardBox {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: var(--gap-lg);
+  column-gap: var(--gap-lg);
+}
+</style>

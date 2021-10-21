@@ -15,6 +15,34 @@ const routes = [
             path: '/discovery',
             name: 'Discovery',
             component: () => import('@/views/home/layout/discovery/index.vue'),
+            redirect: '/discovery/personal',
+            children: [
+              {
+                path: '/discovery/personal',
+                name: 'Personal',
+                component: () => import('@/views/home/layout/discovery/TabPersonal.vue')
+              },
+              {
+                path: '/discovery/playlist',
+                name: 'Playlist',
+                component: () => import('@/views/home/layout/discovery/TabPlaylist.vue')
+              },
+              {
+                path: '/discovery/rank',
+                name: 'Rank',
+                component: () => import('@/views/home/layout/discovery/TabRank.vue')
+              },
+              {
+                path: '/discovery/artist',
+                name: 'Artist',
+                component: () => import('@/views/home/layout/discovery/TabArtist.vue')
+              },
+              {
+                path: '/discovery/newsong',
+                name: 'Newsong',
+                component: () => import('@/views/home/layout/discovery/TabNewsong/index.vue')
+              },
+            ]
           },
           {
             path: '/playlist-detail/:id',

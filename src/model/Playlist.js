@@ -9,7 +9,8 @@ class Playlist {
     this.trackIds = data ? data.trackIds : []
     this.tags = data ? data.tags : []
     this.description = data ? data.description : ''
-    this.creator = data ? data.creator : {}
+    this.creator = data ? data.creator : {},
+    this.subscribed = data ? data.subscribed : null
   }
 
   get imgUrl() {

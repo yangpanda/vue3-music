@@ -46,3 +46,12 @@ export const getPlaylistCat = () =>
 
 export const getTopAlbum = (params) =>
   request.get(`/top/album`, {params})
+
+// t : 类型,1:收藏,2:取消收藏
+export const subscribe = (t, id) =>
+  request.get('/playlist/subscribe', {
+    params: {
+      t,
+      id,
+    }
+  })

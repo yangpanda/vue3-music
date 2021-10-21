@@ -9,17 +9,19 @@
               <n-tag size="small">歌单</n-tag>
               <div class="text-lg">{{ detail.name }}</div>
             </div>
-            <div :class="[creator, $style.layout]">
+            <div :class="[$style.layout]">
               <the-image :src="detail.avatarUrl + '?param=26y26'" round="full" size="26" />
               <div>{{ detail.creatorName }}</div>
             </div>
-            <div :class="[creator, $style.layout]">
-              <the-button>播放全部</the-button>
-              <the-button>收藏</the-button>
+            <div :class="[$style.layout]">
+              <n-button>播放全部</n-button>
+              <n-button @click="subscribe">收藏</n-button>
             </div>
-            <div :class="[creator, $style.layout]">
+            <div :class="[$style.layout]">
               <div>标签:</div>
-              <div>{{ detail.tags }}</div>
+              <div>
+                <span v-for="tag in detail.tags">{{ tag }}</span>
+              </div>
             </div>
             <div :class="$style.description">
               <div>简介:</div>
@@ -43,7 +45,7 @@
             </div>
           </n-tab-pane>
           <n-tab-pane name="subsciber" tab="收藏者">
-            <div class="">
+            <div class>
               <n-result
                 v-if="subscribers.length === 0"
                 status="info"
@@ -59,12 +61,8 @@
                 >
                   <the-image round="full" size="88" :src="item.avatarUrl + '?param=100y100'" />
                   <div :class="$style.subscriberInfo">
-                    <div
-                      class="ellipsis"
-                    >{{ item.nickname }}</div>
-                    <div
-                      class="ellipsis"
-                    >{{ item.signature }}</div>
+                    <div class="ellipsis">{{ item.nickname }}</div>
+                    <div class="ellipsis">{{ item.signature }}</div>
                   </div>
                 </div>
               </div>
@@ -89,10 +87,10 @@ import {
   NTabs,
   NTabPane,
   NResult,
+  NButton,
   NScrollbar,
 } from "naive-ui";
 import SongTableList from "@/components/SongTableList.vue";
-import TheButton from "@/components/Common/Button/TheButton.vue"
 import CommentItem from "../components/CommentItem.vue";
 
 const props = defineProps({
@@ -120,6 +118,7 @@ const getSongs = async (ids) => {
 const getPlaylistDetail = async (id) => {
   api.playlist.getPlaylistDetail(id).then((res) => {
     if (res.code === 200) {
+      console.log(res)
       detail.value = new Playlist(res.playlist);
       subscribers.value = res.playlist.subscribers;
       const ids = detail.value.trackIds.map((item) => item.id);
@@ -137,6 +136,15 @@ const getComment = async (id) => {
       comments.value = response.comments
     }
   })
+}
+
+const subscribe = () => {
+  let t = detail.value.subscribed ? 2 : 1
+  api.playlist.subscribe(t, props.id).then(
+    res => {
+      console.log(res)
+    }
+  )
 }
 
 
@@ -200,17 +208,6 @@ onUnmounted(() => {
 .description {
   display: flex;
   column-gap: var(--gap-sm);
-}
-.title {
-}
-
-.creator {
-}
-
-.btns {
-}
-
-.tags {
 }
 .loading {
   display: flex;
