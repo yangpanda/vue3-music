@@ -6,7 +6,7 @@
         <the-sidebar></the-sidebar>
       </div>
       <div :class="$style.content">
-        <router-view :key="$route.fullPath"></router-view>
+        <router-view></router-view>
       </div>
       <div :class="[$style.playingPage, showPlayingPage ? $style.active : '']">
         <playing-page></playing-page>
