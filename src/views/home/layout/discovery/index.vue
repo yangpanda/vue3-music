@@ -1,7 +1,7 @@
 <template>
 	<div :class="$style.discovery">
 		<div :class="$style.nav">
-			<n-menu @update:value="handleUpdateValue" mode="horizontal" :options="menuOptions" />
+			<n-menu default-value="personal" mode="horizontal" :options="menuOptions" />
 		</div>
 		<div :class="$style.content">
 			<n-scrollbar ref="scrollbarRef">
@@ -17,15 +17,16 @@
 
 <script>
 import { NScrollbar, NBackTop, NMenu } from 'naive-ui'
-import { ref, provide, h, resolveComponent } from 'vue'
+import { ref, provide, h } from 'vue'
 import { useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 
 const menuOptions = [
 	{
-		key: 'Personal',
+		key: 'personal',
 		label: () =>
 			h(
-				resolveComponent('router-link'),
+				RouterLink,
 				{
 					to: {
 						name: 'Personal',
@@ -35,10 +36,10 @@ const menuOptions = [
 			),
 	},
 	{
-		key: 'Playlist',
+		key: 'playlist',
 		label: () =>
 			h(
-				resolveComponent('router-link'),
+				RouterLink,
 				{
 					to: {
 						name: 'Playlist',
@@ -51,7 +52,7 @@ const menuOptions = [
 		key: 'Rank',
 		label: () =>
 			h(
-				resolveComponent('router-link'),
+				RouterLink,
 				{
 					to: {
 						name: 'Rank',
@@ -64,7 +65,7 @@ const menuOptions = [
 		key: 'Artist',
 		label: () =>
 			h(
-				resolveComponent('router-link'),
+				RouterLink,
 				{
 					to: {
 						name: 'Artist',
@@ -77,7 +78,7 @@ const menuOptions = [
 		key: 'Newsong',
 		label: () =>
 			h(
-				resolveComponent('router-link'),
+				RouterLink,
 				{
 					to: {
 						name: 'Newsong',
@@ -108,17 +109,10 @@ export default {
 				})
 		)
 
-		const handleUpdateValue = (key) => {
-			router.push({
-				name: key,
-			})
-		}
-
 		return {
 			scrollbarRef,
 			backtopRef,
 			menuOptions,
-			handleUpdateValue,
 		}
 	}
 }
@@ -132,14 +126,9 @@ export default {
 }
 .nav {
 	display: flex;
+	align-items: center;
 	justify-content: center;
-}
-.tabBox {
-	display: flex;
-	justify-content: center;
-	column-gap: var(--gap-lg);
-	height: 3rem;
-	margin-bottom: 2rem;
+	height: 5rem;
 }
 .content {
 	height: calc(100% - 3rem);
