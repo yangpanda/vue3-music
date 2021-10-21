@@ -1,8 +1,10 @@
 <template>
   <div :class="$style.headerWrap">
     <div :class="$style.homeBtn" @click="toHome">
-      <svg-icon name="logo" color="#ec4141" />
-      <div>网易云音乐</div>
+      <svg width="32" height="32">
+        <use xlink:href="#icon-logo" />
+      </svg>
+      <div>蜗牛音乐</div>
     </div>
     <search-bar />
     <div>
