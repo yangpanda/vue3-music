@@ -6,6 +6,7 @@ import * as mv from './mv.js'
 import * as playlist from './playlist.js'
 import * as song from './song.js'
 import * as user from './user.js'
+import * as search from './search.js'
 
 export default {
 	album,
@@ -16,4 +17,5 @@ export default {
 	playlist,
 	song,
 	user,
+	search,
 }
