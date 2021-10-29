@@ -6,7 +6,7 @@
         <the-sidebar></the-sidebar>
       </div>
       <div :class="$style.content">
-        <router-view></router-view>
+        <router-view :key="key"></router-view>
       </div>
       <div :class="[$style.playingPage, showPlayingPage ? $style.active : '']">
         <playing-page></playing-page>
@@ -36,6 +36,13 @@ export default {
 
     return {
       showPlayingPage
+    }
+  },
+  computed: {
+    key() {
+      if (!(this.$route.path.indexOf('discovery') != -1)) {
+        return this.$route.path
+      }
     }
   }
 }
