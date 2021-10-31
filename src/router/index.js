@@ -45,6 +45,16 @@ const routes = [
             ]
           },
           {
+            path: '/history',
+            name: 'History',
+            component: () => import('@/views/home/layout/PlayHistory.vue'),
+          },
+          {
+            path: '/subscription',
+            name: 'Subscription',
+            component: () => import('@/views/home/layout/subscription/index.vue'),
+          },
+          {
             path: '/playlist-detail/:id',
             name: 'PlaylistDetail',
             props: true,

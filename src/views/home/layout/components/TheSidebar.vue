@@ -64,11 +64,6 @@ const staticMenuOption = [{
   key: "video",
 },
 {
-  path: "/friend",
-  label: "朋友",
-  key: "friend",
-},
-{
   path: "/fm",
   label: "私人FM",
   key: "fm",
@@ -87,15 +82,9 @@ const staticPersonalMenuOption = {
       iconName: "history",
     },
     {
-      path: "/radio",
-      label: "我的电台",
-      key: "history",
-      iconName: "radio",
-    },
-    {
-      path: "/collections",
+      path: "/subscription",
       label: "我的收藏",
-      key: "collection",
+      key: "subscription",
       iconName: "collections",
     },
   ],

@@ -65,3 +65,11 @@ export const qrCheck = (key) => {
     }
   })
 }
+
+export const getPlayHistory = (uid) =>
+  request.get('/user/record', {
+    params: {
+      uid,
+      type: 1,
+    }
+  })

@@ -45,6 +45,14 @@ export default function useRouterMethods() {
       }
     })
   }
+  const toMvDetail = (id) => {
+    router.push({
+      name: 'MvDetail',
+      params: {
+        id
+      }
+    })
+  }
 
   return {
     toHome,
@@ -53,5 +61,6 @@ export default function useRouterMethods() {
     toAlbumDetail,
     toArtistDetail,
     toSearch,
+    toMvDetail,
   }
 }
