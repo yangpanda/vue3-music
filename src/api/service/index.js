@@ -8,6 +8,7 @@ import * as song from './song.js'
 import * as user from './user.js'
 import * as search from './search.js'
 import * as subscription from './subscription.js'
+import * as fm from './fm.js'
 
 export default {
 	album,
@@ -20,4 +21,5 @@ export default {
 	user,
 	search,
 	subscription,
+	fm,
 }

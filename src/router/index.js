@@ -45,6 +45,11 @@ const routes = [
             ]
           },
           {
+            path: '/fm',
+            name: 'Fm',
+            component: () => import('@/views/home/layout/PersonalFm.vue')
+          },
+          {
             path: '/history',
             name: 'History',
             component: () => import('@/views/home/layout/PlayHistory.vue'),
