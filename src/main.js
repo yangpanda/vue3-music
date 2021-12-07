@@ -13,6 +13,7 @@ import "@/styles/common.css";
 import SvgIcon from "@/components/SvgIcon.vue";
 import TheImage from "@/components/TheImage.vue"
 import SvgButton from "@/components/SvgButton.vue"
+import TheLink from '@/components/TheLink.vue'
 
 const app = createApp(App);
 
@@ -20,6 +21,7 @@ const myComponents = {
   'SvgIcon': SvgIcon,
   'TheImage': TheImage,
   'SvgButton': SvgButton,
+  'TheLink': TheLink,
 }
 
 for (let key in myComponents) {

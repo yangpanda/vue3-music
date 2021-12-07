@@ -69,7 +69,7 @@ const routes = [
             path: '/album-detail/:id',
             name: 'AlbumDetail',
             props: true,
-            component: () => import('@/views/home/layout/AlbumDetail.vue'),
+            component: () => import('@/views/home/layout/albumDetail/index.vue'),
           },
           {
             path: '/artist-detail/:id',

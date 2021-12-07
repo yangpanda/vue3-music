@@ -14,3 +14,12 @@ export const ofPlaylist = ({
     offset = 0,
     before,
 }) => request.get(`/comment/playlist`, { params: { id, limit, offset, before } })
+
+export const ofAlbum = (id, limit = 20, offset) =>
+    request.get('/comment/album', {
+        params: {
+            id,
+            limit,
+            offset
+        }
+    })

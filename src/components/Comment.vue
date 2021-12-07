@@ -1,5 +1,6 @@
 <template>
   <div class="divide-y divide-gray-200">
+    <h4>精彩评论</h4>
     <comment-item
       v-for="(comment, index) in comments"
       :key="index"
