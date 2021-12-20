@@ -7,7 +7,7 @@
       <div>蜗牛音乐</div>
     </div>
     <search-bar />
-    <div>
+    <div :class="$style.right">
       <n-button text v-if="!logined" @click="toLogin">登录</n-button>
       <div v-else :class="$style.userInfo">
         <n-avatar :size="30" round :src="userinfo.avatar" />
@@ -23,6 +23,9 @@
           </div>
         </n-popover>
       </div>
+      <a :class="$style.link" href="https://github.com/yangpanda/vue3-music" target="_blank">
+        <svg-icon name="github" size="32"></svg-icon>
+      </a>
     </div>
   </div>
 </template>
@@ -35,6 +38,7 @@ import { mapState, mapMutations } from '@/lib/lib.js';
 import { onMounted } from 'vue';
 import api from '@/api/index.js';
 import User from '@/model/User.js';
+import SvgIcon from '../../../components/SvgIcon.vue';
 
 export default {
   name: 'AppHeader',
@@ -43,6 +47,7 @@ export default {
     NButton,
     NAvatar,
     NPopover,
+    SvgIcon,
   },
   setup() {
     const { userinfo, logined } = mapState();
@@ -110,5 +115,16 @@ export default {
   align-items: center;
   column-gap: var(--gap-sm);
   cursor: pointer;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
