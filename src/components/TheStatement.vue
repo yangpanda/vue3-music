@@ -13,7 +13,8 @@
 
 <script>
 import { NModal } from 'naive-ui';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import cookie from '@/utils/cookie';
 
 export default {
   name: 'TheStatement',
@@ -24,24 +25,22 @@ export default {
     const showModal = ref(false);
     const statement = '本站只用于学习交流，不用于任何牟利活动。';
 
-    setTimeout(() => {
-      showModal.value = true;
-    }, 2000);
+    const setShowModal = () => {
+      const date = new Date(Date.now());
+      date.setDate(date.getDate() + 1);
 
-    // const isPc = () => {
-    //   const platformRegx = /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
-    //   const useragent = navigator.userAgent
-    //   if (useragent.match(platformRegx)) {
-    //     return false
-    //   } else {
-    //     return true
-    //   }
-    // }
+      const name = 'statement';
+      if (!cookie.get(name)) {
+        cookie.set(name, 'showed', { expires: date });
+        setTimeout(() => (showModal.value = true), 2500);
+      }
+    };
+
+    onMounted(() => setShowModal());
 
     return {
       showModal,
       statement,
-      // isPc
     };
   },
 };
