@@ -7,7 +7,8 @@
           v-for="(type, name) in Object.fromEntries(songTypeMap)"
           :key="type"
           @click="songType = type"
-        >{{ name }}</n-button>
+          >{{ name }}</n-button
+        >
       </div>
       <n-button-group>
         <n-button>播放全部</n-button>
@@ -31,30 +32,25 @@
 </template>
 
 <script setup>
-import {
-  NButtonGroup,
-  NButton,
-  NIcon,
-} from "naive-ui";
+import { NButtonGroup, NButton, NIcon } from 'naive-ui';
 
-import { formatDuration } from "@/utils/index.js";
+import { formatDuration } from '@/utils/index.js';
 
-import * as song from "@/api/service/song.js";
-import { ref, watchEffect } from "@vue/runtime-core";
-import { mapMutations } from "@/lib/lib.js";
+import * as song from '@/api/service/song.js';
+import { ref, watchEffect } from '@vue/runtime-core';
+import { mapMutations } from '@/lib/lib.js';
 
-import Song from "@/model/Song.js";
-
+import Song from '@/model/Song.js';
 
 const songTypeMap = new Map([
-  ["全部", 0],
-  ["华语", 7],
-  ["欧美", 96],
-  ["日本", 8],
-  ["韩国", 16],
+  ['全部', 0],
+  ['华语', 7],
+  ['欧美', 96],
+  ['日本', 8],
+  ['韩国', 16],
 ]);
 
-const { setCurrentSong, insertSong } = mapMutations()
+const { setCurrentSong, insertSong } = mapMutations();
 
 const songType = ref(0);
 const newSongs = ref([]);
@@ -74,7 +70,7 @@ watchEffect(() => {
 });
 
 function generateArtists(artists) {
-  return artists.map((item) => item.name).join(" / ");
+  return artists.map((item) => item.name).join(' / ');
 }
 
 function play(song) {

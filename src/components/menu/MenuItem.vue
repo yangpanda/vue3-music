@@ -13,13 +13,13 @@ export default {
   props: {
     iconName: {
       type: [String, Boolean],
-      default: false
+      default: false,
     },
     label: {
       type: String,
     },
-  }
-}
+  },
+};
 </script>
 
 <style module>

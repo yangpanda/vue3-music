@@ -10,31 +10,31 @@
 </template>
 
 <script>
-import * as mv from '@/api/service/mv.js'
-import { onMounted, ref } from 'vue'
+import * as mv from '@/api/service/mv.js';
+import { onMounted, ref } from 'vue';
 
 export default {
   props: {
     id: null,
   },
   setup(props) {
-    let data = ref({})
+    let data = ref({});
 
     const getMvData = async () => {
-      const res = await mv.getMvDetail(props.id)
+      const res = await mv.getMvDetail(props.id);
       console.log(res);
       if (res.code === 200) {
-        data.value = res.data
+        data.value = res.data;
       }
-    }
+    };
 
-    onMounted(getMvData)
+    onMounted(getMvData);
 
     return {
-      data
-    }
-  }
-}
+      data,
+    };
+  },
+};
 </script>
 
 <style scoped>

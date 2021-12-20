@@ -4,7 +4,14 @@
     <div ref="drop" v-if="focused" :class="[$style.drop, 'shadow']">
       <n-scrollbar>
         <n-card title="热搜榜" size="small" content-style="padding: 0;">
-          <div :class="$style.resultItem" v-for="(item, index) in hots" @click="toSearch(item.searchWord); focused = false;">
+          <div
+            :class="$style.resultItem"
+            v-for="(item, index) in hots"
+            @click="
+              toSearch(item.searchWord);
+              focused = false;
+            "
+          >
             <div :class="$style.resultItemIndex">{{ index + 1 }}</div>
             <div :class="$style.resultItemRight">
               <div :class="$style.infoTitle">
@@ -21,10 +28,10 @@
 </template>
 
 <script>
-import { NScrollbar, NPopover, NText, NInput, NCard } from "naive-ui";
-import { ref } from 'vue'
-import api from "../api";
-import useRouterMethods from "../composables/router-methods";
+import { NScrollbar, NPopover, NText, NInput, NCard } from 'naive-ui';
+import { ref } from 'vue';
+import api from '../api';
+import useRouterMethods from '../composables/router-methods';
 
 export default {
   name: 'SearchBar',
@@ -36,34 +43,34 @@ export default {
     NCard,
   },
   setup() {
-    const focused = ref(false)
-    const hots = ref([])
-    const drop = ref(null)
-    const { toSearch } = useRouterMethods()
+    const focused = ref(false);
+    const hots = ref([]);
+    const drop = ref(null);
+    const { toSearch } = useRouterMethods();
 
     const setListener = () => {
-      document.addEventListener('click', e => {
+      document.addEventListener('click', (e) => {
         if (drop.value == e.target || drop.value.contains(e.target)) {
         } else {
-          focused.value = false
+          focused.value = false;
         }
-      })
-    }
+      });
+    };
 
     const handleFocus = () => {
-      api.search.hotDetail().then(res => {
+      api.search.hotDetail().then((res) => {
         if (res.code === 200) {
-          hots.value = res.data
-          focused.value = true
+          hots.value = res.data;
+          focused.value = true;
         }
-      })
-    }
+      });
+    };
 
     const handleBlur = () => {
       if (document.activeElement != drop) {
-        focused.value = false
+        focused.value = false;
       }
-    }
+    };
 
     return {
       hots,
@@ -73,8 +80,8 @@ export default {
       handleFocus,
       handleBlur,
       toSearch,
-    }
-  }
+    };
+  },
 };
 </script>
 

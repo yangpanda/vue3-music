@@ -1,58 +1,58 @@
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router';
 
 export default function useRouterMethods() {
-  const router = useRouter()
+  const router = useRouter();
 
   const toHome = () => {
-    router.push('/')
-  }
+    router.push('/');
+  };
 
   const toLogin = () => {
-    router.push('/login')
-  }
-  
+    router.push('/login');
+  };
+
   const toPlaylistDetail = (id) => {
     router.push({
       name: 'PlaylistDetail',
       params: {
-        id
-      }
+        id,
+      },
     });
-  }
+  };
 
   const toSearch = (words) => {
     router.push({
       name: 'SearchPage',
       params: {
-        words
-      }
-    })
-  }
+        words,
+      },
+    });
+  };
 
   const toArtistDetail = (id) => {
     router.push({
       name: 'ArtistDetail',
       params: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  };
   const toAlbumDetail = (id) => {
     router.push({
       name: 'AlbumDetail',
       params: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  };
   const toMvDetail = (id) => {
     router.push({
       name: 'MvDetail',
       params: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  };
 
   return {
     toHome,
@@ -62,5 +62,5 @@ export default function useRouterMethods() {
     toArtistDetail,
     toSearch,
     toMvDetail,
-  }
+  };
 }

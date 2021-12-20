@@ -75,49 +75,33 @@
 </template>
 
 <script setup>
-import * as utils from "@/utils/index.js";
-import api from "@/api/index.js";
-import { ref, computed, watch, onMounted, reactive } from "vue";
-import { mapState, mapMutations } from "@/lib/lib.js";
-import useRouterMethods from '@/composables/router-methods.js'
+import * as utils from '@/utils/index.js';
+import api from '@/api/index.js';
+import { ref, computed, watch, onMounted, reactive } from 'vue';
+import { mapState, mapMutations } from '@/lib/lib.js';
+import useRouterMethods from '@/composables/router-methods.js';
 
-import { NDrawer, NDrawerContent, NSlider } from "naive-ui";
-import PlaylistItem from "@/components/PlaylistItem.vue"
-import SvgIcon from "@/components/SvgIcon.vue";
+import { NDrawer, NDrawerContent, NSlider } from 'naive-ui';
+import PlaylistItem from '@/components/PlaylistItem.vue';
+import SvgIcon from '@/components/SvgIcon.vue';
 
-const {
-  toArtistDetail
-} = useRouterMethods();
-const {
-  playingState,
-  playIndex,
-  playlist,
-  playMode,
-  randomPlaylist,
-  currentSong,
-  showPlayingPage,
-} = mapState();
+const { toArtistDetail } = useRouterMethods();
+const { playingState, playIndex, playlist, playMode, randomPlaylist, currentSong, showPlayingPage } =
+  mapState();
 
-const { setPlayingState, setPlayIndex, setCurrentSong, setShowPlayingPage } =
-  mapMutations();
+const { setPlayingState, setPlayIndex, setCurrentSong, setShowPlayingPage } = mapMutations();
 
-const muted = ref(false)
-const songUrl = ref("");
+const muted = ref(false);
+const songUrl = ref('');
 const volume = ref(0.3);
 const currentTime = ref(0);
 const showPlaylist = ref(false);
 const duration = ref(0);
 const audio = ref({});
 
-const songName = computed(() =>
-  currentSong.value ? currentSong.value.name : ""
-);
-const songImage = computed(() =>
-  currentSong.value ? currentSong.value.image : ""
-);
-const songSinger = computed(() =>
-  currentSong.value ? currentSong.value.singer : []
-);
+const songName = computed(() => (currentSong.value ? currentSong.value.name : ''));
+const songImage = computed(() => (currentSong.value ? currentSong.value.image : ''));
+const songSinger = computed(() => (currentSong.value ? currentSong.value.singer : []));
 
 watch(
   () => currentSong.value,
@@ -127,22 +111,22 @@ watch(
         songUrl.value = response.data[0].url;
       }
     });
-  }
+  },
 );
 
 watch(
   () => volume.value,
   () => {
-    audio.value.volume = volume.value
-  }
-)
+    audio.value.volume = volume.value;
+  },
+);
 
 watch(
   () => muted.value,
   () => {
-    audio.value.muted = muted.value
-  }
-)
+    audio.value.muted = muted.value;
+  },
+);
 
 const methods = reactive({
   play: null,
@@ -172,7 +156,7 @@ onMounted(() => {
   };
 
   methods.setCurrentTime = (sec) => {
-    console.log('lll')
+    console.log('lll');
     audio.value.currentTime = sec;
   };
 
@@ -181,7 +165,7 @@ onMounted(() => {
   };
 
   methods.nextTrack = () => {
-    if (playMode.value === "unorder") {
+    if (playMode.value === 'unorder') {
       const index = randomPlaylist.value.indexOf(playIndex.value);
       if (index + 1 >= randomPlaylist.value.length) {
         setPlayIndex(randomPlaylist.value[0]);
@@ -197,7 +181,7 @@ onMounted(() => {
   };
 
   methods.preTrack = () => {
-    if (playMode.value === "unorder") {
+    if (playMode.value === 'unorder') {
       const index = this.randomPlaylist.indexOf(playIndex.value);
       if (index - 1 < 0) {
         setPlayIndex(randomPlaylist.value[randomPlaylist.value.length - 1]);
@@ -260,7 +244,7 @@ function formatTime(seconds) {
   let minute = parseInt(seconds / 60);
   let second = utils.formatNumber(seconds - minute * 60);
 
-  return minute + ":" + second;
+  return minute + ':' + second;
 }
 </script>
 

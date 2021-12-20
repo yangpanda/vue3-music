@@ -1,36 +1,35 @@
-
 export default {
   isLogined(state) {
-    return state.logined
+    return state.logined;
   },
   getUserinfo(state) {
-    return state.userinfo
+    return state.userinfo;
   },
   getLikedSongs(state) {
-    return state.likedSongs
+    return state.likedSongs;
   },
   getPlayIndex(state) {
-    return state.playIndex
+    return state.playIndex;
   },
   getPlaylist(state) {
-    return state.playlist
+    return state.playlist;
   },
   getPlayMode(state) {
-    return state.playMode
+    return state.playMode;
   },
   getRandomPlaylist(state) {
-    return state.randomPlaylist
+    return state.randomPlaylist;
   },
   getCurrentSong(state) {
-    return state.currentSong
+    return state.currentSong;
   },
   getPlayingState(state) {
-    return state.playingState
+    return state.playingState;
   },
   getShowPlayingPage(state) {
-    return state.showPlayingPage
+    return state.showPlayingPage;
   },
   getUserPlaylists(state) {
-    return state.userPlaylist
-  }
-}
+    return state.userPlaylist;
+  },
+};

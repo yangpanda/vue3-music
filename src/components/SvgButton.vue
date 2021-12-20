@@ -11,7 +11,7 @@ const props = defineProps({
   color: { type: String, default: '#333' },
   box: { type: Boolean, default: false },
   triangle: { type: Boolean, default: false },
-})
+});
 </script>
 
 <style module>
@@ -23,7 +23,7 @@ const props = defineProps({
 }
 .box {
   background-color: rgba(220, 220, 220, 0.8);
-  padding: .3em;
+  padding: 0.3em;
   border-radius: 50%;
 }
 .triangle {

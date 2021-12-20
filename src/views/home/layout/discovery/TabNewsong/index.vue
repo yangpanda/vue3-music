@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import {NTabs, NTabPane} from 'naive-ui'
-import TopAlbum from './TopAlbum.vue'
-import TopSong from './TopSong.vue'
+import { NTabs, NTabPane } from 'naive-ui';
+import TopAlbum from './TopAlbum.vue';
+import TopSong from './TopSong.vue';
 
 export default {
   components: {
@@ -22,8 +22,8 @@ export default {
     NTabPane,
     TopAlbum,
     TopSong,
-  }
-}
+  },
+};
 </script>
 
 <style module>

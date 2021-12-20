@@ -6,30 +6,31 @@
         :class="[$style.artist, 'cursor-pointer']"
         v-for="singer in song.singer"
         @click="toArtistDetail(singer.id)"
-      >{{ singer.name }}</span>
+        >{{ singer.name }}</span
+      >
     </div>
     <div :class="$style.duration">{{ song.duration }}</div>
   </div>
 </template>
 
 <script>
-import { mapState } from "@/lib/lib.js";
-import { computed } from "vue";
-import useRouterMethods from "../composables/router-methods";
+import { mapState } from '@/lib/lib.js';
+import { computed } from 'vue';
+import useRouterMethods from '../composables/router-methods';
 
 export default {
-  name: "PlaylistItem",
+  name: 'PlaylistItem',
   props: {
     song: {
       type: Object,
     },
     index: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   setup(props) {
-    const { playIndex } = mapState()
-    const { toArtistDetail } = useRouterMethods()
+    const { playIndex } = mapState();
+    const { toArtistDetail } = useRouterMethods();
 
     const playing = computed(() => props.index === playIndex.value);
 

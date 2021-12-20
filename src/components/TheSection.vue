@@ -8,14 +8,17 @@
       <slot name="nav"></slot>
     </div>
     <div
-      :class="[$style.content, {
-        'grid-cols-2': cols == 2,
-        'grid-cols-3': cols == 3,
-        'grid-cols-4': cols == 4,
-        'grid-cols-5': cols == 5,
-        'grid-cols-6': cols == 6,
-        'grid-cols-7': cols == 7,
-      }]"
+      :class="[
+        $style.content,
+        {
+          'grid-cols-2': cols == 2,
+          'grid-cols-3': cols == 3,
+          'grid-cols-4': cols == 4,
+          'grid-cols-5': cols == 5,
+          'grid-cols-6': cols == 6,
+          'grid-cols-7': cols == 7,
+        },
+      ]"
     >
       <slot name="cards"></slot>
     </div>
@@ -27,8 +30,8 @@ export default {
   props: {
     title: String,
     cols: [Number, String],
-  }
-}
+  },
+};
 </script>
 
 <style module>

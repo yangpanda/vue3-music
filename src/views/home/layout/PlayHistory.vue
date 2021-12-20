@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import api from '@/api/index.js'
-import { mapState } from '@/lib/lib.js'
-import { onMounted, ref } from 'vue'
-import useRouterMethods from '@/composables/router-methods'
-import { NScrollbar } from 'naive-ui'
-import Song from '@/model/Song.js'
-import SongTableList from '@/components/SongTableList.vue'
-import SongTableListItem from '@/components/SongTableListItem.vue'
+import api from '@/api/index.js';
+import { mapState } from '@/lib/lib.js';
+import { onMounted, ref } from 'vue';
+import useRouterMethods from '@/composables/router-methods';
+import { NScrollbar } from 'naive-ui';
+import Song from '@/model/Song.js';
+import SongTableList from '@/components/SongTableList.vue';
+import SongTableListItem from '@/components/SongTableListItem.vue';
 
 export default {
   name: 'PlayHistory',
@@ -28,32 +28,32 @@ export default {
     SongTableListItem,
   },
   setup() {
-    const { logined, userinfo } = mapState()
-    const { toLogin } = useRouterMethods()
-    const history = ref([])
+    const { logined, userinfo } = mapState();
+    const { toLogin } = useRouterMethods();
+    const history = ref([]);
 
     const getPlayHistory = (id) => {
-      api.user.getPlayHistory(id).then(res => {
+      api.user.getPlayHistory(id).then((res) => {
         if (res.code === 200) {
-          history.value = res.weekData.map(item => new Song(item.song))
+          history.value = res.weekData.map((item) => new Song(item.song));
         }
-      })
-    }
+      });
+    };
 
     onMounted(() => {
       if (logined.value) {
-        const userId = userinfo.value.id
-        getPlayHistory(userId)
+        const userId = userinfo.value.id;
+        getPlayHistory(userId);
       } else {
-        toLogin()
+        toLogin();
       }
-    })
+    });
 
     return {
-      history
-    }
-  }
-}
+      history,
+    };
+  },
+};
 </script>
 
 <style module>

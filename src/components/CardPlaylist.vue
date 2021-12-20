@@ -16,30 +16,29 @@
 </template>
 
 <script>
-import Playlist from "../model/Playlist";
-import useRouterMethods from "../composables/router-methods";
-import usePlaylistMethods from "../composables/playlist-methods";
-import CardBase from "@/components/CardBase.vue";
+import Playlist from '../model/Playlist';
+import useRouterMethods from '../composables/router-methods';
+import usePlaylistMethods from '../composables/playlist-methods';
+import CardBase from '@/components/CardBase.vue';
 
 export default {
   name: 'CardPlaylist',
   components: {
-    CardBase
+    CardBase,
   },
   props: {
     playlist: new Playlist(),
   },
   setup() {
-    const { toPlaylistDetail } = useRouterMethods()
-    const { playAll } = usePlaylistMethods()
+    const { toPlaylistDetail } = useRouterMethods();
+    const { playAll } = usePlaylistMethods();
 
     return {
       toPlaylistDetail,
       playAll,
-    }
-  }
-}
-
+    };
+  },
+};
 </script>
 
 <style module>

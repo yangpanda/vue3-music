@@ -15,10 +15,24 @@
           index === pointer ? $style.center : '',
         ]"
       />
-      <div :class="[$style.btn, $style.btnPre]" @click="clearTimer(); backward(); setTimer();">
+      <div
+        :class="[$style.btn, $style.btnPre]"
+        @click="
+          clearTimer();
+          backward();
+          setTimer();
+        "
+      >
         <svg-button name="arrow-left" color="#d8d8d8" :size="30" />
       </div>
-      <div :class="[$style.btn, $style.btnNext]" @click="clearTimer(); forward(); setTimer();">
+      <div
+        :class="[$style.btn, $style.btnNext]"
+        @click="
+          clearTimer();
+          forward();
+          setTimer();
+        "
+      >
         <svg-button name="arrow-right" color="#d8d8d8" :size="30" />
       </div>
     </div>
@@ -33,7 +47,7 @@
 </template>
 
 <script>
-import { computed, onBeforeUnmount, onMounted, toRefs, reactive } from "vue";
+import { computed, onBeforeUnmount, onMounted, toRefs, reactive } from 'vue';
 
 export default {
   name: 'TheSwiper',
@@ -51,11 +65,8 @@ export default {
     const state = reactive({
       pointer: 0,
       timer: 0,
-    })
-    const {
-      duration,
-      banners
-    } = toRefs(props);
+    });
+    const { duration, banners } = toRefs(props);
 
     const forward = () => {
       if (state.pointer === banners.value.length - 1) {
@@ -63,7 +74,7 @@ export default {
       } else {
         state.pointer++;
       }
-    }
+    };
 
     const backward = () => {
       if (state.pointer === 0) {
@@ -71,20 +82,20 @@ export default {
       } else {
         state.pointer--;
       }
-    }
+    };
 
     function clearTimer() {
-      clearInterval(state.timer)
+      clearInterval(state.timer);
     }
 
     function setTimer() {
-      state.timer = setInterval(forward, duration.value)
+      state.timer = setInterval(forward, duration.value);
     }
 
     function changePointer(index) {
-      clearTimer()
+      clearTimer();
       state.pointer = index;
-      setTimer()
+      setTimer();
     }
 
     const pre = computed(() => {
@@ -106,8 +117,8 @@ export default {
     onBeforeUnmount(() => clearTimer());
 
     onMounted(() => {
-      setTimer()
-    })
+      setTimer();
+    });
 
     return {
       ...toRefs(state),
@@ -118,9 +129,9 @@ export default {
       changePointer,
       forward,
       backward,
-    }
+    };
   },
-}
+};
 </script>
 
 <style module>

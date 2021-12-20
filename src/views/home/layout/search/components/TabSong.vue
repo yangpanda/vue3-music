@@ -5,38 +5,37 @@
 </template>
 
 <script>
-import api from '@/api/index.js'
-import { ref, watchEffect } from 'vue'
-import SongTableList from '../../../../../components/SongTableList.vue'
-import Song from '@/model/Song.js'
+import api from '@/api/index.js';
+import { ref, watchEffect } from 'vue';
+import SongTableList from '../../../../../components/SongTableList.vue';
+import Song from '@/model/Song.js';
 
 export default {
   props: {
     keywords: null,
   },
   components: {
-    SongTableList
+    SongTableList,
   },
   setup(props) {
-    const results = ref(null)
-    const songs = ref([])
+    const results = ref(null);
+    const songs = ref([]);
 
     watchEffect(() => {
-      api.search.search(1, props.keywords).then(res => {
-        console.log(res)
+      api.search.search(1, props.keywords).then((res) => {
+        console.log(res);
         if (res.code === 200) {
-          songs.value = res.result.songs.map(item => new Song(item))
+          songs.value = res.result.songs.map((item) => new Song(item));
         }
-      })
-    })
+      });
+    });
 
     return {
       results,
       songs,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
-<style module>
-</style>
+<style module></style>

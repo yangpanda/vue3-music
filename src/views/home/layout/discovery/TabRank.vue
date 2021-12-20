@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import CardPlaylist from "@/components/CardPlaylist.vue";
-import { ref, onMounted } from "vue";
-import Playlist from "@/model/Playlist.js";
-import * as playlist from "@/api/service/playlist.js";
+import CardPlaylist from '@/components/CardPlaylist.vue';
+import { ref, onMounted } from 'vue';
+import Playlist from '@/model/Playlist.js';
+import * as playlist from '@/api/service/playlist.js';
 
 export default {
-  name: "Ranking",
+  name: 'Ranking',
   components: {
     CardPlaylist,
   },
@@ -35,7 +35,7 @@ export default {
 
       if (res.code === 200) {
         res.list.map((item) => {
-          if ("ToplistType" in item) {
+          if ('ToplistType' in item) {
             officialList.value.push(new Playlist(item));
           } else {
             list.value.push(new Playlist(item));

@@ -1,63 +1,61 @@
 <template>
-    <div :class="$style.cardSong">
-        <div :class="$style.songCoverBox">
-            <the-image :src="song.al.picUrl + '?param=50y50'" size="50" round="normal" />
-            <svg-button
-                :class="$style.btnPlay"
-                name="play-triangle"
-                color="#ec4141"
-                box
-                :triangle="true"
-                @click="play(song)"
-            />
-        </div>
-        <div :class="$style.songInfoBox">
-            <div class="cursor-pointer ellipsis">{{ song.name }}</div>
-            <div :class="[$style.songArtistBox, 'text-sm ellipsis']">
-                <a
-                    class="cursor-pointer"
-                    v-for="artist in song.ar"
-                    @click="toArtistDetail(artist.id)"
-                >{{ artist.name }}</a>
-            </div>
-        </div>
+  <div :class="$style.cardSong">
+    <div :class="$style.songCoverBox">
+      <the-image :src="song.al.picUrl + '?param=50y50'" size="50" round="normal" />
+      <svg-button
+        :class="$style.btnPlay"
+        name="play-triangle"
+        color="#ec4141"
+        box
+        :triangle="true"
+        @click="play(song)"
+      />
     </div>
+    <div :class="$style.songInfoBox">
+      <div class="cursor-pointer ellipsis">{{ song.name }}</div>
+      <div :class="[$style.songArtistBox, 'text-sm ellipsis']">
+        <a class="cursor-pointer" v-for="artist in song.ar" @click="toArtistDetail(artist.id)">{{
+          artist.name
+        }}</a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    props: {
-        song: {}
-    }
-}
+  props: {
+    song: {},
+  },
+};
 </script>
 
 <style module>
 .cardSong {
-    display: flex;
-    align-items: center;
-    column-gap: var(--gap-sm);
+  display: flex;
+  align-items: center;
+  column-gap: var(--gap-sm);
 }
 .songCoverBox {
-    position: relative;
+  position: relative;
 }
 .btnPlay {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .songInfoBox {
-    width: 0;
-    height: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    row-gap: 0.4rem;
+  width: 0;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 0.4rem;
 }
 .songArtistBox {
-    display: flex;
-    column-gap: var(--gap-sm);
+  display: flex;
+  column-gap: var(--gap-sm);
 }
 </style>

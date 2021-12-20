@@ -1,40 +1,42 @@
-
 export function formatNumber(num) {
-  let ret = num
+  let ret = num;
 
   if (String(num).length === 1) {
-    ret = '0' + num
+    ret = '0' + num;
   }
 
-  return ret
+  return ret;
 }
 
 function addZero(num) {
-  let ret = num
+  let ret = num;
   if (String(num).length === 1) {
-    ret = '0' + num
+    ret = '0' + num;
   }
 
-  return ret
+  return ret;
 }
 
 export function formatDuration(time) {
-  let minute = ~~(time / 1000 / 60)
-  let second = ~~((time - (minute * 60 * 1000)) / 1000)
+  let minute = ~~(time / 1000 / 60);
+  let second = ~~((time - minute * 60 * 1000) / 1000);
 
-  return addZero(minute) + ':' + addZero(second)
+  return addZero(minute) + ':' + addZero(second);
 }
 
 export const getScrollParent = (node) => {
   const regex = /(auto|scroll)/;
   const parents = (_node, ps) => {
-    if (_node.parentNode === null) { return ps; }
+    if (_node.parentNode === null) {
+      return ps;
+    }
     return parents(_node.parentNode, ps.concat([_node]));
   };
 
   const style = (_node, prop) => getComputedStyle(_node, null).getPropertyValue(prop);
-  const overflow = _node => style(_node, 'overflow') + style(_node, 'overflow-y') + style(_node, 'overflow-x');
-  const scroll = _node => regex.test(overflow(_node));
+  const overflow = (_node) =>
+    style(_node, 'overflow') + style(_node, 'overflow-y') + style(_node, 'overflow-x');
+  const scroll = (_node) => regex.test(overflow(_node));
 
   /* eslint-disable consistent-return */
   const scrollParent = (_node) => {

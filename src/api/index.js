@@ -1,3 +1,3 @@
-import api from './service/index.js'
+import api from './service/index.js';
 
-export default api
+export default api;

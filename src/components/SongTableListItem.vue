@@ -14,23 +14,21 @@
         v-for="(artist, index) in song.singer"
         :key="index"
         @click="toArtistDetail(artist.id)"
-      >{{ artist.name }}</a>
+        >{{ artist.name }}</a
+      >
     </div>
-    <div
-      :class="[$style.album, 'ellipsis']"
-      @click="toAlbumDetail(song.album.id)"
-    >{{ song.album.name }}</div>
+    <div :class="[$style.album, 'ellipsis']" @click="toAlbumDetail(song.album.id)">{{ song.album.name }}</div>
     <div>{{ song.duration }}</div>
   </div>
 </template>
 
 <script>
-import * as utils from "@/utils/index.js";
+import * as utils from '@/utils/index.js';
 import { mapMutations } from '@/lib/lib.js';
 import useRouterMethods from '@/composables/router-methods';
 
 export default {
-  name: "SongTableListItem",
+  name: 'SongTableListItem',
   props: {
     song: {
       type: Object,
@@ -42,30 +40,28 @@ export default {
   },
   emits: ['play'],
   setup(props, { emit }) {
-    const { setCurrentSong, setPlayIndex, setPlayingState } = mapMutations()
-    const { toArtistDetail, toAlbumDetail } = useRouterMethods()
+    const { setCurrentSong, setPlayIndex, setPlayingState } = mapMutations();
+    const { toArtistDetail, toAlbumDetail } = useRouterMethods();
 
     const play = () => {
-      setCurrentSong(props.song)
-      setPlayIndex(props.index)
-      setPlayingState(true)
-      emit('play')
-    }
+      setCurrentSong(props.song);
+      setPlayIndex(props.index);
+      setPlayingState(true);
+      emit('play');
+    };
     return {
       play,
       toArtistDetail,
       toAlbumDetail,
-    }
+    };
   },
   methods: {
     formatIndex(num) {
       return utils.formatNumber(num);
     },
     isLiked(id) {
-      const likedSongs = this.$store.state.likedSongs
-      return likedSongs
-        ? likedSongs.has(id)
-        : false;
+      const likedSongs = this.$store.state.likedSongs;
+      return likedSongs ? likedSongs.has(id) : false;
     },
   },
 };
@@ -110,13 +106,16 @@ export default {
 .artistBox {
   display: flex;
   align-items: center;
-  column-gap: var(--gap-sm);
 }
 .artist {
   cursor: pointer;
 }
 .artist:hover {
   color: #18191c;
+}
+.artist:not(:first-child):before {
+  content: '|';
+  padding: 0 var(--gap-sm);
 }
 .album {
   cursor: pointer;

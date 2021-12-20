@@ -1,56 +1,56 @@
 export default {
   setLogined(state, status) {
-    state.logined = status
+    state.logined = status;
   },
   setUserinfo(state, info) {
-    state.userinfo = info
+    state.userinfo = info;
   },
   setPlaylist(state, list) {
-    state.playlist = list
+    state.playlist = list;
   },
   setLikedSongs(state, songs) {
-    state.likedSongs = songs
+    state.likedSongs = songs;
   },
   setPlayIndex(state, index) {
     if (state.playlist.length === index) {
-      state.playIndex = 0
+      state.playIndex = 0;
     } else if (index < 0) {
-      state.playIndex = state.playlist.length - 1
+      state.playIndex = state.playlist.length - 1;
     } else {
-      state.playIndex = index
+      state.playIndex = index;
     }
   },
   setPlayMode(state, mode) {
-    state.playMode = mode
+    state.playMode = mode;
   },
   insertSong(state, song) {
-    let length = state.playlist.length
-    state.playlist.splice(state.playIndex + 1, 0, song)
+    let length = state.playlist.length;
+    state.playlist.splice(state.playIndex + 1, 0, song);
     if (length > 0) {
-      state.playIndex += 1
+      state.playIndex += 1;
     }
   },
   setRandomPlaylist(state) {
-    const playlist = [...Array(state.playlist.length).keys()]
+    const playlist = [...Array(state.playlist.length).keys()];
 
     for (let i = 0; i < playlist.length; i++) {
       const swapIndex = ~~(i + Math.random() * (playlist.length - i));
 
-      [ playlist[i], playlist[swapIndex] ] = [ playlist[swapIndex], playlist[i] ];
+      [playlist[i], playlist[swapIndex]] = [playlist[swapIndex], playlist[i]];
     }
 
-    state.randomPlaylist = playlist
+    state.randomPlaylist = playlist;
   },
   setCurrentSong(state, song) {
-    state.currentSong = song
+    state.currentSong = song;
   },
   setPlayingState(state, theState) {
-    state.playingState = theState
+    state.playingState = theState;
   },
   setShowPlayingPage(state, theState) {
-    state.showPlayingPage = theState
+    state.showPlayingPage = theState;
   },
   setUserPlaylists(state, playlists) {
-    state.userPlaylists = playlists
-  }
-}
+    state.userPlaylists = playlists;
+  },
+};

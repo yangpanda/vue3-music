@@ -27,16 +27,16 @@
 </template>
 
 <script>
-import TheSwiper from "@/components/TheSwiper.vue";
-import TheSection from "@/components/TheSection.vue";
-import CardPlaylist from '@/components/CardPlaylist.vue'
-import CardMv from '@/components/CardMv.vue'
-import CardBase from '@/components/CardBase.vue'
-import CardSong from './components/CardSong.vue'
+import TheSwiper from '@/components/TheSwiper.vue';
+import TheSection from '@/components/TheSection.vue';
+import CardPlaylist from '@/components/CardPlaylist.vue';
+import CardMv from '@/components/CardMv.vue';
+import CardBase from '@/components/CardBase.vue';
+import CardSong from './components/CardSong.vue';
 
-import Playlist from "@/model/Playlist";
-import api from '@/api/index.js'
-import { onMounted, reactive, toRefs } from "vue";
+import Playlist from '@/model/Playlist';
+import api from '@/api/index.js';
+import { onMounted, reactive, toRefs } from 'vue';
 
 export default {
   components: {
@@ -53,32 +53,32 @@ export default {
       playlists: [],
       privateContents: [],
       songs: [],
-      mvs: []
-    })
+      mvs: [],
+    });
 
     const getBanners = () => {
-      api.banner.getBanners(2).then(response => {
+      api.banner.getBanners(2).then((response) => {
         if (response.code === 200) {
-          state.banners = response.banners
+          state.banners = response.banners;
         }
-      })
-    }
+      });
+    };
 
     const getPrivateContents = () => {
-      api.mv.getPrivatecontent(3).then(response => {
+      api.mv.getPrivatecontent(3).then((response) => {
         if (response.code === 200) {
           state.privateContents = response.result;
         }
-      })
-    }
+      });
+    };
 
     const getPlaylists = () => {
-      api.playlist.getPersonalized(10).then(response => {
+      api.playlist.getPersonalized(10).then((response) => {
         if (response.code === 200) {
-          state.playlists = response.result.map(item => new Playlist(item))
+          state.playlists = response.result.map((item) => new Playlist(item));
         }
-      })
-    }
+      });
+    };
 
     const getSongs = () => {
       api.song
@@ -90,35 +90,35 @@ export default {
           }
         })
         .then((songsId) => {
-          api.song.getSongDetail(songsId.join(",")).then((response) => {
+          api.song.getSongDetail(songsId.join(',')).then((response) => {
             if (response.code === 200) {
               state.songs = response.songs;
             }
           });
         });
-    }
+    };
 
     const getMvs = () => {
-      api.mv.getPersonalized().then(response => {
+      api.mv.getPersonalized().then((response) => {
         if (response.code === 200) {
-          state.mvs = response.result.slice(0, 3)
+          state.mvs = response.result.slice(0, 3);
         }
-      })
-    }
+      });
+    };
 
     onMounted(() => {
-      getBanners()
-      getPrivateContents()
-      getPlaylists()
-      getSongs()
-      getMvs()
-    })
+      getBanners();
+      getPrivateContents();
+      getPlaylists();
+      getSongs();
+      getMvs();
+    });
 
     return {
-      ...toRefs(state)
-    }
-  }
-}
+      ...toRefs(state),
+    };
+  },
+};
 </script>
 
 <style module>

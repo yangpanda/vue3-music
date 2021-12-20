@@ -5,70 +5,68 @@
 </template>
 
 <script>
-import api from '@/api/index.js'
-import { onMounted, ref } from 'vue'
-import useRouterMethods from '../../../composables/router-methods'
+import api from '@/api/index.js';
+import { onMounted, ref } from 'vue';
+import useRouterMethods from '../../../composables/router-methods';
 
 export default {
   setup() {
-    const qr = ref('')
-    const { toHome } = useRouterMethods()
+    const qr = ref('');
+    const { toHome } = useRouterMethods();
 
     const qrLogin = (key) => {
-      let timer
+      let timer;
       timer = setInterval(() => {
-        api.user.qrCheck(key).then(res => {
-          console.log(res)
+        api.user.qrCheck(key).then((res) => {
+          console.log(res);
           switch (res.code) {
             case '800':
-              console.log('二维码已过期')
-              clearInterval(timer)
-              break
+              console.log('二维码已过期');
+              clearInterval(timer);
+              break;
             case '801':
-              console.log('待扫码')
-              break
+              console.log('待扫码');
+              break;
             case '802':
-              console.log('待确认')
-              break
+              console.log('待确认');
+              break;
             case '803':
-              clearInterval(timer)
-              console.log('登录成功')
-              toHome()
-              break
+              clearInterval(timer);
+              console.log('登录成功');
+              toHome();
+              break;
             default:
-              break
+              break;
           }
-        })
-      }, 3000)
-    }
+        });
+      }, 3000);
+    };
     const createQr = (key) => {
-      api.user.qrCreate(key)
-        .then(res => {
-          if (res.code === 200) {
-            qr.value = res.data.qrimg
-          }
-        })
-    }
+      api.user.qrCreate(key).then((res) => {
+        if (res.code === 200) {
+          qr.value = res.data.qrimg;
+        }
+      });
+    };
     const getKey = () => {
-      api.user.qrKey()
-        .then(res => {
-          if (res.code === 200) {
-            // key.value = res.data.unikey
-            createQr(res.data.unikey)
-            qrLogin(res.data.unikey)
-          }
-        })
-    }
+      api.user.qrKey().then((res) => {
+        if (res.code === 200) {
+          // key.value = res.data.unikey
+          createQr(res.data.unikey);
+          qrLogin(res.data.unikey);
+        }
+      });
+    };
 
     onMounted(() => {
-      getKey()
-    })
+      getKey();
+    });
 
     return {
-      qr
-    }
-  }
-}
+      qr,
+    };
+  },
+};
 </script>
 
 <style module>

@@ -41,7 +41,11 @@
           </n-tab-pane>
           <n-tab-pane name="comment" tab="评论">
             <div :class="$style.comment">
-              <comment-item v-for="item in comments" :comment="item"></comment-item>
+              <comment-item
+                :class="$style.commentItem"
+                v-for="item in comments"
+                :comment="item"
+              ></comment-item>
             </div>
           </n-tab-pane>
           <n-tab-pane name="subsciber" tab="收藏者">
@@ -54,11 +58,7 @@
                 size="huge"
               ></n-result>
               <div v-else :class="$style.subscriberBox">
-                <div
-                  :class="$style.cardSubscriber"
-                  v-for="(item, index) in subscribers"
-                  :key="index"
-                >
+                <div :class="$style.cardSubscriber" v-for="(item, index) in subscribers" :key="index">
                   <the-image round="full" size="88" :src="item.avatarUrl + '?param=100y100'" />
                   <div :class="$style.subscriberInfo">
                     <div class="ellipsis">{{ item.nickname }}</div>
@@ -76,107 +76,101 @@
 </template>
 
 <script setup>
-import api from "@/api/index.js"
-import Playlist from "../../../model/Playlist";
-import Song from "../../../model/Song";
-import _ from 'lodash'
-import { ref, onMounted, onUnmounted } from "vue";
-import {
-  NTag,
-  NSpin,
-  NTabs,
-  NTabPane,
-  NResult,
-  NButton,
-  NScrollbar,
-} from "naive-ui";
-import SongTableList from "@/components/SongTableList.vue";
-import CommentItem from "../../../components/CommentItem.vue";
+import api from '@/api/index.js';
+import Playlist from '../../../model/Playlist';
+import Song from '../../../model/Song';
+import _ from 'lodash';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { NTag, NSpin, NTabs, NTabPane, NResult, NButton, NScrollbar } from 'naive-ui';
+import SongTableList from '@/components/SongTableList.vue';
+import CommentItem from '../../../components/CommentItem.vue';
 
 const props = defineProps({
   id: String,
 });
 
-const container = ref(null)
+const container = ref(null);
 
 // data refs
 const detail = ref({});
 const songs = ref([]);
-const songIdChunks = ref([])
-const comments = ref([])
+const songIdChunks = ref([]);
+const comments = ref([]);
 const subscribers = ref([]);
 
 const getSongs = async (ids) => {
-  api.song.getSongDetail(ids)
-    .then(response => {
-      if (response.code === 200) {
-        songs.value.push(...response.songs.map(item => new Song(item)))
-      }
-    })
+  api.song.getSongDetail(ids).then((response) => {
+    if (response.code === 200) {
+      songs.value.push(...response.songs.map((item) => new Song(item)));
+    }
+  });
 };
 
 const getPlaylistDetail = async (id) => {
   api.playlist.getPlaylistDetail(id).then((res) => {
     if (res.code === 200) {
-      console.log(res)
+      console.log(res);
       detail.value = new Playlist(res.playlist);
       subscribers.value = res.playlist.subscribers;
       const ids = detail.value.trackIds.map((item) => item.id);
-      songIdChunks.value = _.chunk(ids, pageSize)
-      getSongs(songIdChunks.value[0].join(','))
+      songIdChunks.value = _.chunk(ids, pageSize);
+      getSongs(songIdChunks.value[0].join(','));
     }
   });
 };
 
 const getComment = async (id) => {
-  api.comment.ofPlaylist({
-    id
-  }).then(response => {
-    if (response.code === 200) {
-      comments.value = response.comments
-    }
-  })
-}
+  api.comment
+    .ofPlaylist({
+      id,
+    })
+    .then((response) => {
+      if (response.code === 200) {
+        comments.value = response.comments;
+      }
+    });
+};
 
 const subscribe = () => {
-  let t = detail.value.subscribed ? 2 : 1
-  api.playlist.subscribe(t, props.id).then(
-    res => {
-      console.log(res)
-    }
-  )
-}
+  let t = detail.value.subscribed ? 2 : 1;
+  api.playlist.subscribe(t, props.id).then((res) => {
+    console.log(res);
+  });
+};
 
-
-let counter = 1
+let counter = 1;
 const distance = 40;
-const pageSize = 100
-const showSpin = ref(true)
+const pageSize = 100;
+const showSpin = ref(true);
 
-const handleScroll = _.throttle(function (event) {
-  const scrollbar = event.target
-  const scrollHeight = () => scrollbar.scrollHeight
-  const scrollTop = () => scrollbar.scrollTop
-  const clientHeight = () => scrollbar.clientHeight
+const handleScroll = _.throttle(
+  function (event) {
+    const scrollbar = event.target;
+    const scrollHeight = () => scrollbar.scrollHeight;
+    const scrollTop = () => scrollbar.scrollTop;
+    const clientHeight = () => scrollbar.clientHeight;
 
-  if ((scrollTop() + clientHeight()) >= (scrollHeight() - distance)) {
-    if (counter < songIdChunks.value.length) {
-      getSongs(songIdChunks.value[counter].join(','))
-      counter += 1
-    } else {
-      showSpin.value = false
+    if (scrollTop() + clientHeight() >= scrollHeight() - distance) {
+      if (counter < songIdChunks.value.length) {
+        getSongs(songIdChunks.value[counter].join(','));
+        counter += 1;
+      } else {
+        showSpin.value = false;
+      }
     }
-  }
-}, 500, { leading: false })
+  },
+  500,
+  { leading: false },
+);
 
 onMounted(() => {
-  getPlaylistDetail(props.id)
-  getComment(props.id)
+  getPlaylistDetail(props.id);
+  getComment(props.id);
 });
 
 onUnmounted(() => {
-  handleScroll.cancel()
-})
+  handleScroll.cancel();
+});
 </script>
 
 <style module>
@@ -218,8 +212,13 @@ onUnmounted(() => {
 .comment {
   display: flex;
   flex-direction: column;
-  row-gap: var(--gap-lg);
-  padding: 0 4rem;
+  padding: 1rem 4rem;
+}
+.commentItem {
+  padding: var(--gap-sm);
+}
+.commentItem:not(:last-child) {
+  border-bottom: 1px solid rgba(1, 1, 1, 0.1);
 }
 .subscriberBox {
   display: grid;

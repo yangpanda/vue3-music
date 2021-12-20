@@ -1,14 +1,17 @@
 <template>
-  <div :class="[$style.cd, !running ? $style.pause : '' ]">
-    <div :class="$style.bg" :style="{
-      'background-image': 'url(' + cdPic + ')',
-    }"></div>
+  <div :class="[$style.cd, !running ? $style.pause : '']">
+    <div
+      :class="$style.bg"
+      :style="{
+        'background-image': 'url(' + cdPic + ')',
+      }"
+    ></div>
     <img :class="$style.cover" :src="src + '?param=100y100'" />
   </div>
 </template>
 
 <script setup>
-import cdPic from "@/assets/pictures/cd.png";
+import cdPic from '@/assets/pictures/cd.png';
 
 const props = defineProps({
   src: String,
@@ -40,7 +43,7 @@ const props = defineProps({
   animation: rotate 20s linear infinite;
 }
 .cd::after {
-  content: " ";
+  content: ' ';
   width: 0;
   height: 0;
   padding-top: 100%;

@@ -5,32 +5,31 @@
 </template>
 
 <script>
-import CardMv from '@/components/CardMv.vue'
-import api from '@/api/index.js'
-import { ref } from 'vue'
+import CardMv from '@/components/CardMv.vue';
+import api from '@/api/index.js';
+import { ref } from 'vue';
 
 export default {
   props: {
-    id: ''
+    id: '',
   },
   components: {
     CardMv,
   },
   setup(props) {
-    const mvs = ref([])
-    api.artist.getMv(props.id)
-      .then(response => {
-        if (response.code === 200) {
-          mvs.value = response.mvs
-          console.log(response.mvs)
-        }
-      })
+    const mvs = ref([]);
+    api.artist.getMv(props.id).then((response) => {
+      if (response.code === 200) {
+        mvs.value = response.mvs;
+        console.log(response.mvs);
+      }
+    });
 
     return {
-      mvs
-    }
-  }
-}
+      mvs,
+    };
+  },
+};
 </script>
 
 <style module>

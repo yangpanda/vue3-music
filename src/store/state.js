@@ -10,4 +10,4 @@ export default {
   currentSong: null,
   playingState: false,
   showPlayingPage: false,
-}
+};

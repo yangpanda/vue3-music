@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import api from '@/api/index.js'
-import { NScrollbar } from 'naive-ui'
-import useRouterMethods from '@/composables/router-methods.js'
+import { ref, onMounted } from 'vue';
+import api from '@/api/index.js';
+import { NScrollbar } from 'naive-ui';
+import useRouterMethods from '@/composables/router-methods.js';
 
 export default {
   name: 'TabArtist',
@@ -30,31 +30,31 @@ export default {
     NScrollbar,
   },
   setup() {
-    const artists = ref([])
-    const count = ref(0)
-    const { toArtistDetail } = useRouterMethods()
+    const artists = ref([]);
+    const count = ref(0);
+    const { toArtistDetail } = useRouterMethods();
 
     const getArtist = () => {
-      api.subscription.getArtist().then(res => {
+      api.subscription.getArtist().then((res) => {
         if (res.code === 200) {
-          console.log(res)
-          artists.value = res.data
-          count.value = res.count
+          console.log(res);
+          artists.value = res.data;
+          count.value = res.count;
         }
-      })
-    }
+      });
+    };
 
     onMounted(() => {
-      getArtist()
-    })
+      getArtist();
+    });
 
     return {
       artists,
       count,
       toArtistDetail,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style module>

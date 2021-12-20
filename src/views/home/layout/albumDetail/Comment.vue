@@ -11,16 +11,20 @@
       <n-space vertical size="large">
         <comment-item v-for="comment in comments" :comment="comment" />
       </n-space>
-      <n-pagination v-model:page="pageSize" :page-count="Math.ceil(total / pageSize)" @update-page="loadMore(page)" />
+      <n-pagination
+        v-model:page="pageSize"
+        :page-count="Math.ceil(total / pageSize)"
+        @update-page="loadMore(page)"
+      />
     </section>
   </div>
 </template>
 
 <script>
-import api from '@/api/index.js'
-import { onMounted, ref } from 'vue'
-import CommentItem from '@/components/CommentItem.vue'
-import { NPagination } from 'naive-ui'
+import api from '@/api/index.js';
+import { onMounted, ref } from 'vue';
+import CommentItem from '@/components/CommentItem.vue';
+import { NPagination } from 'naive-ui';
 
 export default {
   name: 'Comment',
@@ -30,35 +34,35 @@ export default {
   },
   props: {
     id: {
-      type: [Number, String]
+      type: [Number, String],
     },
   },
   setup(props) {
-    const hotComments = ref([])
-    const comments = ref([])
-    const pageSize = ref(20)
-    const total = ref(0)
+    const hotComments = ref([]);
+    const comments = ref([]);
+    const pageSize = ref(20);
+    const total = ref(0);
 
     const getComment = (id) => {
-      api.comment.ofAlbum(id).then(res => {
-        console.log(res)
+      api.comment.ofAlbum(id).then((res) => {
+        console.log(res);
         if (res.code === 200) {
-          hotComments.value = res.hotComments
-          comments.value = res.comments
-          total.value = res.total
+          hotComments.value = res.hotComments;
+          comments.value = res.comments;
+          total.value = res.total;
         }
-      })
-    }
+      });
+    };
 
     const loadMore = (offset) => {
-      api.comment.ofAlbum({id: props.id, offset: offset}).then(res => {
-        console.log(res)
-      })
-    }
+      api.comment.ofAlbum({ id: props.id, offset: offset }).then((res) => {
+        console.log(res);
+      });
+    };
 
     onMounted(() => {
-      getComment(props.id)
-    })
+      getComment(props.id);
+    });
 
     return {
       hotComments,
@@ -66,9 +70,9 @@ export default {
       pageSize,
       total,
       loadMore,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style module>

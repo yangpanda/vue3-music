@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import { ref, watch, watchEffect, onMounted } from 'vue'
-import api from '@/api/index.js'
-import Song from '@/model/Song.js'
-import { mapMutations } from '@/lib/lib.js'
-import Lyric from '@/views/home/layout/components/playing-page/Lyric.vue'
-import { NScrollbar } from 'naive-ui'
+import { ref, watch, watchEffect, onMounted } from 'vue';
+import api from '@/api/index.js';
+import Song from '@/model/Song.js';
+import { mapMutations } from '@/lib/lib.js';
+import Lyric from '@/views/home/layout/components/playing-page/Lyric.vue';
+import { NScrollbar } from 'naive-ui';
 
 export default {
   name: 'PersonalFm',
@@ -33,47 +33,43 @@ export default {
     NScrollbar,
   },
   setup() {
-    const songs = ref([])
-    const pointer = ref(null)
-    const song = ref({})
-    const {
-      setCurrentSong,
-    } = mapMutations()
+    const songs = ref([]);
+    const pointer = ref(null);
+    const song = ref({});
+    const { setCurrentSong } = mapMutations();
 
     const getFm = () => {
-      api.fm.getFm().then(res => {
-        console.log(res)
+      api.fm.getFm().then((res) => {
+        console.log(res);
         if (res.code === 200) {
-          songs.value = res.data.map(item => new Song(item))
-          pointer.value = 0
+          songs.value = res.data.map((item) => new Song(item));
+          pointer.value = 0;
         }
-      })
-    }
+      });
+    };
 
     watch(
       () => pointer.value,
       () => {
-        song.value = songs.value[pointer.value]
-        setCurrentSong(song.value)
-      }
-    )
+        song.value = songs.value[pointer.value];
+        setCurrentSong(song.value);
+      },
+    );
 
-    watchEffect(
-      () => {
-        if (pointer.value === 3) {
-          getFm()
-        }
+    watchEffect(() => {
+      if (pointer.value === 3) {
+        getFm();
       }
-    )
+    });
 
-    onMounted(() => getFm())
+    onMounted(() => getFm());
 
     return {
       song,
       pointer,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style module>

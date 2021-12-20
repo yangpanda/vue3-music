@@ -7,7 +7,9 @@
           :key="value"
           @click="area = value"
           :class="['cursor-pointer', $style.navItem, area == value ? $style.active : '']"
-        >{{ name }}</div>
+        >
+          {{ name }}
+        </div>
       </div>
       <div :class="$style.nav">
         <div
@@ -15,8 +17,9 @@
           :key="value"
           @click="type = value"
           :class="['cursor-pointer', $style.navItem, type == value ? $style.active : '']"
-
-        >{{ name }}</div>
+        >
+          {{ name }}
+        </div>
       </div>
     </div>
     <n-grid v-if="weekAlbums" x-gap="20" y-gap="20" :cols="5">
@@ -39,28 +42,28 @@
 </template>
 
 <script setup>
-import { NGrid, NGridItem } from "naive-ui";
+import { NGrid, NGridItem } from 'naive-ui';
 
-import { ref, watchEffect, reactive } from "@vue/runtime-core";
-import { useRouter } from "vue-router"
-import * as playlist from "@/api/service/playlist.js";
+import { ref, watchEffect, reactive } from '@vue/runtime-core';
+import { useRouter } from 'vue-router';
+import * as playlist from '@/api/service/playlist.js';
 
 const router = useRouter();
-const showSpin = ref(true)
+const showSpin = ref(true);
 
 const albumAreaMap = new Map([
-  ["全部", "ALL"],
-  ["华语", "ZH"],
-  ["欧美", "EA"],
-  ["韩国", "KR"],
-  ["日本", "JP"],
+  ['全部', 'ALL'],
+  ['华语', 'ZH'],
+  ['欧美', 'EA'],
+  ['韩国', 'KR'],
+  ['日本', 'JP'],
 ]);
 const albumTypeMap = new Map([
-  ["全部", "new"],
-  ["热门", "hot"],
+  ['全部', 'new'],
+  ['热门', 'hot'],
 ]);
-const area = ref("ALL");
-const type = ref("new");
+const area = ref('ALL');
+const type = ref('new');
 const year = ref(new Date().getFullYear());
 const month = ref(new Date().getMonth() + 1);
 const offset = ref(0);
@@ -90,7 +93,7 @@ watchEffect(() => {
 });
 
 function toPlaylistDetail(id) {
-  router.push(`/album-detail/${id}`)
+  router.push(`/album-detail/${id}`);
 }
 </script>
 

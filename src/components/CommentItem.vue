@@ -17,14 +17,17 @@
 export default {
   props: {
     comment: Object,
-  }
-}
+  },
+};
 </script>
 
 <style module>
 .commentItem {
   display: flex;
   column-gap: var(--gap-sm);
+}
+.commentItem:not(:last-child) {
+  border-bottom: 1px solid rgba(1, 1, 1, 0.1);
 }
 .info {
   display: flex;

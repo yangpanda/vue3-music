@@ -1,15 +1,18 @@
 <template>
   <div
     class="shadow"
-    :class="[$style.imageWrap, {
-      'rounded-none': round === 'none',
-      'rounded-sm': round === 'small',
-      rounded: round === 'normal',
-      'rounded-md': round === 'middle',
-      'rounded-lg': round === 'large',
-      'rounded-full': round === 'full',
-      [$style.w100]: !((width && height) || size),
-    }]"
+    :class="[
+      $style.imageWrap,
+      {
+        'rounded-none': round === 'none',
+        'rounded-sm': round === 'small',
+        rounded: round === 'normal',
+        'rounded-md': round === 'middle',
+        'rounded-lg': round === 'large',
+        'rounded-full': round === 'full',
+        [$style.w100]: !((width && height) || size),
+      },
+    ]"
     :style="{
       width: imageWidth,
       height: imageHeight,
@@ -25,32 +28,28 @@ const props = defineProps({
   src: String,
   ratio: {
     type: String,
-    default: "1 / 1",
+    default: '1 / 1',
   },
   width: String,
   height: String,
   size: String,
   round: {
     type: String,
-    default: "none",
+    default: 'none',
   },
 });
 
 let paddingHeight = `calc(100% / (${props.ratio}))`;
-let imageWidth = "";
-let imageHeight = "";
+let imageWidth = '';
+let imageHeight = '';
 
 if (props.height) {
-  paddingHeight = props.height.indexOf("px")
-    ? `${props.height}`
-    : `${prop.height}px`;
+  paddingHeight = props.height.indexOf('px') ? `${props.height}` : `${prop.height}px`;
 }
 
 if (props.width && props.height) {
-  imageWidth = props.width.indexOf("px") ? `${props.width}` : `${prop.width}px`;
-  imageHeight = props.height.indexOf("px")
-    ? `${props.height}`
-    : `${prop.height}px`;
+  imageWidth = props.width.indexOf('px') ? `${props.width}` : `${prop.width}px`;
+  imageHeight = props.height.indexOf('px') ? `${props.height}` : `${prop.height}px`;
 } else {
   imageWidth = `${props.size}px`;
   imageHeight = `${props.size}px`;
@@ -67,7 +66,7 @@ if (props.width && props.height) {
   background-color: lightgray;
   overflow: hidden;
 }
-.image[lazy="loaded"] {
+.image[lazy='loaded'] {
   width: 100%;
   animation: fadein 1s both;
 }

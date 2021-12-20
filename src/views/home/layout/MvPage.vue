@@ -12,7 +12,8 @@
               :key="index"
               @click="newMvArea = value"
               :class="[$style.navItem, newMvArea === value ? $style.active : '']"
-            >{{ value }}</span>
+              >{{ value }}</span
+            >
           </nav>
         </template>
       </the-section>
@@ -38,7 +39,8 @@
               :key="index"
               @click="topMvArea = value"
               :class="[$style.navItem, topMvArea === value ? $style.active : '']"
-            >{{ value }}</span>
+              >{{ value }}</span
+            >
           </nav>
         </template>
       </the-section>
@@ -48,18 +50,18 @@
 </template>
 
 <script setup>
-import TheSection from "@/components/TheSection.vue";
-import CardMv from "@/components/CardMv.vue";
+import TheSection from '@/components/TheSection.vue';
+import CardMv from '@/components/CardMv.vue';
 
-import api from "@/api/index.js";
+import api from '@/api/index.js';
 
-import { onMounted, ref, watchPostEffect } from "vue";
+import { onMounted, ref, watchPostEffect } from 'vue';
 
-const contentRef = ref(null)
+const contentRef = ref(null);
 
-const Areas = ["内地", "港台", "欧美", "日本", "韩国"];
-const newMvArea = ref("内地");
-const topMvArea = ref("内地");
+const Areas = ['内地', '港台', '欧美', '日本', '韩国'];
+const newMvArea = ref('内地');
+const topMvArea = ref('内地');
 
 const newMvs = ref([]);
 const neteaseMvs = ref([]);
@@ -79,12 +81,9 @@ onMounted(() => {
       limit: 12,
     }),
   ]).then((results) => {
-    [newMvs.value, neteaseMvs.value, topMvs.value] = results.map(
-      (item) => item.data
-    );
+    [newMvs.value, neteaseMvs.value, topMvs.value] = results.map((item) => item.data);
 
     watchPostEffect(() => {
-
       api.mv
         .getTop({
           area: topMvArea.value,

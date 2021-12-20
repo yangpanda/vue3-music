@@ -18,30 +18,30 @@
 </template>
 
 <script>
-import SongTableListItem from "@/components/SongTableListItem.vue";
+import SongTableListItem from '@/components/SongTableListItem.vue';
 import { mapState, mapMutations } from '@/lib/lib.js';
 
 export default {
-  name: "SongTableList",
+  name: 'SongTableList',
   props: {
     songs: {
       type: Array,
     },
   },
   setup(props) {
-    const { playlist } = mapState()
-    const { setPlaylist, setRandomPlaylist } = mapMutations()
+    const { playlist } = mapState();
+    const { setPlaylist, setRandomPlaylist } = mapMutations();
 
     const onPlay = () => {
       if (!Object.is(playlist, props.songs)) {
-        setPlaylist(props.songs)
-        setRandomPlaylist()
+        setPlaylist(props.songs);
+        setRandomPlaylist();
       }
-    }
+    };
 
     return {
-      onPlay
-    }
+      onPlay,
+    };
   },
   components: {
     SongTableListItem,

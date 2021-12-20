@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import PlayingPage from "./components/playing-page/index.vue"
-import TheSidebar from "./components/TheSidebar.vue";
-import ThePlayer from "./components/ThePlayer.vue";
-import { mapState } from '@/lib/lib.js'
+import PlayingPage from './components/playing-page/index.vue';
+import TheSidebar from './components/TheSidebar.vue';
+import ThePlayer from './components/ThePlayer.vue';
+import { mapState } from '@/lib/lib.js';
 
 export default {
   components: {
@@ -32,21 +32,20 @@ export default {
     ThePlayer,
   },
   setup() {
-    const { showPlayingPage } = mapState()
+    const { showPlayingPage } = mapState();
 
     return {
-      showPlayingPage
-    }
+      showPlayingPage,
+    };
   },
   computed: {
     key() {
       if (!(this.$route.path.indexOf('discovery') != -1)) {
-        return this.$route.path
+        return this.$route.path;
       }
-    }
-  }
-}
-
+    },
+  },
+};
 </script>
 
 <style module>

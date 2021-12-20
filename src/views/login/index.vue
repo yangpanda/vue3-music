@@ -24,21 +24,13 @@
 </template>
 
 <script>
-import {
-  NCard,
-  NForm,
-  NFormItem,
-  NTabs,
-  NTabPane,
-  NButton,
-  NInput,
-} from 'naive-ui'
-import TheQr from './components/TheQr.vue'
-import api from '@/api/index.js'
-import { ref, onBeforeMount } from 'vue'
-import { mapState, mapMutations } from '@/lib/lib.js'
-import useRouterMethods from '../../composables/router-methods'
-import User from '@/model/User.js'
+import { NCard, NForm, NFormItem, NTabs, NTabPane, NButton, NInput } from 'naive-ui';
+import TheQr from './components/TheQr.vue';
+import api from '@/api/index.js';
+import { ref, onBeforeMount } from 'vue';
+import { mapState, mapMutations } from '@/lib/lib.js';
+import useRouterMethods from '../../composables/router-methods';
+import User from '@/model/User.js';
 
 export default {
   components: {
@@ -52,52 +44,52 @@ export default {
     TheQr,
   },
   setup() {
-    const errMsg = ref('')
+    const errMsg = ref('');
     const model = ref({
       email: null,
       password: null,
-    })
-    const { toHome } = useRouterMethods()
-    const { logined, userinfo } = mapState()
-    const { setUserinfo, setLogined } = mapMutations()
+    });
+    const { toHome } = useRouterMethods();
+    const { logined, userinfo } = mapState();
+    const { setUserinfo, setLogined } = mapMutations();
 
     const login = () => {
-      api.user.login(model.value).then(res => {
+      api.user.login(model.value).then((res) => {
         switch (res.code) {
           case 200:
-            setUserinfo(new User(res.profile))
-            setLogined(true)
-            toHome()
-            break
+            setUserinfo(new User(res.profile));
+            setLogined(true);
+            toHome();
+            break;
           case 502:
-            errMsg.value = res.data.msg ?? res.data.message
-            break
+            errMsg.value = res.data.msg ?? res.data.message;
+            break;
           default:
-            break
+            break;
         }
-      })
-    }
+      });
+    };
 
     onBeforeMount(() => {
       if (logined.value && userinfo.value) {
-        toHome()
+        toHome();
       } else {
-        api.user.loginStatus().then(res => {
+        api.user.loginStatus().then((res) => {
           if (res.data.profile && res.data.account) {
-            setUserinfo(new User(res.data.profile))
-            setLogined(true)
-            toHome()
+            setUserinfo(new User(res.data.profile));
+            setLogined(true);
+            toHome();
           }
-        })
+        });
       }
-    })
+    });
 
     return {
       model,
       login,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style module>

@@ -1,12 +1,7 @@
 <template>
   <div :class="$style.tabPlaylist">
     <div :class="$style.nav">
-      <n-popover
-        display-directive="show"
-        trigger="focus"
-        placement="bottom-start"
-        style="width: 500px"
-      >
+      <n-popover display-directive="show" trigger="focus" placement="bottom-start" style="width: 500px">
         <template #trigger>
           <span>{{ cat.name }}</span>
         </template>
@@ -19,22 +14,19 @@
                 <n-tag
                   style="cursor: pointer"
                   @mousedown="
-                  cat = tag;
-                  page = 1;
+                    cat = tag;
+                    page = 1;
                   "
                   round
-                >{{ tag.name }}</n-tag>
+                  >{{ tag.name }}</n-tag
+                >
               </n-badge>
             </div>
           </div>
         </div>
       </n-popover>
       <div :class="$style.navRight">
-        <span
-          v-for="(tag, index) in hotTags"
-          :key="index"
-          @click="cat = tag"
-        >{{ tag.name }}</span>
+        <span v-for="(tag, index) in hotTags" :key="index" @click="cat = tag">{{ tag.name }}</span>
       </div>
     </div>
     <div :class="[$style.content, loading ? $style.loading : '']">
@@ -47,21 +39,17 @@
 </template>
 
 <script setup>
-import api from "@/api/index.js";
-import Playlist from "@/model/Playlist.js";
-import { ref, watchPostEffect, onMounted, inject } from "vue";
+import api from '@/api/index.js';
+import Playlist from '@/model/Playlist.js';
+import { ref, watchPostEffect, onMounted, inject } from 'vue';
 
-import CardPlaylist from "@/components/CardPlaylist.vue";
-import {
-  NPagination,
-  NBadge,
-  NPopover,
-} from "naive-ui";
+import CardPlaylist from '@/components/CardPlaylist.vue';
+import { NPagination, NBadge, NPopover } from 'naive-ui';
 
 // inject
-const backToTop = inject("backToTop");
+const backToTop = inject('backToTop');
 
-const loading = ref(true)
+const loading = ref(true);
 const hotTags = ref([]);
 const playlists = ref([]);
 const popData = ref({});
@@ -72,16 +60,13 @@ const page = ref(1);
 const pageCount = ref(0);
 
 onMounted(() => {
-  Promise.allSettled([
-    api.playlist.getPlaylistHotTags(),
-    api.playlist.getPlaylistCat(),
-  ]).then((results) => {
+  Promise.allSettled([api.playlist.getPlaylistHotTags(), api.playlist.getPlaylistCat()]).then((results) => {
     const [hotTagsData, categoriesData] = results.map((item) => {
-      if (item.status === "fulfilled") {
+      if (item.status === 'fulfilled') {
         return item.value;
       }
-      if (item.status === "rejected") {
-        console.log("rejected");
+      if (item.status === 'rejected') {
+        console.log('rejected');
       }
     });
 
@@ -93,7 +78,7 @@ onMounted(() => {
         const tags = categoriesData.sub.filter((item) => item.category == key);
 
         return [key, { name: value, tags }];
-      })
+      }),
     );
 
     watchPostEffect(() => {
@@ -101,7 +86,7 @@ onMounted(() => {
 
       api.playlist
         .getPlaylist({
-          order: "hot",
+          order: 'hot',
           cat: cat.value.name,
           offset: (page.value - 1) * 50,
         })
@@ -111,9 +96,7 @@ onMounted(() => {
             const count = Math.floor(response.total / 50);
             pageCount.value = judge === 0 ? count : count + 1;
 
-            playlists.value = response.playlists.map(
-              (item) => new Playlist(item)
-            );
+            playlists.value = response.playlists.map((item) => new Playlist(item));
           }
 
           loading.value = false;

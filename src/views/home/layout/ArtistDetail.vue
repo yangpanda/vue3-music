@@ -31,17 +31,17 @@
 </template>
 
 <script>
-import api from '@/api/index.js'
-import { ref } from 'vue'
-import Artist from '@/model/Artist.js'
-import { NTabs, NTabPane, NScrollbar } from 'naive-ui'
-import AlbumList from '@/components/ArtistDetail/AlbumList.vue'
-import SimilarArtist from '@/components/ArtistDetail/SimilarArtist.vue'
-import Mv from '@/components/ArtistDetail/Mv.vue'
+import api from '@/api/index.js';
+import { ref } from 'vue';
+import Artist from '@/model/Artist.js';
+import { NTabs, NTabPane, NScrollbar } from 'naive-ui';
+import AlbumList from '@/components/ArtistDetail/AlbumList.vue';
+import SimilarArtist from '@/components/ArtistDetail/SimilarArtist.vue';
+import Mv from '@/components/ArtistDetail/Mv.vue';
 
 export default {
   props: {
-    id: [String, Number]
+    id: [String, Number],
   },
   components: {
     NTabs,
@@ -52,21 +52,19 @@ export default {
     Mv,
   },
   setup(props) {
-    const artist = ref(new Artist())
+    const artist = ref(new Artist());
 
-    api.artist.getDetail(props.id)
-      .then(response => {
-        if (response.code === 200) {
-          artist.value = new Artist(response.data.artist)
-        }
-      })
+    api.artist.getDetail(props.id).then((response) => {
+      if (response.code === 200) {
+        artist.value = new Artist(response.data.artist);
+      }
+    });
 
     return {
       artist,
-    }
-  }
-}
-
+    };
+  },
+};
 </script>
 
 <style module>

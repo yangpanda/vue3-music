@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
@@ -20,34 +20,34 @@ const routes = [
               {
                 path: '/discovery/personal',
                 name: 'Personal',
-                component: () => import('@/views/home/layout/discovery/TabPersonal.vue')
+                component: () => import('@/views/home/layout/discovery/TabPersonal.vue'),
               },
               {
                 path: '/discovery/playlist',
                 name: 'Playlist',
-                component: () => import('@/views/home/layout/discovery/TabPlaylist.vue')
+                component: () => import('@/views/home/layout/discovery/TabPlaylist.vue'),
               },
               {
                 path: '/discovery/rank',
                 name: 'Rank',
-                component: () => import('@/views/home/layout/discovery/TabRank.vue')
+                component: () => import('@/views/home/layout/discovery/TabRank.vue'),
               },
               {
                 path: '/discovery/artist',
                 name: 'Artist',
-                component: () => import('@/views/home/layout/discovery/TabArtist.vue')
+                component: () => import('@/views/home/layout/discovery/TabArtist.vue'),
               },
               {
                 path: '/discovery/newsong',
                 name: 'Newsong',
-                component: () => import('@/views/home/layout/discovery/TabNewsong/index.vue')
+                component: () => import('@/views/home/layout/discovery/TabNewsong/index.vue'),
               },
-            ]
+            ],
           },
           {
             path: '/fm',
             name: 'Fm',
-            component: () => import('@/views/home/layout/PersonalFm.vue')
+            component: () => import('@/views/home/layout/PersonalFm.vue'),
           },
           {
             path: '/history',
@@ -81,35 +81,34 @@ const routes = [
             path: '/mv',
             name: 'MV',
             component: () => import('@/views/home/layout/MvPage.vue'),
-            children: [
-            ]
+            children: [],
           },
           {
             path: '/search',
             name: 'SearchPage',
             props: true,
-            component: () => import('@/views/home/layout/search/index.vue')
-          }
-        ]
+            component: () => import('@/views/home/layout/search/index.vue'),
+          },
+        ],
       },
       {
         path: '/mv-detail/:id',
         name: 'MvDetail',
         props: true,
         component: () => import('@/views/home/MvDetail.vue'),
-      }
+      },
     ],
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/login/index.vue')
-  }
-]
+    component: () => import('@/views/login/index.vue'),
+  },
+];
 
 const router = createRouter({
   history: createWebHistory('/music/'),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

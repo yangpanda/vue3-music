@@ -34,41 +34,30 @@
 </template>
 
 <script setup>
-import { mapState, mapMutations } from "@/lib/lib.js"
-import { ref, computed, watch } from "vue";
+import { mapState, mapMutations } from '@/lib/lib.js';
+import { ref, computed, watch } from 'vue';
 
-import Song from "@/model/Song.js";
-import api from "@/api/index.js";
+import Song from '@/model/Song.js';
+import api from '@/api/index.js';
 
-import RotateCd from "./RotateCd.vue";
-import Lyric from "./Lyric.vue";
-import Comment from "@/components/Comment.vue";
-import { NScrollbar, NBackTop } from 'naive-ui'
+import RotateCd from './RotateCd.vue';
+import Lyric from './Lyric.vue';
+import Comment from '@/components/Comment.vue';
+import { NScrollbar, NBackTop } from 'naive-ui';
 
 const simiSongs = ref([]);
 const comments = ref([]);
 const hotComments = ref([]);
-const scrollbar = ref(null)
-const container = ref(null)
+const scrollbar = ref(null);
+const container = ref(null);
 
-const {
-  currentSong,
-  playingState,
-} = mapState()
+const { currentSong, playingState } = mapState();
 
-const {
-  setCurrentSong
-} = mapMutations()
+const { setCurrentSong } = mapMutations();
 
-const songImage = computed(() =>
-  currentSong.value ? currentSong.value.image : ""
-);
-const songName = computed(() =>
-  currentSong.value ? currentSong.value.name : ""
-);
-const songArtist = computed(() =>
-  currentSong.value ? currentSong.value.singer : []
-);
+const songImage = computed(() => (currentSong.value ? currentSong.value.image : ''));
+const songName = computed(() => (currentSong.value ? currentSong.value.name : ''));
+const songArtist = computed(() => (currentSong.value ? currentSong.value.singer : []));
 
 watch(
   () => currentSong.value,
@@ -90,7 +79,8 @@ watch(
           comments.value = response.comments;
         }
       });
-  });
+  },
+);
 </script>
 
 <style module>

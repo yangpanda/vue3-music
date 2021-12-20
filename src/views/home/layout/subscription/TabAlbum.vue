@@ -17,42 +17,42 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import api from '@/api/index.js'
-import useRouterMethods from '@/composables/router-methods.js'
+import { ref, onMounted } from 'vue';
+import api from '@/api/index.js';
+import useRouterMethods from '@/composables/router-methods.js';
 
 export default {
   name: 'TabAlbum',
   setup() {
-    const albums = ref([])
-    const count = ref(0)
-    const { toAlbumDetail } = useRouterMethods()
+    const albums = ref([]);
+    const count = ref(0);
+    const { toAlbumDetail } = useRouterMethods();
 
     const getAlbum = () => {
-      api.subscription.getAlbum().then(res => {
+      api.subscription.getAlbum().then((res) => {
         if (res.code === 200) {
-          albums.value = res.data
-          count.value = res.count
+          albums.value = res.data;
+          count.value = res.count;
         }
-      })
-    }
+      });
+    };
 
     function generateArtists(artists) {
-      return artists.map((item) => item.name).join(" / ");
+      return artists.map((item) => item.name).join(' / ');
     }
 
     onMounted(() => {
-      getAlbum()
-    })
+      getAlbum();
+    });
 
     return {
       albums,
       count,
       generateArtists,
       toAlbumDetail,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style module>

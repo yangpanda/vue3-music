@@ -11,16 +11,12 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from '@vue/runtime-core'
-import {
-  NTabs,
-  NTabPane,
-  NScrollbar,
-} from 'naive-ui'
+import { defineAsyncComponent } from '@vue/runtime-core';
+import { NTabs, NTabPane, NScrollbar } from 'naive-ui';
 
 export default {
   props: {
-    words: ''
+    words: '',
   },
   components: {
     NTabs,
@@ -54,13 +50,13 @@ export default {
       //   tab: 'MV',
       //   component: defineAsyncComponent(() => import('./components/TabMv.vue'))
       // },
-    ]
+    ];
 
     return {
       tabs,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style module>

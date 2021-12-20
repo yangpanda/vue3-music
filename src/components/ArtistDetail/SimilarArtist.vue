@@ -5,32 +5,31 @@
 </template>
 
 <script>
-import CardArtist from '@/components/CardArtist.vue'
-import api from '@/api/index.js'
-import Artist from '@/model/Artist.js'
-import { ref } from 'vue'
+import CardArtist from '@/components/CardArtist.vue';
+import api from '@/api/index.js';
+import Artist from '@/model/Artist.js';
+import { ref } from 'vue';
 
 export default {
   props: {
-    id: ''
+    id: '',
   },
   components: {
     CardArtist,
   },
   setup(props) {
-    const artists = ref([])
-    api.artist.getSimi(props.id)
-      .then(response => {
-        if (response.code === 200) {
-          artists.value = response.artists.map(item => new Artist(item))
-        }
-      })
+    const artists = ref([]);
+    api.artist.getSimi(props.id).then((response) => {
+      if (response.code === 200) {
+        artists.value = response.artists.map((item) => new Artist(item));
+      }
+    });
 
     return {
-      artists
-    }
-  }
-}
+      artists,
+    };
+  },
+};
 </script>
 
 <style module>

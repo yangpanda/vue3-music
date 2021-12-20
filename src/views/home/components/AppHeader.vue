@@ -28,13 +28,13 @@
 </template>
 
 <script>
-import SearchBar from "@/components/SearchBar.vue";
-import { NButton, NAvatar, NPopover } from 'naive-ui'
-import useRouterMethods from '@/composables/router-methods.js'
-import { mapState, mapMutations } from "@/lib/lib.js"
-import { onMounted } from "vue";
-import api from '@/api/index.js'
-import User from '@/model/User.js'
+import SearchBar from '@/components/SearchBar.vue';
+import { NButton, NAvatar, NPopover } from 'naive-ui';
+import useRouterMethods from '@/composables/router-methods.js';
+import { mapState, mapMutations } from '@/lib/lib.js';
+import { onMounted } from 'vue';
+import api from '@/api/index.js';
+import User from '@/model/User.js';
 
 export default {
   name: 'AppHeader',
@@ -45,36 +45,33 @@ export default {
     NPopover,
   },
   setup() {
-    const { userinfo, logined } = mapState()
-    const { setUserinfo, setLogined } = mapMutations()
-    const {
-      toHome,
-      toLogin,
-    } = useRouterMethods();
+    const { userinfo, logined } = mapState();
+    const { setUserinfo, setLogined } = mapMutations();
+    const { toHome, toLogin } = useRouterMethods();
 
     const checkLoginStatus = () => {
-      api.user.loginStatus().then(res => {
-        console.log(res)
+      api.user.loginStatus().then((res) => {
+        console.log(res);
         if (res.data.profile && res.data.account) {
-          setUserinfo(new User(res.data.profile))
-          setLogined(true)
+          setUserinfo(new User(res.data.profile));
+          setLogined(true);
         }
-      })
-    }
+      });
+    };
 
     const logout = async () => {
-      const res = await api.user.logout()
+      const res = await api.user.logout();
       if (res.code === 200) {
-        setUserinfo(null)
-        setLogined(false)
+        setUserinfo(null);
+        setLogined(false);
       }
-    }
+    };
 
     onMounted(() => {
       if (!logined.value) {
-        checkLoginStatus()
+        checkLoginStatus();
       }
-    })
+    });
 
     return {
       userinfo,
@@ -82,9 +79,9 @@ export default {
       toHome,
       toLogin,
       logout,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style module>

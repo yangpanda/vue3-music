@@ -14,11 +14,16 @@
             <n-button>播放全部</n-button>
             <n-button>收藏</n-button>
           </n-space>
-          <div>歌手: <the-link v-for="artist in album.artists" @click="toArtistDetail(artist.id)">{{ artist.name }}</the-link></div>
+          <div>
+            歌手:
+            <the-link v-for="artist in album.artists" @click="toArtistDetail(artist.id)">{{
+              artist.name
+            }}</the-link>
+          </div>
           <div>时间: {{ album.publishTime }}</div>
         </n-space>
       </div>
-      <n-tabs default-value="album" type="line" :tabs-padding="20" :pane-style="{'padding-bottom': '20px'}"	>
+      <n-tabs default-value="album" type="line" :tabs-padding="20" :pane-style="{ 'padding-bottom': '20px' }">
         <n-tab-pane name="album" tab="歌曲列表">
           <div v-if="showSpin" style="display: flex; justify-content: center">
             <n-spin />
@@ -40,37 +45,32 @@
 </template>
 
 <script setup>
-import * as song from "@/api/service/song.js";
-import * as albumApi from "@/api/service/album.js";
+import * as song from '@/api/service/song.js';
+import * as albumApi from '@/api/service/album.js';
 
-import Song from "@/model/Song";
-import Album from '@/model/Album.js'
-import { ref, onMounted, defineAsyncComponent } from "vue";
-import useRouterMethods from "@/composables/router-methods";
+import Song from '@/model/Song';
+import Album from '@/model/Album.js';
+import { ref, onMounted, defineAsyncComponent } from 'vue';
+import useRouterMethods from '@/composables/router-methods';
 
-import SongTableList from "@/components/SongTableList.vue";
-import {
-  NSpin,
-  NTabs,
-  NTabPane,
-  NScrollbar,
-} from "naive-ui";
-import TheLink from "@/components/TheLink.vue";
+import SongTableList from '@/components/SongTableList.vue';
+import { NSpin, NTabs, NTabPane, NScrollbar } from 'naive-ui';
+import TheLink from '@/components/TheLink.vue';
 
-const Comment = defineAsyncComponent(() => import('./Comment.vue'))
+const Comment = defineAsyncComponent(() => import('./Comment.vue'));
 
 const props = defineProps({
   id: String,
 });
 
-const { toArtistDetail } = useRouterMethods()
+const { toArtistDetail } = useRouterMethods();
 
 const showSpin = ref(true);
 const album = ref({});
 const songs = ref([]);
 
 const getSongs = async (ids) => {
-  song.getSongDetail(ids.join(",")).then((res) => {
+  song.getSongDetail(ids.join(',')).then((res) => {
     if (res.code === 200) {
       songs.value = res.songs.map((item) => new Song(item));
       showSpin.value = false;

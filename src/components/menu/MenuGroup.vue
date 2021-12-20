@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "MenuGroup",
+  name: 'MenuGroup',
   props: {
     label: {
       type: String,

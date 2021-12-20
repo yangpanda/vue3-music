@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   prefix: {
@@ -18,16 +18,15 @@ const props = defineProps({
   },
   color: {
     type: String,
-    default: '#333'
+    default: '#333',
   },
   size: {
     type: [String, Number],
-    default: 24
-  }
-})
+    default: 24,
+  },
+});
 
-const symbolId = computed(() => `#${props.prefix}-${props.name}`)
+const symbolId = computed(() => `#${props.prefix}-${props.name}`);
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
