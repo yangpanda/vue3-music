@@ -23,7 +23,6 @@ export default {
 
     watchEffect(() => {
       api.search.search(1, props.keywords).then((res) => {
-        console.log(res);
         if (res.code === 200) {
           songs.value = res.result.songs.map((item) => new Song(item));
         }

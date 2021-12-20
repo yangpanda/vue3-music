@@ -56,7 +56,6 @@ export default {
 
     const checkLoginStatus = () => {
       api.user.loginStatus().then((res) => {
-        console.log(res);
         if (res.data.profile && res.data.account) {
           setUserinfo(new User(res.data.profile));
           setLogined(true);

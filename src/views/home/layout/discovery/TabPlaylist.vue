@@ -66,7 +66,6 @@ onMounted(() => {
         return item.value;
       }
       if (item.status === 'rejected') {
-        console.log('rejected');
       }
     });
 

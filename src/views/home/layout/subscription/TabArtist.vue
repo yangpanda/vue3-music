@@ -37,7 +37,7 @@ export default {
     const getArtist = () => {
       api.subscription.getArtist().then((res) => {
         if (res.code === 200) {
-          console.log(res);
+          res;
           artists.value = res.data;
           count.value = res.count;
         }

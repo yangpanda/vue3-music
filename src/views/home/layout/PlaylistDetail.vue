@@ -109,7 +109,6 @@ const getSongs = async (ids) => {
 const getPlaylistDetail = async (id) => {
   api.playlist.getPlaylistDetail(id).then((res) => {
     if (res.code === 200) {
-      console.log(res);
       detail.value = new Playlist(res.playlist);
       subscribers.value = res.playlist.subscribers;
       const ids = detail.value.trackIds.map((item) => item.id);
@@ -133,9 +132,7 @@ const getComment = async (id) => {
 
 const subscribe = () => {
   let t = detail.value.subscribed ? 2 : 1;
-  api.playlist.subscribe(t, props.id).then((res) => {
-    console.log(res);
-  });
+  api.playlist.subscribe(t, props.id).then((res) => {});
 };
 
 let counter = 1;

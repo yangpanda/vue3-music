@@ -156,7 +156,6 @@ onMounted(() => {
   };
 
   methods.setCurrentTime = (sec) => {
-    console.log('lll');
     audio.value.currentTime = sec;
   };
 

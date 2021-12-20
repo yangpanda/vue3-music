@@ -45,7 +45,6 @@ export default {
 
     const getComment = (id) => {
       api.comment.ofAlbum(id).then((res) => {
-        console.log(res);
         if (res.code === 200) {
           hotComments.value = res.hotComments;
           comments.value = res.comments;
@@ -55,9 +54,7 @@ export default {
     };
 
     const loadMore = (offset) => {
-      api.comment.ofAlbum({ id: props.id, offset: offset }).then((res) => {
-        console.log(res);
-      });
+      api.comment.ofAlbum({ id: props.id, offset: offset }).then((res) => {});
     };
 
     onMounted(() => {

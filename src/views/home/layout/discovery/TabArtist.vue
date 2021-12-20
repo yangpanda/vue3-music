@@ -95,7 +95,6 @@ export default {
     const getArtist = async (param) => {
       api.artist.getArtist(param).then((response) => {
         if (response.code === 200) {
-          console.log(response.artists);
           artists.value.push(...response.artists.map((item) => new Artist(item)));
         }
       });

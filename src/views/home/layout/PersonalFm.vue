@@ -40,7 +40,6 @@ export default {
 
     const getFm = () => {
       api.fm.getFm().then((res) => {
-        console.log(res);
         if (res.code === 200) {
           songs.value = res.data.map((item) => new Song(item));
           pointer.value = 0;
