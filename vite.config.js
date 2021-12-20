@@ -11,6 +11,7 @@ function resolve(dir) {
 }
 
 export default defineConfig({
+  base: '/music/',
   plugins: [
     vue(),
     viteSvgIcons({

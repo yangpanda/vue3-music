@@ -108,7 +108,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/music/'),
   routes
 })
 
