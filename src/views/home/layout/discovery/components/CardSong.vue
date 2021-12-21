@@ -8,7 +8,7 @@
         color="#ec4141"
         box
         :triangle="true"
-        @click="play(song)"
+        @click="playSong(song)"
       />
     </div>
     <div :class="$style.songInfoBox">
@@ -23,9 +23,23 @@
 </template>
 
 <script>
+import { mapMutations } from '@/lib/lib';
+
 export default {
   props: {
     song: {},
+  },
+  setup() {
+    const { insertSong, setCurrentSong } = mapMutations();
+
+    const playSong = (song) => {
+      insertSong(song);
+      setCurrentSong(song);
+    };
+
+    return {
+      playSong,
+    };
   },
 };
 </script>

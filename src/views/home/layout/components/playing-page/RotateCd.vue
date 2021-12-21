@@ -40,6 +40,7 @@ export default {
 .container {
   position: relative;
   z-index: 0;
+  min-width: 300px;
 }
 .needle {
   position: absolute;
@@ -72,7 +73,6 @@ export default {
   position: relative;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2);
-  min-width: 300px;
   animation: rotate 20s linear infinite;
 }
 .cd::after {
