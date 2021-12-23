@@ -11,3 +11,15 @@
 ## TODO
 
 - [ ] 整理代码（目前的代码很乱）
+
+## 截图
+
+![home](/assets/home.png)
+![playlist](/assets/playlist.png)
+![rank](/assets/rank.png)
+![artist](/assets/artist.png)
+![top](/assets/top.png)
+![playlistdetail](/assets/playlistdetail.png)
+![playlistsidebar](/assets/playlistsidebar.png)
+![mv](/assets/mv.png)
+![playingpage](/assets/playingpage.png)
