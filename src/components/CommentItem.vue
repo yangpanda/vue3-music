@@ -6,7 +6,15 @@
         <span :class="$style.user">{{ comment.user.nickname }}：</span>
         <span>{{ comment.content }}</span>
       </div>
-      <div>
+      <div v-if="comment.beReplied.length">
+        <div v-for="item in comment.beReplied" :key="item.beRepliedCommentId">
+          <div :class="$style.beReplied">
+            <span :class="$style.user">@{{ item.user.nickname }}：</span>
+            <span>{{ item.content }}</span>
+          </div>
+        </div>
+      </div>
+      <div :class="$style.bottom">
         <div :class="$style.date">{{ new Date(comment.time).toLocaleString() }}</div>
       </div>
     </div>
@@ -26,9 +34,6 @@ export default {
   display: flex;
   column-gap: var(--gap-sm);
 }
-.commentItem:not(:last-child) {
-  border-bottom: 1px solid rgba(1, 1, 1, 0.1);
-}
 .info {
   display: flex;
   flex-direction: column;
@@ -43,5 +48,14 @@ export default {
 .date {
   font-size: 12px;
   color: #9f9f9f;
+}
+.beReplied {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+}
+.bottom {
+  margin-top: 10px;
 }
 </style>

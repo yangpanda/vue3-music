@@ -2,69 +2,117 @@
   <the-scrollbar>
     <div :class="$style.container">
       <div :class="$style.top">
-        <rotate-cd :src="songImage" :running="playingState" />
+        <rotate-cd />
         <lyric />
       </div>
       <div :class="$style.commentContainer">
-        <comment :comments="comments" />
+        <h3 ref="commentPos">听友评论</h3>
+        <div :class="$style.commentItemContainer">
+          <comment-item v-for="item in comments" :key="item.commentId" :comment="item"></comment-item>
+        </div>
+        <div :class="$style.paginationContainer">
+          <n-pagination
+            v-model:page="page"
+            :page-count="pageCount"
+            :page-size="pageSize"
+            @update-page="() => commentPos.scrollIntoView({ behavior: 'smooth' })"
+          />
+        </div>
       </div>
+      <svg-button
+        box
+        :class="$style.down"
+        name="arrow-down"
+        size="30"
+        @click="
+          () => {
+            setShowPlayingPage(false);
+          }
+        "
+      ></svg-button>
     </div>
   </the-scrollbar>
 </template>
 
 <script>
 import { mapState, mapMutations } from '@/lib/lib.js';
-import { ref, computed, watch } from 'vue';
-
+import { ref, watch, reactive, toRefs } from 'vue';
 import api from '@/api/index.js';
 
 import RotateCd from './RotateCd.vue';
 import Lyric from './Lyric.vue';
-import Comment from '@/components/Comment.vue';
+import CommentItem from '@/components/CommentItem.vue';
+import { NPagination } from 'naive-ui';
 
 export default {
   name: 'PlayingPage',
   components: {
     RotateCd,
     Lyric,
-    Comment,
+    CommentItem,
+    NPagination,
   },
   setup() {
+    const commentPos = ref(null);
     const comments = ref([]);
-    
-    const { currentSong, playingState } = mapState();
-    
-    const songImage = computed(() => (currentSong.value ? currentSong.value.image : ''));
-    
+    const { currentSong } = mapState();
+    const { setShowPlayingPage } = mapMutations();
+
+    const state = reactive({
+      total: 0,
+      page: 1,
+      pageSize: 20,
+      pageCount: 0,
+    });
+
+    const getComment = async (offset = 0) => {
+      const res = await api.comment.ofSong({
+        id: currentSong.value.id,
+        limit: state.pageSize,
+        offset,
+      });
+
+      if (res.code == 200) {
+        state.total = res.total;
+        state.pageCount = Math.ceil(state.total / state.pageSize);
+
+        comments.value = res.comments;
+      }
+    };
+
     watch(
       () => currentSong.value,
       () => {
-        api.comment
-          .ofSong({
-            id: currentSong.value.id,
-            limit: 20,
-          })
-          .then((response) => {
-            if (response.code === 200) {
-              comments.value = response.comments;
-            }
-          });
+        state.page = 1;
+        getComment();
+      },
+    );
+
+    watch(
+      () => state.page,
+      () => {
+        getComment(state.page * state.pageSize);
       },
     );
 
     return {
+      commentPos,
       comments,
-      songImage,
-      playingState,
-    }
-  }
-}
-
+      ...toRefs(state),
+      setShowPlayingPage,
+    };
+  },
+};
 </script>
 
 <style module>
 .container {
   padding: 20px;
+}
+.down {
+  position: fixed;
+  right: 20px;
+  top: 20px;
 }
 .top {
   max-width: 1000px;
@@ -79,5 +127,17 @@ export default {
 .commentContainer {
   max-width: 1000px;
   margin: 0 auto;
+  margin-top: 30px;
+}
+.paginationContainer {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.commentItemContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
 }
 </style>

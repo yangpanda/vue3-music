@@ -1,37 +1,47 @@
 <template>
   <div :class="$style.container">
-    <img :class="[$style.needle, running ? $style.run : '']" :src="needlePic" alt="needle" />
-    <div :class="[$style.cd, !running ? $style.pause : '']">
+    <img :class="[$style.needle, playingState ? $style.run : '']" :src="needlePic" alt="needle" />
+    <div :class="[$style.cd, !playingState ? $style.pause : '']">
       <div
         :class="$style.bg"
         :style="{
-          'background-image': 'url(' + cdPic + ')',
+          'background-image': 'url(' + discPic + ')',
         }"
       ></div>
-      <img :class="$style.cover" :src="picSizeUrl(src, 300)" />
+      <img :class="$style.cover" :src="picUrl" />
     </div>
   </div>
 </template>
 
 <script>
-import cdPic from '@/assets/pictures/cd.png';
+import discPic from '@/assets/pictures/cd.png';
 import needlePic from '@/assets/pictures/needle.png';
 import { picSizeUrl } from '@/utils/picture';
+import { reactive, toRefs, watch } from 'vue';
+import { mapState } from '@/lib/lib';
 
 export default {
   name: 'RotateCd',
-  props: {
-    src: '',
-    running: false,
-  },
-  data() {
+  setup() {
+    const state = reactive({
+      picUrl: '',
+    });
+
+    const { currentSong, playingState } = mapState();
+
+    watch(
+      () => currentSong.value,
+      () => {
+        state.picUrl = picSizeUrl(currentSong.value.image, 300);
+      },
+    );
+
     return {
-      cdPic,
+      ...toRefs(state),
+      playingState,
+      discPic,
       needlePic,
     };
-  },
-  methods: {
-    picSizeUrl,
   },
 };
 </script>
