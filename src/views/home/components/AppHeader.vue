@@ -23,7 +23,7 @@
           </div>
         </n-popover>
       </div>
-      <a :class="$style.link" href="https://github.com/yangpanda/vue3-music" target="_blank">
+      <a :class="$style.link" href="https://github.com/yangpanda/vue3-pc-netease-music" target="_blank">
         <svg-icon name="github" size="32"></svg-icon>
       </a>
     </div>
