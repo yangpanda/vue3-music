@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import store from '../store';
 
 const routes = [
   {
@@ -109,6 +110,12 @@ const routes = [
 const router = createRouter({
   history: createWebHistory('/music/'),
   routes,
+});
+
+router.beforeEach(() => {
+  if (store.state.showPlayingPage) {
+    store.commit('setShowPlayingPage', false);
+  }
 });
 
 export default router;

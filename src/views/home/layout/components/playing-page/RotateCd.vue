@@ -48,7 +48,7 @@ export default {
   height: 146px;
   z-index: 10;
   left: 45%;
-  top: -30%;
+  top: -28%;
   transition: all;
   transition-duration: 0.5s;
   transform-origin: left top;
