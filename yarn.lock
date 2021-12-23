@@ -58,10 +58,10 @@
   resolved "https://repo.huaweicloud.com/repository/npm/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jambonn/vue-lazyload@^1.0.8":
-  version "1.0.8"
-  resolved "https://repo.huaweicloud.com/repository/npm/@jambonn/vue-lazyload/-/vue-lazyload-1.0.8.tgz#3a148afcf8dd96085f0b99906fefa469f21d72db"
-  integrity sha512-ljpahX+K50ejq62O5CuYl7PSnEmeSHqkQ+sG58tV13wnokqCLuhHnHycnVxSwBhEx8Ssu+Oga5ixfCsgnu+NQA==
+"@jambonn/vue-lazyload@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@jambonn/vue-lazyload/-/vue-lazyload-1.0.9.tgz#3b2271e41860a8d9728d1898d9c997b749052d95"
+  integrity sha512-V9AnxDTAS1+q5LpTWtvyEN2bo1skvSzPRbFfP7Z1qhfEQRQouSwReEkbEb5B5M4MDEM1UIE0kxlsvOcCkon8DQ==
 
 "@jest/types@^26.6.2":
   version "26.6.2"

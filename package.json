@@ -8,6 +8,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@jambonn/vue-lazyload": "^1.0.9",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "qs": "^6.10.1",
@@ -16,7 +17,6 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@jambonn/vue-lazyload": "^1.0.8",
     "@rollup/plugin-alias": "^3.1.5",
     "@vitejs/plugin-legacy": "^1.4.4",
     "@vitejs/plugin-vue": "^1.2.4",
