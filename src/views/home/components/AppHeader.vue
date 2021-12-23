@@ -51,14 +51,20 @@ export default {
   },
   setup() {
     const { userinfo, logined } = mapState();
-    const { setUserinfo, setLogined } = mapMutations();
+    const { setUserinfo, setLogined, setLikedSongs } = mapMutations();
     const { toHome, toLogin } = useRouterMethods();
+
+    const getLikedSongs = async (id) => {
+      const res = await api.user.getLikedSongs(id);
+      setLikedSongs(new Set(res.ids));
+    };
 
     const checkLoginStatus = () => {
       api.user.loginStatus().then((res) => {
         if (res.data.profile && res.data.account) {
           setUserinfo(new User(res.data.profile));
           setLogined(true);
+          getLikedSongs(userinfo.value.id);
         }
       });
     };

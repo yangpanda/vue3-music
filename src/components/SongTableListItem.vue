@@ -36,7 +36,6 @@ export default {
     index: {
       type: Number,
     },
-    inLove: false,
   },
   emits: ['play'],
   setup(props, { emit }) {
