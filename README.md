@@ -20,6 +20,6 @@
 ![artist](/assets/artist.png)
 ![top](/assets/top.png)
 ![playlistdetail](/assets/playlistdetail.png)
-![playlistsidebar](/assets/playlistsidebar.png)
+![playsidebar](/assets/playsidebar.png)
 ![mv](/assets/mv.png)
 ![playingpage](/assets/playingpage.png)
