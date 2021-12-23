@@ -31,7 +31,7 @@ export default {
       const name = 'statement';
       if (!cookie.get(name)) {
         cookie.set(name, 'showed', { expires: date });
-        setTimeout(() => (showModal.value = true), 2500);
+        setTimeout(() => (showModal.value = true), 1500);
       }
     };
 
