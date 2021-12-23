@@ -1,34 +1,28 @@
 <template>
   <div :class="$style.artists">
-    <n-scrollbar>
-      <div
-        :class="$style.albumItem"
-        v-for="(item, index) in artists"
-        :key="index"
-        @click="toArtistDetail(item.id)"
-      >
-        <div :class="[$style.coverBox, 'cursor-pointer']">
-          <the-image :src="item.picUrl + '?param=160y160'" size="60" round="normal" />
-        </div>
-        <div class="ellipsis">{{ item.name }}</div>
-        <div class="ellipsis">专辑: {{ item.albumSize }}</div>
-        <div>MV: {{ item.mvSize }}</div>
+    <div
+      :class="$style.albumItem"
+      v-for="(item, index) in artists"
+      :key="index"
+      @click="toArtistDetail(item.id)"
+    >
+      <div :class="[$style.coverBox, 'cursor-pointer']">
+        <the-image :src="item.picUrl + '?param=160y160'" size="60" round="normal" />
       </div>
-    </n-scrollbar>
+      <div class="ellipsis">{{ item.name }}</div>
+      <div class="ellipsis">专辑: {{ item.albumSize }}</div>
+      <div>MV: {{ item.mvSize }}</div>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
 import api from '@/api/index.js';
-import { NScrollbar } from 'naive-ui';
 import useRouterMethods from '@/composables/router-methods.js';
 
 export default {
   name: 'TabArtist',
-  components: {
-    NScrollbar,
-  },
   setup() {
     const artists = ref([]);
     const count = ref(0);

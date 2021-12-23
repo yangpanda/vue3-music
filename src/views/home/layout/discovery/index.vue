@@ -4,12 +4,11 @@
       <n-menu default-value="personal" mode="horizontal" :options="menuOptions" />
     </div>
     <div :class="$style.content">
-      <n-scrollbar ref="scrollbarRef">
+      <the-scrollbar>
         <div :class="$style.viewBox">
           <router-view></router-view>
         </div>
-        <n-back-top v-if="scrollbarRef" :right="20" :bottom="100" :to="backtopRef"></n-back-top>
-      </n-scrollbar>
+      </the-scrollbar>
     </div>
     <div :class="$style.backtopContainer" ref="backtopRef"></div>
   </div>
@@ -17,8 +16,7 @@
 
 <script>
 import { NScrollbar, NBackTop, NMenu } from 'naive-ui';
-import { ref, provide, h } from 'vue';
-import { useRouter } from 'vue-router';
+import { h } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const menuOptions = [
@@ -96,20 +94,7 @@ export default {
     NMenu,
   },
   setup() {
-    const router = useRouter();
-    const scrollbarRef = ref(null);
-    const backtopRef = ref(null);
-
-    provide('backToTop', (behavior = 'auto') =>
-      scrollbarRef.value.scrollTo({
-        top: 0,
-        bahavior: `${behavior}`,
-      }),
-    );
-
     return {
-      scrollbarRef,
-      backtopRef,
       menuOptions,
     };
   },
