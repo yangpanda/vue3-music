@@ -23,7 +23,7 @@
         box
         :class="$style.down"
         name="arrow-down"
-        size="30"
+        :size="30"
         @click="
           () => {
             setShowPlayingPage(false);
