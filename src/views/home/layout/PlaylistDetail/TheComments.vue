@@ -71,7 +71,7 @@ export default {
     watch(
       () => state.page,
       () => {
-        getComment(state.page * state.pageSize);
+        getComment((state.page - 1) * state.pageSize);
       },
     );
 
