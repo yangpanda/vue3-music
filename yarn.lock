@@ -185,6 +185,11 @@
   dependencies:
     "@types/yargs-parser" "*"
 
+"@vicons/ionicons4@^0.11.0":
+  version "0.11.0"
+  resolved "https://mirrors.huaweicloud.com/repository/npm/@vicons/ionicons4/-/ionicons4-0.11.0.tgz#a60f5ead661d473f17103ad0051ce82ad771bbe6"
+  integrity sha512-2wgc2WZiQhR5AwNfiJcjxjNb910QBqeEYFXnZ0IJtfSgSUPH7lX6HEXegly3zqvLA0dmdUvyo2kI9lF/2PSbnQ==
+
 "@vitejs/plugin-legacy@^1.4.4":
   version "1.6.2"
   resolved "https://repo.huaweicloud.com/repository/npm/@vitejs/plugin-legacy/-/plugin-legacy-1.6.2.tgz#638bfe74715bdba33a68b3de555f615e1b246cdb"
@@ -669,10 +674,10 @@ date-fns-tz@^1.1.6:
   resolved "https://repo.huaweicloud.com/repository/npm/date-fns-tz/-/date-fns-tz-1.1.6.tgz#93cbf354e2aeb2cd312ffa32e462c1943cf20a8e"
   integrity sha512-nyy+URfFI3KUY7udEJozcoftju+KduaqkVfwyTIE0traBiVye09QnyWKLZK7drRr5h9B7sPJITmQnS3U6YOdQg==
 
-date-fns@^2.19.0:
-  version "2.25.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/date-fns/-/date-fns-2.25.0.tgz#8c5c8f1d958be3809a9a03f4b742eba894fc5680"
-  integrity sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==
+date-fns@^2.27.0:
+  version "2.27.0"
+  resolved "https://mirrors.huaweicloud.com/repository/npm/date-fns/-/date-fns-2.27.0.tgz#e1ff3c3ddbbab8a2eaadbb6106be2929a5a2d92b"
+  integrity sha512-sj+J0Mo2p2X1e306MHq282WS4/A8Pz/95GIFcsPNMPMZVI3EUrAdSv90al1k+p74WGLCruMXk23bfEDZa71X9Q==
 
 debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -1740,10 +1745,10 @@ ms@2.1.2:
   resolved "https://repo.huaweicloud.com/repository/npm/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-naive-ui@^2.21.5:
-  version "2.21.5"
-  resolved "https://repo.huaweicloud.com/repository/npm/naive-ui/-/naive-ui-2.21.5.tgz#b433cdc2e8b394e57274f0000eb65ad43d3586a0"
-  integrity sha512-/vgWS4DdV7Ck8LgqAZCAynnLC9AXP9na1G3Uou1OeHYOgy3w07AcffpZVsAQtgYYuU8fRd6ogAABoLX3wZmRFg==
+naive-ui@^2.23.1:
+  version "2.23.1"
+  resolved "https://mirrors.huaweicloud.com/repository/npm/naive-ui/-/naive-ui-2.23.1.tgz#3c9c6a5b9ec758006e8cc071920b4b6a1cc9f3ce"
+  integrity sha512-Hi/I8YWn+tK0iieSNLfOtcqr9ml+2tMNsKjD3HRB18nwDBNEOstnk/vcpKhCtI0IfTOSn8l1BSX4622HcF3dMw==
   dependencies:
     "@css-render/plugin-bem" "^0.15.6"
     "@css-render/vue3-ssr" "^0.15.6"
@@ -1751,7 +1756,7 @@ naive-ui@^2.21.5:
     "@types/lodash-es" "^4.17.4"
     async-validator "^4.0.1"
     css-render "^0.15.6"
-    date-fns "^2.19.0"
+    date-fns "^2.27.0"
     date-fns-tz "^1.1.6"
     evtd "^0.2.3"
     highlight.js "^11.0.1"
