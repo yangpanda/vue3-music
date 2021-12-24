@@ -64,7 +64,7 @@ const routes = [
             path: '/playlist-detail/:id',
             name: 'PlaylistDetail',
             props: true,
-            component: () => import('@/views/home/layout/PlaylistDetail.vue'),
+            component: () => import('@/views/home/layout/PlaylistDetail/index.vue'),
           },
           {
             path: '/album-detail/:id',

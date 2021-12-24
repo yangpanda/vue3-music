@@ -21,6 +21,7 @@ export const getPlaylist = (params) => {
 };
 
 export const getPlaylistDetail = (id) => request.get(`/playlist/detail?id=${id}`);
+export const getSongs = (id) => request.get(`/playlist/track/all?id=${id}`);
 
 /**
  * @method 获取每日推荐歌曲（需登录）
