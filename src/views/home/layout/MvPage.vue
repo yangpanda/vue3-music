@@ -52,6 +52,7 @@
 <script setup>
 import TheSection from '@/components/TheSection.vue';
 import CardMv from '@/components/CardMv.vue';
+import { NButton, NScrollbar, NBackTop } from 'naive-ui';
 
 import api from '@/api/index.js';
 

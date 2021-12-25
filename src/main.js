@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router/index.js';
 import store from './store';
-import naive from 'naive-ui';
 
 import VueLazyload from '@jambonn/vue-lazyload';
 import 'virtual:svg-icons-register';
@@ -35,7 +34,6 @@ app
     preLoad: 1.3,
     attempt: 3,
   })
-  .use(naive)
   .use(store)
   .use(router)
   .mount('#app');

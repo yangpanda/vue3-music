@@ -3,6 +3,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import viteSvgIcons from 'vite-plugin-svg-icons';
+import viteCompression from 'vite-plugin-compression';
 
 // const API_SERVER = import.meta.env.VITE_API_SERVER
 
@@ -18,6 +19,7 @@ export default defineConfig({
       iconDirs: [resolve('src/assets/icons/svg')],
       symbolId: 'icon-[name]',
     }),
+    viteCompression(),
   ],
   resolve: {
     alias: [{ find: '@', replacement: resolve('src') }],

@@ -46,7 +46,7 @@ import api from '@/api/index.js';
 import RotateCd from './RotateCd.vue';
 import Lyric from './Lyric.vue';
 import CommentItem from '@/components/CommentItem.vue';
-import { NPagination, NIcon } from 'naive-ui';
+import { NPagination, NIcon, NButton } from 'naive-ui';
 import { IosArrowDown as IconArrowDown } from '@vicons/ionicons4';
 
 export default {
@@ -58,6 +58,7 @@ export default {
     NPagination,
     NIcon,
     IconArrowDown,
+    NButton,
   },
   setup() {
     const commentPos = ref(null);

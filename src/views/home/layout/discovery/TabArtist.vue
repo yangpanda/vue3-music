@@ -51,7 +51,7 @@ import api from '@/api/index.js';
 import { reactive, ref, toRefs, onMounted, watch } from 'vue';
 import Artist from '@/model/Artist.js';
 import CardArtist from '@/components/CardArtist.vue';
-import { NPagination, NScrollbar } from 'naive-ui';
+import { NPagination, NScrollbar, NButton } from 'naive-ui';
 
 const types = {
   '-1': '全部',
@@ -84,6 +84,7 @@ export default {
     CardArtist,
     NPagination,
     NScrollbar,
+    NButton,
   },
   setup() {
     const artists = ref([]);

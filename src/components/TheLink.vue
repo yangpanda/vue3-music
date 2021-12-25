@@ -6,9 +6,13 @@
 
 <script>
 import useRouterMethods from '@/composables/router-methods.js';
+import { NButton } from 'naive-ui';
 
 export default {
   name: 'TheLink',
+  components: {
+    NButton,
+  },
   props: {
     params: null,
   },

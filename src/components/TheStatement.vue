@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { NModal } from 'naive-ui';
+import { NModal, NCard } from 'naive-ui';
 import { ref, onMounted } from 'vue';
 import cookie from '@/utils/cookie';
 
@@ -18,6 +18,7 @@ export default {
   name: 'TheStatement',
   components: {
     NModal,
+    NCard,
   },
   setup() {
     const showModal = ref(false);
@@ -31,7 +32,7 @@ export default {
       const name = 'statement';
       if (!cookie.get(name)) {
         cookie.set(name, 'showed', { expires: date });
-        setTimeout(() => (showModal.value = true), 1500);
+        setTimeout(() => (showModal.value = true), 2500);
       }
     };
 

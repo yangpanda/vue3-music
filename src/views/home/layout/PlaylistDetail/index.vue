@@ -68,9 +68,9 @@
 import api from '@/api/index.js';
 import Playlist from '@/model/Playlist';
 import Song from '@/model/Song';
-import _ from 'lodash';
+import { throttle, chunk } from 'lodash';
 import { ref, reactive, watch, onMounted, onUnmounted, toRefs } from 'vue';
-import { NTag, NSpin, NTabs, NTabPane, NResult, NButton, NScrollbar } from 'naive-ui';
+import { NTag, NSpin, NTabs, NTabPane, NResult, NButton, NScrollbar, NBackTop } from 'naive-ui';
 import SongTableList from '@/components/SongTableList.vue';
 import TheComment from './TheComments.vue';
 import { picSizeUrl } from '@/utils/picture.js';
@@ -84,6 +84,7 @@ export default {
     NTabPane,
     NResult,
     NButton,
+    NBackTop,
     NScrollbar,
     SongTableList,
     TheComment,
@@ -110,7 +111,7 @@ export default {
         state.playlist = new Playlist(res.playlist);
         state.subscribers = res.playlist.subscribers;
         const songsId = state.playlist.trackIds.map((item) => item.id);
-        state.songsIdChunks = _.chunk(songsId, chunkSize);
+        state.songsIdChunks = chunk(songsId, chunkSize);
       }
     };
 
@@ -138,7 +139,7 @@ export default {
     const handleScroll = (() => {
       const distance = 40;
 
-      return _.throttle(
+      return throttle(
         function (event) {
           const scrollbar = event.target;
           const scrollHeight = () => scrollbar.scrollHeight;
