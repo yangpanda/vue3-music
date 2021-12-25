@@ -109,8 +109,9 @@ export default {
   display: flex;
   align-items: center;
 }
-.artist:not(:first-child):before {
-  content: '|';
-  padding: 0 var(--gap-sm);
+.artist:not(:first-child)::before {
+  content: '';
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 0 var(--gap-sm);
 }
 </style>
