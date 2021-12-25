@@ -9,15 +9,18 @@
     </div>
     <div :class="[$style.title, 'ellipsis']">{{ song.name }}</div>
     <div :class="['ellipsis', $style.artistBox]">
-      <a
+      <the-link
         :class="$style.artist"
-        v-for="(artist, index) in song.singer"
-        :key="index"
-        @click="toArtistDetail(artist.id)"
-        >{{ artist.name }}</a
+        v-for="artist in song.singer"
+        :key="artist.id"
+        :params="{ name: 'ArtistDetail', id: artist.id }"
       >
+        {{ artist.name }}
+      </the-link>
     </div>
-    <div :class="[$style.album, 'ellipsis']" @click="toAlbumDetail(song.album.id)">{{ song.album.name }}</div>
+    <div class="ellipsis">
+      <the-link :params="{ name: 'AlbumDetail', id: song.album.id }">{{ song.album.name }}</the-link>
+    </div>
     <div>{{ song.duration }}</div>
   </div>
 </template>
@@ -106,20 +109,8 @@ export default {
   display: flex;
   align-items: center;
 }
-.artist {
-  cursor: pointer;
-}
-.artist:hover {
-  color: #18191c;
-}
 .artist:not(:first-child):before {
   content: '|';
   padding: 0 var(--gap-sm);
-}
-.album {
-  cursor: pointer;
-}
-.album:hover {
-  color: #18191c;
 }
 </style>

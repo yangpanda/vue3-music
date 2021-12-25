@@ -54,7 +54,7 @@ import { ref, onMounted, defineAsyncComponent } from 'vue';
 import useRouterMethods from '@/composables/router-methods';
 
 import SongTableList from '@/components/SongTableList.vue';
-import { NSpin, NTabs, NTabPane, NScrollbar } from 'naive-ui';
+import { NTag, NButton, NSpace, NSpin, NTabs, NTabPane, NScrollbar } from 'naive-ui';
 import TheLink from '@/components/TheLink.vue';
 
 const Comment = defineAsyncComponent(() => import('./Comment.vue'));

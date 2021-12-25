@@ -2,47 +2,49 @@
   <div :class="$style.topSong">
     <div :class="$style.nav">
       <div :class="$style.navLeft">
-        <n-button
-          text
-          v-for="(type, name) in Object.fromEntries(songTypeMap)"
-          :key="type"
-          @click="songType = type"
-          >{{ name }}</n-button
+        <span
+          :class="[$style.navItem, type == value ? $style.active : '']"
+          v-for="(value, name) in Object.fromEntries(typeMap)"
+          @click="type = value"
         >
+          {{ name }}
+        </span>
       </div>
-      <n-button-group>
-        <n-button>播放全部</n-button>
-        <n-button>收藏全部</n-button>
-      </n-button-group>
+      <n-button>播放全部</n-button>
     </div>
     <div>
-      <div :class="$style.songItem" v-for="(item, index) in newSongs" :key="index">
+      <div :class="$style.songItem" v-for="(item, index) in songs" :key="item.id">
         <div :class="[$style.Index]">{{ index + 1 }}</div>
-        <div :class="[$style.coverBox, 'cursor-pointer']" @click="play(new Song(item))">
+        <div :class="[$style.coverBox, 'cursor-pointer']" @click="play(item)">
           <the-image :src="item.album.picUrl + '?param=160y160'" size="60" round="normal" />
           <svg-button :class="$style.btnPlay" name="play-triangle" box triangle color="#ec4141" />
         </div>
         <div class="ellipsis">{{ item.name }}</div>
-        <div class="ellipsis">{{ generateArtists(item.artists) }}</div>
-        <div class="ellipsis">{{ item.album.name }}</div>
-        <div :class="[$style.duration]">{{ formatDuration(item.duration) }}</div>
+        <div class="ellipsis">
+          <the-link
+            :class="$style.artistLink"
+            v-for="artist in item.singer"
+            :params="{ name: 'ArtistDetail', id: artist.id }"
+            >{{ artist.name }}</the-link
+          >
+        </div>
+        <div class="ellipsis">
+          <the-link :params="{ name: 'AlbumDetail', id: item.album.id }">{{ item.album.name }}</the-link>
+        </div>
+        <div :class="$style.duration">{{ item.duration }}</div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { NButtonGroup, NButton, NIcon } from 'naive-ui';
-
-import { formatDuration } from '@/utils/index.js';
-
-import * as song from '@/api/service/song.js';
+<script>
+import { NButton } from 'naive-ui';
 import { ref, watchEffect } from '@vue/runtime-core';
+import api from '@/api/index.js';
 import { mapMutations } from '@/lib/lib.js';
-
 import Song from '@/model/Song.js';
 
-const songTypeMap = new Map([
+const typeMap = new Map([
   ['全部', 0],
   ['华语', 7],
   ['欧美', 96],
@@ -50,33 +52,43 @@ const songTypeMap = new Map([
   ['韩国', 16],
 ]);
 
-const { setCurrentSong, insertSong } = mapMutations();
+export default {
+  name: 'TopSong',
+  components: {
+    NButton,
+  },
+  setup() {
+    const type = ref(0);
+    const songs = ref([]);
+    const { setCurrentSong, insertSong, setPlayingState } = mapMutations();
 
-const songType = ref(0);
-const newSongs = ref([]);
+    const getTopSong = async (params) => {
+      const res = await api.song.getTopSong(params);
+      if (res.code === 200) {
+        songs.value = res.data.map((item) => new Song(item));
+      }
+    };
 
-const getTopSong = async (params) => {
-  song.getTopSong(params).then((res) => {
-    if (res.code === 200) {
-      newSongs.value = res.data;
+    function play(song) {
+      setCurrentSong(song);
+      insertSong(song);
+      setPlayingState(true);
     }
-  });
+
+    watchEffect(() => {
+      getTopSong({
+        type: type.value,
+      });
+    });
+
+    return {
+      type,
+      songs,
+      typeMap,
+      play,
+    };
+  },
 };
-
-watchEffect(() => {
-  getTopSong({
-    type: songType.value,
-  });
-});
-
-function generateArtists(artists) {
-  return artists.map((item) => item.name).join(' / ');
-}
-
-function play(song) {
-  setCurrentSong(song);
-  insertSong(song);
-}
 </script>
 
 <style module>
@@ -93,9 +105,18 @@ function play(song) {
   display: flex;
   column-gap: var(--gap-lg);
 }
+.navItem {
+  cursor: pointer;
+}
+.navItem.active {
+  color: #18a058;
+}
+.navItem:hover {
+  color: #18a058;
+}
 .songItem {
   display: grid;
-  grid-template-columns: 30px 60px 2fr 1fr 2fr 40px;
+  grid-template-columns: 30px 60px 1.2fr 2fr 1fr 40px;
   column-gap: 15px;
   padding: 10px 10px 10px 5px;
   align-items: center;
@@ -119,5 +140,10 @@ function play(song) {
 }
 .duration {
   text-align: end;
+}
+.artistLink:not(:first-child)::before {
+  content: '';
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 0 10px;
 }
 </style>

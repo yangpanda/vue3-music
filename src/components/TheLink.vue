@@ -1,7 +1,7 @@
 <template>
-  <n-button text tag="a" type="primary" @click="routeActive">
+  <span :class="[$style.link]" @click="routeActive">
     <slot></slot>
-  </n-button>
+  </span>
 </template>
 
 <script>
@@ -34,3 +34,13 @@ export default {
   },
 };
 </script>
+
+<style module>
+.link {
+  color: #7c7a7a;
+  cursor: pointer;
+}
+.link:hover {
+  color: #18a058;
+}
+</style>
