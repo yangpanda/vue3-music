@@ -70,11 +70,9 @@ if (props.width && props.height) {
   width: 100%;
   animation: fadein 1s both;
 }
-
 .w-100 {
   width: 100%;
 }
-
 @keyframes fadein {
   0% {
     opacity: 0;
@@ -84,7 +82,6 @@ if (props.width && props.height) {
     opacity: 1;
   }
 }
-
 @keyframes fadeout {
   100% {
     display: block;

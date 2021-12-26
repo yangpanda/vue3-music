@@ -76,7 +76,7 @@ const routes = [
             path: '/artist-detail/:id',
             name: 'ArtistDetail',
             props: true,
-            component: () => import('@/views/home/layout/ArtistDetail.vue'),
+            component: () => import('@/views/home/layout/ArtistDetail/index.vue'),
           },
           {
             path: '/mv',

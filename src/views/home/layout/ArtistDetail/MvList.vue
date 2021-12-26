@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.mvCardBox">
+  <div :class="$style.container">
     <card-mv v-for="item in mvs" :mv="item"></card-mv>
   </div>
 </template>
@@ -10,8 +10,9 @@ import api from '@/api/index.js';
 import { ref } from 'vue';
 
 export default {
+  name: 'MvList',
   props: {
-    id: '',
+    id: String | Number,
   },
   components: {
     CardMv,
@@ -33,7 +34,7 @@ export default {
 </script>
 
 <style module>
-.mvCardBox {
+.container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   row-gap: var(--gap-lg);
