@@ -100,15 +100,15 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 2rem;
+  padding: 0 20px;
   background-color: #f5f5f5;
 }
 .homeBtn {
   display: flex;
   align-items: center;
-  column-gap: 0.6rem;
+  column-gap: 6px;
+  font-size: 18px;
   cursor: pointer;
-  font-size: 1.8rem;
 }
 .userInfo {
   display: flex;

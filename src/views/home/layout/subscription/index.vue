@@ -1,13 +1,13 @@
 <template>
-  <div :class="$style.subscription">
-    <n-scrollbar>
+  <the-scrollbar>
+    <div :class="$style.wrap">
       <n-tabs type="line">
         <n-tab-pane v-for="tab in tabs" :name="tab.name" :tab="tab.name">
           <component :is="tab.component"></component>
         </n-tab-pane>
       </n-tabs>
-    </n-scrollbar>
-  </div>
+    </div>
+  </the-scrollbar>
 </template>
 
 <script>
@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style module>
-.subscription {
-  height: 100%;
+.wrap {
+  padding: 0 20px;
 }
 </style>

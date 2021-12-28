@@ -1,7 +1,8 @@
 <template>
   <div :class="$style.songListItem" @dblclick="play(index)">
     <div :class="$style.front">
-      <span :class="$style.index">{{ formatIndex(index + 1) }}</span>
+      <img v-if="playingId == song.id" :class="$style.playingGif" :src="playingGif" />
+      <span v-else :class="$style.index">{{ formatIndex(index + 1) }}</span>
       <div :class="$style.btn">
         <svg-icon v-if="!isLiked(song.id)" name="love" size="20" color="#909399" />
         <svg-icon v-else name="love-selected" size="20" color="#ec4141" />
@@ -27,8 +28,10 @@
 
 <script>
 import * as utils from '@/utils/index.js';
-import { mapMutations } from '@/lib/lib.js';
+import { mapMutations, mapState } from '@/lib/lib.js';
 import useRouterMethods from '@/composables/router-methods';
+import playingGif from '@/assets/pictures/playing.gif';
+import { computed } from 'vue';
 
 export default {
   name: 'SongTableListItem',
@@ -43,6 +46,7 @@ export default {
   emits: ['play'],
   setup(props, { emit }) {
     const { setCurrentSong, setPlayIndex, setPlayingState } = mapMutations();
+    const { currentSong } = mapState();
     const { toArtistDetail, toAlbumDetail } = useRouterMethods();
 
     const play = () => {
@@ -55,6 +59,8 @@ export default {
       play,
       toArtistDetail,
       toAlbumDetail,
+      playingId: computed(() => (currentSong.value ? currentSong.value.id : '')),
+      playingGif,
     };
   },
   methods: {
@@ -92,10 +98,12 @@ export default {
   justify-content: space-between;
 }
 .index {
-  width: 3.2rem;
+  width: 32px;
   text-align: center;
 }
-
+.playingGif {
+  width: 25px;
+}
 .title {
   color: #18191c;
 }

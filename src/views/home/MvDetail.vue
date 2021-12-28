@@ -1,12 +1,13 @@
 <template>
-  <n-scrollbar>
-    <div class="mv-detail-container flex-col-gap-20">
-      <div class="mv-detail-left">
-        <video controls class="video" :src="data.url"></video>
+  <div :class="$style.container">
+    <the-scrollbar>
+      <div :class="$style.wrap">
+        <div :class="$style.left">
+          <video controls :class="$style.video" :src="data.url"></video>
+        </div>
       </div>
-      <div class="mv-detail-recommend"></div>
-    </div>
-  </n-scrollbar>
+    </the-scrollbar>
+  </div>
 </template>
 
 <script>
@@ -37,19 +38,19 @@ export default {
 };
 </script>
 
-<style scoped>
-.mv-detail-container {
+<style module>
+.container {
+  padding-top: 50px;
+  height: 100%;
+}
+.wrap {
   margin: 0 auto;
   width: 1000px;
   padding: 20px;
-}
-.mv-detail-left {
-  flex-basis: 650px;
-}
-.mv-detail-recommend {
-  flex-grow: 1;
+  display: flex;
 }
 .video {
-  width: 100%;
+  width: 650px;
+  height: 350px;
 }
 </style>

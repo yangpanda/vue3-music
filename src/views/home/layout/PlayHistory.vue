@@ -1,13 +1,11 @@
 <template>
-  <div :class="$style.history">
+  <the-scrollbar>
     <div :class="$style.header">
       <h3>最近播放</h3>
-      <n-button>清空列表</n-button>
+      <n-button>播放全部</n-button>
     </div>
-    <n-scrollbar>
-      <song-table-list :songs="history"></song-table-list>
-    </n-scrollbar>
-  </div>
+    <song-table-list :songs="history"></song-table-list>
+  </the-scrollbar>
 </template>
 
 <script>
@@ -15,7 +13,7 @@ import api from '@/api/index.js';
 import { mapState } from '@/lib/lib.js';
 import { onMounted, ref } from 'vue';
 import useRouterMethods from '@/composables/router-methods';
-import { NScrollbar } from 'naive-ui';
+import { NButton } from 'naive-ui';
 import Song from '@/model/Song.js';
 import SongTableList from '@/components/SongTableList.vue';
 import SongTableListItem from '@/components/SongTableListItem.vue';
@@ -23,7 +21,7 @@ import SongTableListItem from '@/components/SongTableListItem.vue';
 export default {
   name: 'PlayHistory',
   components: {
-    NScrollbar,
+    NButton,
     SongTableList,
     SongTableListItem,
   },
@@ -58,12 +56,9 @@ export default {
 
 <style module>
 .header {
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-}
-.history {
-  height: 100%;
 }
 </style>
