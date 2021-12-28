@@ -47,7 +47,7 @@ const menuOptions = [
       ),
   },
   {
-    key: 'Rank',
+    key: 'rank',
     label: () =>
       h(
         RouterLink,
@@ -60,7 +60,7 @@ const menuOptions = [
       ),
   },
   {
-    key: 'Artist',
+    key: 'artist',
     label: () =>
       h(
         RouterLink,
@@ -73,7 +73,7 @@ const menuOptions = [
       ),
   },
   {
-    key: 'Newsong',
+    key: 'newsong',
     label: () =>
       h(
         RouterLink,

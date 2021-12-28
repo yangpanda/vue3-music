@@ -2,9 +2,7 @@
   <div :class="$style.layout">
     <!-- 中间 -->
     <div :class="$style.top">
-      <div :class="$style.sidebar">
-        <the-sidebar></the-sidebar>
-      </div>
+      <the-sidebar></the-sidebar>
       <div :class="$style.content">
         <router-view :key="key"></router-view>
       </div>
@@ -21,7 +19,7 @@
 
 <script>
 import PlayingPage from './components/playing-page/index.vue';
-import TheSidebar from './components/TheSidebar.vue';
+import TheSidebar from './TheSidebar.vue';
 import ThePlayer from './components/ThePlayer.vue';
 import { mapState } from '@/lib/lib.js';
 
@@ -50,45 +48,27 @@ export default {
 
 <style module>
 .layout {
-  position: absolute;
-  z-index: 9;
-  top: 5rem;
-  bottom: 0;
-  width: 100%;
+  position: relative;
+  height: 100%;
+  padding-top: 50px;
 }
 .top {
-  position: absolute;
-  top: 0;
-  bottom: 8rem;
-  width: 100%;
+  position: relative;
+  z-index: 0;
   display: flex;
-}
-.sidebar {
-  width: 20rem;
+  width: 100%;
   height: 100%;
-  border-right: 1px solid lightgray;
-  flex-shrink: 0;
+  padding-bottom: 80px;
 }
-@media screen and (min-width: 1280px) {
-  .sidebar {
-    width: 26rem;
-  }
-}
-@media screen and (min-width: 1536px) {
-  .sidebar {
-    width: 30rem;
-  }
-}
-
 .content {
   flex-grow: 1;
   height: 100%;
 }
-
 .playingPage {
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: 80px;
+  z-index: 10;
   background-color: white;
   width: 100%;
   height: 0;
@@ -96,15 +76,14 @@ export default {
   transition-duration: 1000ms;
 }
 .active {
-  /* width: 100%; */
-  height: 100%;
+  height: calc(100% - 80px);
 }
 
 .player {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 8rem;
+  height: 80px;
   border-top: 1px solid lightgray;
 }
 </style>

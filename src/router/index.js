@@ -80,9 +80,8 @@ const routes = [
           },
           {
             path: '/mv',
-            name: 'MV',
+            name: 'Mv',
             component: () => import('@/views/home/layout/MvPage.vue'),
-            children: [],
           },
           {
             path: '/search',
