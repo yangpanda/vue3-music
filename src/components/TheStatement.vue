@@ -1,16 +1,21 @@
 <template>
-  <n-modal v-model:show="showModal">
+  <n-modal :show="showModal">
     <n-card style="width: 400px" content-style="padding: 10;">
       <div :class="$style.container">
         <h2 :class="$style.title">声明</h2>
         <div :class="$style.content" v-html="statement"></div>
       </div>
+      <template #action>
+        <div :class="$style.btn">
+          <n-button @click="() => (showModal = false)">关闭</n-button>
+        </div>
+      </template>
     </n-card>
   </n-modal>
 </template>
 
 <script>
-import { NModal, NCard } from 'naive-ui';
+import { NModal, NCard, NButton } from 'naive-ui';
 import { ref, onMounted } from 'vue';
 import cookie from '@/utils/cookie';
 
@@ -19,6 +24,7 @@ export default {
   components: {
     NModal,
     NCard,
+    NButton,
   },
   setup() {
     const showModal = ref(false);
@@ -55,5 +61,9 @@ export default {
 .content {
   text-align: center;
   font-size: 16px;
+}
+.btn {
+  display: flex;
+  justify-content: center;
 }
 </style>
