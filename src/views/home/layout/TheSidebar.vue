@@ -85,19 +85,19 @@ export default {
           ),
         key: 'mv',
       },
-      {
-        label: () =>
-          h(
-            RouterLink,
-            {
-              to: {
-                name: 'Fm',
-              },
-            },
-            { default: () => '私人FM' },
-          ),
-        key: 'fm',
-      },
+      // {
+      //   label: () =>
+      //     h(
+      //       RouterLink,
+      //       {
+      //         to: {
+      //           name: 'Fm',
+      //         },
+      //       },
+      //       { default: () => '私人FM' },
+      //     ),
+      //   key: 'fm',
+      // },
       {
         label: '我的音乐',
         type: 'group',

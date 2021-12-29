@@ -10,7 +10,14 @@
         <the-image :src="item.picUrl + '?param=160y160'" size="60" round="normal" />
       </div>
       <div class="ellipsis">{{ item.name }}</div>
-      <div class="ellipsis">{{ generateArtists(item.artists) }}</div>
+      <div class="ellipsis">
+        <the-link
+          :class="$style.link"
+          v-for="artist in item.artists"
+          :params="{ name: 'ArtistDetail', id: artist.id }"
+          >{{ artist.name }}</the-link
+        >
+      </div>
       <div :class="$style.size">{{ item.size }}</div>
     </div>
   </div>
@@ -63,14 +70,23 @@ export default {
   padding: 10px 30px 10px 30px;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 .albumItem:nth-of-type(odd) {
   background-color: #f9f9f9;
+}
+.albumItem:hover {
+  background-color: #e6e4e4;
 }
 .coverBox {
   flex-shrink: 0;
 }
 .size {
   text-align: middle;
+}
+.link:not(:first-child)::before {
+  content: '';
+  border-left: 1px solid rgba(0, 0, 0, 0.5);
+  margin: 0 5px;
 }
 </style>

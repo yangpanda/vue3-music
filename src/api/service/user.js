@@ -12,7 +12,7 @@ export const login = (model) =>
 export const phoneLogin = (model) =>
   request.get('/login/cellphone', {
     params: {
-      phone: model.email,
+      phone: model.phone,
       password: model.password,
     },
   });

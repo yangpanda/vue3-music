@@ -1,18 +1,23 @@
 <template>
   <the-scrollbar>
-    <div :class="$style.wrap">
+    <div v-if="loginStatus" :class="$style.wrap">
       <n-tabs type="line">
         <n-tab-pane v-for="tab in tabs" :name="tab.name" :tab="tab.name">
           <component :is="tab.component"></component>
         </n-tab-pane>
       </n-tabs>
     </div>
+    <div v-else :class="$style.message">
+      <n-result status="info" title="还没有登录哦" description="在这个年代，信息就是金钱，金钱就是信息。">
+      </n-result>
+    </div>
   </the-scrollbar>
 </template>
 
 <script>
-import { NScrollbar, NTabs, NTabPane } from 'naive-ui';
+import { NScrollbar, NTabs, NTabPane, NResult } from 'naive-ui';
 import { defineAsyncComponent } from 'vue';
+import useLoginStatus from '@/composables/useLoginStatus.js';
 
 const tabs = [
   {
@@ -31,10 +36,14 @@ export default {
     NScrollbar,
     NTabs,
     NTabPane,
+    NResult,
   },
   setup() {
+    const { loginStatus } = useLoginStatus();
+
     return {
       tabs,
+      loginStatus,
     };
   },
 };
@@ -43,5 +52,11 @@ export default {
 <style module>
 .wrap {
   padding: 0 20px;
+}
+.message {
+  padding-top: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

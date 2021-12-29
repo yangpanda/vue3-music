@@ -14,18 +14,26 @@
             </n-form>
             <n-button type="primary" block @click="login">登录</n-button>
           </n-tab-pane>
-          <n-tab-pane name="qr" tab="二维码" display-directive="if">
-            <the-qr></the-qr>
+          <n-tab-pane name="phone" tab="手机">
+            <n-form>
+              <n-form-item label="手机" label-placement="left">
+                <n-input type="tel" v-model:value="phoneModel.phone" placeholder="请输入手机号" />
+              </n-form-item>
+              <n-form-item label="密码" label-placement="left">
+                <n-input type="password" v-model:value="phoneModel.password" placeholder="请输入密码" />
+              </n-form-item>
+            </n-form>
+            <n-button type="primary" block @click="phoneLogin">登录</n-button>
           </n-tab-pane>
         </n-tabs>
+        <template #footer>请使用网易云音乐账号登录</template>
       </n-card>
     </div>
   </div>
 </template>
 
 <script>
-import { NCard, NForm, NFormItem, NTabs, NTabPane, NButton, NInput } from 'naive-ui';
-import TheQr from './components/TheQr.vue';
+import { NCard, NForm, NFormItem, NTabs, NTabPane, NButton, NInput, useMessage } from 'naive-ui';
 import api from '@/api/index.js';
 import { ref, onBeforeMount } from 'vue';
 import { mapState, mapMutations } from '@/lib/lib.js';
@@ -41,12 +49,16 @@ export default {
     NTabPane,
     NButton,
     NInput,
-    TheQr,
   },
   setup() {
+    const message = useMessage();
     const errMsg = ref('');
     const model = ref({
       email: null,
+      password: null,
+    });
+    const phoneModel = ref({
+      phone: null,
       password: null,
     });
     const { toHome } = useRouterMethods();
@@ -62,7 +74,27 @@ export default {
             toHome();
             break;
           case 502:
-            errMsg.value = res.data.msg ?? res.data.message;
+            errMsg.value = res.msg ?? res.message;
+            message.error(errMsg.value);
+            break;
+          default:
+            break;
+        }
+      });
+    };
+
+    const phoneLogin = () => {
+      api.user.phoneLogin(phoneModel.value).then((res) => {
+        console.log(res);
+        switch (res.code) {
+          case 200:
+            setUserinfo(new User(res.profile));
+            setLogined(true);
+            toHome();
+            break;
+          case 502:
+            errMsg.value = res.msg ?? res.message;
+            message.error(errMsg.value);
             break;
           default:
             break;
@@ -86,7 +118,9 @@ export default {
 
     return {
       model,
+      phoneModel,
       login,
+      phoneLogin,
     };
   },
 };

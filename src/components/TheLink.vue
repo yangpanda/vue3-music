@@ -1,5 +1,5 @@
 <template>
-  <span :class="[$style.link]" @click="routeActive">
+  <span :class="[$style.link]" @click.stop="routeActive">
     <slot></slot>
   </span>
 </template>

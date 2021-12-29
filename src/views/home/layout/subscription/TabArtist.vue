@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.artists">
     <div
-      :class="$style.albumItem"
+      :class="$style.artistItem"
       v-for="(item, index) in artists"
       :key="index"
       @click="toArtistDetail(item.id)"
@@ -52,18 +52,19 @@ export default {
 </script>
 
 <style module>
-.albumItem {
+.artistItem {
   display: grid;
   grid-template-columns: 60px 2fr 1fr 1fr;
   column-gap: 15px;
   padding: 10px 30px 10px 30px;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
-.albumItem:nth-of-type(odd) {
+.artistItem:nth-of-type(even) {
   background-color: #f9f9f9;
 }
-.coverBox {
-  flex-shrink: 0;
+.artistItem:hover {
+  background-color: #e9e7e7;
 }
 </style>
