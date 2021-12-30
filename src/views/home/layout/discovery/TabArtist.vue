@@ -36,7 +36,7 @@
         </div>
       </nav>
     </div>
-    <div :class="$style.content">
+    <div v-infinite-scroll="loadMore" infinite-scroll-distance="10" :class="$style.content">
       <card-artist v-for="(item, index) in artists" :key="index" :artist="item" />
     </div>
     <div :class="$style.loadMore">

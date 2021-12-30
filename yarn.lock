@@ -2560,6 +2560,11 @@ vue-router@^4.0.9:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.14"
 
+vue3-infinite-scroll-good@^1.0.2:
+  version "1.0.2"
+  resolved "https://repo.huaweicloud.com/repository/npm/vue3-infinite-scroll-good/-/vue3-infinite-scroll-good-1.0.2.tgz#c875a795132af17bed868a401e0933774011bc3e"
+  integrity sha512-Xp5gqLEpVKhUaAsnc88E79Im9ShW2zcitKDRJnwR+YItTlL6pg1X/g6JyL3BjYf0KO3g/iMG9L/YXkNYETAegg==
+
 vue@^3.2.2:
   version "3.2.20"
   resolved "https://repo.huaweicloud.com/repository/npm/vue/-/vue-3.2.20.tgz#940f8aa8bf3e3be78243ca582bad41fcd45ae3e6"

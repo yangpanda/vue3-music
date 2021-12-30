@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.container">
-    <n-scrollbar @scroll="handleScroll($event)">
-      <div ref="container" :class="$style.wrap">
+    <the-scrollbar>
+      <div :class="$style.wrap">
         <div :class="$style.header">
           <the-image class :src="playlist.imgUrl" size="180" round="large" />
           <div :class="$style.info">
@@ -30,7 +30,11 @@
         </div>
         <n-tabs default-value="playlist" type="line" :tabs-padding="20">
           <n-tab-pane name="playlist" tab="歌曲列表">
-            <song-table-list :songs="songs"></song-table-list>
+            <song-table-list
+              v-infinite-scroll="loadMore"
+              infinite-scroll-distance="10"
+              :songs="songs"
+            ></song-table-list>
             <div :class="$style.loading">
               <n-spin v-if="loading" />
               <span v-else>没有更多了......</span>
@@ -58,9 +62,8 @@
             </div>
           </n-tab-pane>
         </n-tabs>
-        <n-back-top v-if="container" :right="20" :bottom="100" :to="container"></n-back-top>
       </div>
-    </n-scrollbar>
+    </the-scrollbar>
   </div>
 </template>
 
@@ -68,9 +71,9 @@
 import api from '@/api/index.js';
 import Playlist from '@/model/Playlist';
 import Song from '@/model/Song';
-import { throttle, chunk } from 'lodash';
-import { ref, reactive, watch, onMounted, onUnmounted, toRefs } from 'vue';
-import { NTag, NSpin, NTabs, NTabPane, NResult, NButton, NScrollbar, NBackTop } from 'naive-ui';
+import { chunk } from 'lodash';
+import { ref, reactive, watch, onMounted, toRefs } from 'vue';
+import { NTag, NSpin, NTabs, NTabPane, NResult, NButton, NBackTop } from 'naive-ui';
 import SongTableList from '@/components/SongTableList.vue';
 import TheComment from './TheComments.vue';
 import { picSizeUrl } from '@/utils/picture.js';
@@ -85,7 +88,6 @@ export default {
     NResult,
     NButton,
     NBackTop,
-    NScrollbar,
     SongTableList,
     TheComment,
   },
@@ -134,40 +136,19 @@ export default {
       () => getPlaylistSongs(state.songsIdChunks[0].join(',')),
     );
 
-    // 1. 有一个兄弟歌单收藏了好几千首歌，太多，无法一下子获取，后端直接报错
-    // 2. 为了更好的性能
-    const handleScroll = (() => {
-      const distance = 40;
-
-      return throttle(
-        function (event) {
-          const scrollbar = event.target;
-          const scrollHeight = () => scrollbar.scrollHeight;
-          const scrollTop = () => scrollbar.scrollTop;
-          const clientHeight = () => scrollbar.clientHeight;
-
-          if (scrollTop() + clientHeight() >= scrollHeight() - distance) {
-            if (state.loadmore < state.songsIdChunks.length) {
-              getPlaylistSongs(state.songsIdChunks[state.loadmore].join(','));
-              state.loadmore += 1;
-            } else {
-              showSpin.value = false;
-            }
-          }
-        },
-        500,
-        { leading: false },
-      );
-    })();
-
-    onUnmounted(() => {
-      handleScroll.cancel();
-    });
+    const loadMore = () => {
+      if (state.loadmore < state.songsIdChunks.length) {
+        getPlaylistSongs(state.songsIdChunks[state.loadmore].join(','));
+        state.loadmore += 1;
+      } else {
+        showSpin.value = false;
+      }
+    };
 
     return {
       container,
-      handleScroll,
       picSizeUrl,
+      loadMore,
       ...toRefs(state),
     };
   },
