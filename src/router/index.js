@@ -112,8 +112,8 @@ const router = createRouter({
 });
 
 router.beforeEach(() => {
-  if (store.state.showPlayingPage) {
-    store.commit('setShowPlayingPage', false);
+  if (store.state.player.playingPageDisplayStatus) {
+    store.commit('player/hidePlayingPage');
   }
 });
 

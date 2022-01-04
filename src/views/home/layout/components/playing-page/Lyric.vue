@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import { mapState } from '@/lib/lib.js';
 import api from '@/api/index.js';
-import { ref, watchEffect, reactive, toRefs } from 'vue';
+import { ref, watch, reactive, toRefs, computed } from 'vue';
 import { NScrollbar } from 'naive-ui';
+import { useStore } from 'vuex';
 
 export default {
   name: 'Lyric',
@@ -34,8 +34,9 @@ export default {
     NScrollbar,
   },
   setup() {
-    const { currentSong } = mapState();
+    const store = useStore();
     const lyric = ref([]);
+    const currentSong = computed(() => store.getters['player/currentSong']);
 
     const state = reactive({
       albumName: '',
@@ -49,42 +50,45 @@ export default {
       id: 0,
     });
 
-    watchEffect(() => {
-      if (currentSong.value) {
-        state.albumName = currentSong.value.album.name;
-        state.songName = currentSong.value.name;
-        state.artists = currentSong.value.singer;
+    watch(
+      () => currentSong.value,
+      () => {
+        if (currentSong.value) {
+          state.albumName = currentSong.value.album.name;
+          state.songName = currentSong.value.name;
+          state.artists = currentSong.value.singer;
 
-        state.artists.forEach((item) => {
-          item.routeParams = {
-            name: 'ArtistDetail',
-            id: item.id,
-          };
-        });
+          state.artists.forEach((item) => {
+            item.routeParams = {
+              name: 'ArtistDetail',
+              id: item.id,
+            };
+          });
 
-        albumRouteParams.id = currentSong.value.album.id;
+          albumRouteParams.id = currentSong.value.album.id;
 
-        api.song.getLyric(currentSong.value.id).then((response) => {
-          if (response.code === 200) {
-            const lrc = response.lrc.lyric;
+          api.song.getLyric(currentSong.value.id).then((response) => {
+            if (response.code === 200) {
+              const lrc = response.lrc.lyric;
 
-            const lrcs = lrc.split('\n');
-            lyric.value = lrcs.map((item) => {
-              let t = item.substring(item.indexOf('[') + 1, item.indexOf(']'));
-              let l = item.substring(item.indexOf(']') + 1).trim();
-              if (l == '') {
-                l = ' ';
-              }
+              const lrcs = lrc.split('\n');
+              lyric.value = lrcs.map((item) => {
+                let t = item.substring(item.indexOf('[') + 1, item.indexOf(']'));
+                let l = item.substring(item.indexOf(']') + 1).trim();
+                if (l == '') {
+                  l = ' ';
+                }
 
-              return {
-                t,
-                l,
-              };
-            });
-          }
-        });
-      }
-    });
+                return {
+                  t,
+                  l,
+                };
+              });
+            }
+          });
+        }
+      },
+    );
 
     return {
       lyric,

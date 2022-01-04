@@ -19,7 +19,8 @@
 
 <script>
 import SongTableListItem from '@/components/SongTableListItem.vue';
-import { mapState, mapMutations } from '@/lib/lib.js';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
   name: 'SongTableList',
@@ -29,13 +30,16 @@ export default {
     },
   },
   setup(props) {
-    const { playlist } = mapState();
-    const { setPlaylist, setRandomPlaylist } = mapMutations();
+    const store = useStore();
+    const playList = computed(() => store.state.player.playList);
+
+    const setPlayList = (list) => store.commit('player/setPlayList', list);
+    const setRandomPlayList = () => store.commit('player/setRandomPlayList');
 
     const onPlay = () => {
-      if (!Object.is(playlist, props.songs)) {
-        setPlaylist(props.songs);
-        setRandomPlaylist();
+      if (!Object.is(playList, props.songs)) {
+        setPlayList(props.songs);
+        setRandomPlayList();
       }
     };
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="[$style.playlistItem, playing ? 'playing' : '']" @dblclick="play(index)">
+  <div :class="[$style.playlistItem, playing ? $style.playing : '']" @dblclick="play(index)">
     <div :class="['ellipsis']">{{ song.name }}</div>
     <div :class="[$style.artistBox, 'ellipsis']">
       <span
@@ -14,32 +14,28 @@
 </template>
 
 <script>
-import { mapState } from '@/lib/lib.js';
-import { computed } from 'vue';
-import useRouterMethods from '../composables/router-methods';
-
 export default {
   name: 'PlaylistItem',
-  props: {
-    song: {
-      type: Object,
-    },
-    index: {
-      type: Number,
-    },
-  },
-  setup(props) {
-    const { playIndex } = mapState();
-    const { toArtistDetail } = useRouterMethods();
-
-    const playing = computed(() => props.index === playIndex.value);
-
-    return {
-      playing,
-      toArtistDetail,
-    };
-  },
 };
+</script>
+<script setup>
+import { computed, defineProps } from 'vue';
+import useRouterMethods from '../composables/router-methods';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const props = defineProps({
+  song: {
+    type: Object,
+  },
+  index: {
+    type: Number | String,
+  },
+});
+const { toArtistDetail } = useRouterMethods();
+const currentIndex = computed(() => store.state.player.currentIndex);
+
+const playing = computed(() => props.index == currentIndex.value);
 </script>
 
 <style module>
@@ -69,6 +65,6 @@ export default {
 }
 
 .playing {
-  color: red;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 </style>

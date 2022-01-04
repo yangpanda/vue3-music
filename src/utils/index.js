@@ -24,6 +24,13 @@ export function formatDuration(time) {
   return addZero(minute) + ':' + addZero(second);
 }
 
+export function formatTime(time) {
+  let minute = ~~(time / 60);
+  let second = ~~(time - minute * 60);
+
+  return addZero(minute) + ' : ' + addZero(second);
+}
+
 export const getScrollParent = (node) => {
   const regex = /(auto|scroll)/;
   const parents = (_node, ps) => {

@@ -96,6 +96,7 @@ export default {
   },
   setup({ id }) {
     const container = ref(null);
+    const showSpin = ref(true);
     const state = reactive({
       loadmore: 1,
       playlist: {},

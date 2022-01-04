@@ -2,29 +2,33 @@
   <div :class="$style.playerWrap">
     <div :class="$style.left">
       <div :class="$style.cover">
-        <the-image :src="songImage + '?param=100y100'" size="50" round="normal" />
-        <div :class="[$style.toggle, 'rounded']" @click="setShowPlayingPage(!showPlayingPage)">
-          <svg-icon name="arrow-up" color="#f3f3f3"></svg-icon>
+        <the-image :src="currentSong.image + '?param=100y100'" size="50" round="normal" />
+        <div :class="$style.toggle" @click="togglePlayingPage">
+          <svg-icon v-if="!playingPageDisplayStatus" name="arrow-up" color="#f3f3f3"></svg-icon>
+          <svg-icon v-else name="arrow-down" color="#f3f3f3"></svg-icon>
         </div>
       </div>
       <div>
-        <div class="text-base pointer ellipsis">{{ songName }}</div>
-        <div class="text-sm pointer ellipsis">
-          <span v-for="artist in songSinger" @click="toArtistDetail(artist.id)">{{ artist.name }}</span>
+        <div class="text-base pointer ellipsis">{{ currentSong.name }}</div>
+        <div>
+          <the-link v-for="artist in currentSong.singer" :params="{ name: 'ArtistDetail', id: artist.id }">{{
+            artist.name
+          }}</the-link>
         </div>
       </div>
     </div>
     <div :class="$style.center">
       <div :class="$style.btns">
-        <div :class="$style.mode" @click="changeMode()">
-          <svg-button v-if="playMode == 'order'" name="play-mode-order" />
-          <svg-button v-else-if="playMode == 'unorder'" name="play-mode-unorder" />
-          <svg-button v-else name="play-mode-loop" />
+        <div :class="$style.mode" @click="togglePlayMode">
+          <svg-button v-if="playMode === PlayMode.sequence" name="play-mode-sequence" />
+          <svg-button v-else-if="playMode === PlayMode.random" name="play-mode-unorder" />
+          <svg-button v-else-if="playMode === PlayMode.listLoop" name="play-mode-order" />
+          <svg-button v-else="playMode === PlayMode.singleLoop" name="play-mode-loop" />
         </div>
-        <svg-button @click="methods.preTrack()" name="pre" />
-        <svg-button v-if="!playingState" @click="methods.play()" name="play" box />
-        <svg-button v-else @click="methods.pause()" name="pause" box />
-        <svg-button @click="methods.nextTrack()" name="next" />
+        <svg-button @click="preTrack" name="pre" />
+        <svg-button v-if="!playing" @click="play" name="play" box />
+        <svg-button v-else @click="pause" name="pause" box />
+        <svg-button @click="nextTrack" name="next" />
       </div>
       <div :class="$style.songSliderWrap">
         <div>{{ formatTime(currentTime) }}</div>
@@ -34,7 +38,7 @@
             :tooltip="false"
             :max="duration"
             v-model:value="currentTime"
-            @update-value="methods.setCurrentTime($event)"
+            @update-value="($event) => setCurrentTime($event)"
           />
         </div>
         <div>{{ formatTime(duration) }}</div>
@@ -50,201 +54,166 @@
           <n-slider :tooltip="false" :min="0" :max="1" :step="0.1" v-model:value="volume" />
         </div>
       </div>
-      <svg-button name="menu" @click="showPlaylist = !showPlaylist" />
+      <svg-button name="menu" @click="() => (showPlaylist = !showPlaylist)" />
     </div>
-    <audio
-      autoplay
-      ref="audio"
-      :src="songUrl"
-      @timeupdate="methods.getCurrentTime()"
-      @ended="methods.nextTrack()"
-      @durationchange="methods.getDuration()"
-    ></audio>
     <n-drawer v-model:show="showPlaylist" placement="right" :width="600">
       <n-drawer-content title="播放列表" body-content-style="padding: 0;" :native-scrollbar="false">
         <playlist-item
           class="item"
-          v-for="(item, index) in playlist"
+          v-for="(item, index) in playList"
           :key="index"
           :song="item"
           :index="index"
         />
       </n-drawer-content>
     </n-drawer>
+    <audio
+      autoplay
+      ref="audio"
+      :src="url"
+      @timeupdate="getCurrentTime"
+      @ended="ended"
+      @durationchange="getDuration"
+    ></audio>
   </div>
 </template>
 
-<script setup>
-import * as utils from '@/utils/index.js';
+<script>
+import { formatTime } from '@/utils/index.js';
 import api from '@/api/index.js';
-import { ref, computed, watch, onMounted, reactive } from 'vue';
-import { mapState, mapMutations } from '@/lib/lib.js';
+import { ref, computed, watch, toRefs, reactive, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import useRouterMethods from '@/composables/router-methods.js';
+import { PlayMode } from '@/store/player.js';
 
 import { NDrawer, NDrawerContent, NSlider } from 'naive-ui';
 import PlaylistItem from '@/components/PlaylistItem.vue';
-import SvgIcon from '@/components/SvgIcon.vue';
 
-const { toArtistDetail } = useRouterMethods();
-const { playingState, playIndex, playlist, playMode, randomPlaylist, currentSong, showPlayingPage } =
-  mapState();
-
-const { setPlayingState, setPlayIndex, setCurrentSong, setShowPlayingPage } = mapMutations();
-
-const muted = ref(false);
-const songUrl = ref('');
-const volume = ref(0.3);
-const currentTime = ref(0);
-const showPlaylist = ref(false);
-const duration = ref(0);
-const audio = ref({});
-
-const songName = computed(() => (currentSong.value ? currentSong.value.name : ''));
-const songImage = computed(() => (currentSong.value ? currentSong.value.image : ''));
-const songSinger = computed(() => (currentSong.value ? currentSong.value.singer : []));
-
-watch(
-  () => currentSong.value,
-  () => {
-    api.song.getSongsUrl(currentSong.value.id).then((response) => {
-      if (response.code === 200) {
-        songUrl.value = response.data[0].url;
-      }
+export default {
+  name: 'ThePlayer',
+  components: {
+    NDrawer,
+    NDrawerContent,
+    NSlider,
+    PlaylistItem,
+  },
+  setup() {
+    const store = useStore();
+    const state = reactive({
+      audio: null,
+      muted: false,
+      volume: 0.3,
+      duration: 0,
+      url: '',
+      currentTime: 0,
     });
-  },
-);
+    const showPlaylist = ref(false);
+    const playing = computed(() => store.state.player.playing);
+    const playMode = computed(() => store.state.player.playMode);
+    const playList = computed(() => store.state.player.playList);
+    const currentSong = computed(() => store.getters['player/currentSong']);
+    const reachEnd = computed(() => store.getters['player/reachEnd']);
+    const playingPageDisplayStatus = computed(() => store.state.player.playingPageDisplayStatus);
 
-watch(
-  () => volume.value,
-  () => {
-    audio.value.volume = volume.value;
-  },
-);
-
-watch(
-  () => muted.value,
-  () => {
-    audio.value.muted = muted.value;
-  },
-);
-
-const methods = reactive({
-  play: null,
-  pause: null,
-  getCurrentTime: null,
-  getDuration: null,
-  setCurrentTime: null,
-  nextTrack: null,
-  preTrack: null,
-});
-
-onMounted(() => {
-  audio.value.volume = volume.value;
-
-  methods.play = () => {
-    setPlayingState(true);
-    audio.value.play();
-  };
-
-  methods.pause = () => {
-    setPlayingState(false);
-    audio.value.pause();
-  };
-
-  methods.getCurrentTime = () => {
-    currentTime.value = ~~audio.value.currentTime;
-  };
-
-  methods.setCurrentTime = (sec) => {
-    audio.value.currentTime = sec;
-  };
-
-  methods.getDuration = () => {
-    duration.value = ~~audio.value.duration;
-  };
-
-  methods.nextTrack = () => {
-    if (playMode.value === 'unorder') {
-      const index = randomPlaylist.value.indexOf(playIndex.value);
-      if (index + 1 >= randomPlaylist.value.length) {
-        setPlayIndex(randomPlaylist.value[0]);
-      } else {
-        setPlayIndex(randomPlaylist.value[index + 1]);
+    // methods
+    const { toArtistDetail } = useRouterMethods();
+    const togglePlayMode = () => store.commit('player/togglePlayMode');
+    const togglePlayingPage = () => store.commit('player/togglePlayingPage');
+    const setPlaying = (flag) => store.commit('player/setPlaying', flag);
+    const nextTrack = () => store.commit('player/nextTrack');
+    const preTrack = () => store.commit('player/preTrack');
+    const play = () => {
+      setPlaying(true);
+      state.audio.play();
+    };
+    const pause = () => {
+      setPlaying(false);
+      state.audio.pause();
+    };
+    const getCurrentTime = () => {
+      state.currentTime = ~~state.audio.currentTime;
+    };
+    const setCurrentTime = (sec) => {
+      state.audio.currentTime = sec;
+      state.duration = ~~state.audio.duration;
+    };
+    const getDuration = () => {
+      state.duration = ~~state.audio.duration;
+    };
+    const ended = () => {
+      if (playMode.value != PlayMode.singleLoop) {
+        if (!(playMode.value === PlayMode.sequence && reachEnd.value)) {
+          nextTrack();
+        } else {
+          setPlaying(false);
+        }
       }
-      setCurrentSong(playlist.value[playIndex.value]);
-    } else {
-      setPlayIndex(playIndex.value + 1);
-      setCurrentSong(playlist.value[playIndex.value]);
-    }
-    setPlayingState(true);
-  };
+    };
 
-  methods.preTrack = () => {
-    if (playMode.value === 'unorder') {
-      const index = this.randomPlaylist.indexOf(playIndex.value);
-      if (index - 1 < 0) {
-        setPlayIndex(randomPlaylist.value[randomPlaylist.value.length - 1]);
-      } else {
-        setPlayIndex(randomPlaylist.value[index - 1]);
-      }
-      setCurrentSong(playlist.value[playIndex.value]);
-    } else {
-      setPlayIndex(playIndex.value - 1);
-      setCurrentSong(playlist.value[playIndex.value]);
-    }
-    setPlayingState(true);
-  };
+    watch(
+      () => currentSong.value,
+      () => {
+        api.song.getSongsUrl(currentSong.value.id).then((response) => {
+          if (response.code === 200) {
+            state.url = response.data[0].url;
+          }
+        });
+      },
+    );
 
-  // this.changeMode = (() => {
-  //   let count = 0;
-  //   const audio = this.$refs.audio;
+    watch(
+      () => state.volume,
+      () => {
+        state.audio.volume = state.volume;
+      },
+    );
 
-  //   return function () {
-  //     count++;
-  //     switch (count % 3) {
-  //       case 0:
-  //         audio.loop = false;
-  //         this.setPlayMode("order");
-  //         break;
-  //       case 1:
-  //         this.setPlayMode("unorder");
-  //         break;
-  //       case 2:
-  //         audio.loop = true;
-  //         this.setPlayMode("loop");
-  //         break;
-  //     }
-  //   };
-  // })();
-});
+    watch(
+      () => playMode.value,
+      () => {
+        if (playMode.value === PlayMode.singleLoop) {
+          state.audio.loop = true;
+        } else {
+          state.audio.loop = false;
+        }
+      },
+    );
 
-//   decreaseVolume() {
-//     if (this.volume > 0 && this.volume > 0.2) {
-//       this.volume = this.volume - 0.1;
-//       this.$refs.audio.volume = this.volume;
-//       console.log(this.$refs.audio.volume);
-//     }
-//   },
-//   increaseVolume() {
-//     if (this.volume < 1) {
-//       this.volume = this.volume + 0.1;
-//       this.$refs.audio.volume = this.volume;
-//       console.log(this.$refs.audio.volume);
-//     }
-//   },
-//   toggleMuted() {
-//     this.$refs.audio.muted = !this.$refs.audio.muted;
-//   },
-//   orderPlay() {
-//     this.$store.state.currentSong = this.$store.state.playlists[1];
-//   },
+    watch(
+      () => state.muted,
+      () => {
+        state.audio.muted = state.muted;
+      },
+    );
 
-function formatTime(seconds) {
-  let minute = parseInt(seconds / 60);
-  let second = utils.formatNumber(seconds - minute * 60);
+    onMounted(() => {
+      state.audio.volume = state.volume;
+    });
 
-  return minute + ':' + second;
-}
+    return {
+      ...toRefs(state),
+      PlayMode,
+      showPlaylist,
+      playList,
+      playing,
+      playMode,
+      currentSong,
+      toArtistDetail,
+      formatTime,
+      playingPageDisplayStatus,
+      play,
+      pause,
+      togglePlayMode,
+      togglePlayingPage,
+      getCurrentTime,
+      setCurrentTime,
+      getDuration,
+      nextTrack,
+      preTrack,
+      ended,
+    };
+  },
+};
 </script>
 
 <style module>

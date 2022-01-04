@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.songListItem" @dblclick="play(index)">
     <div :class="$style.front">
-      <img v-if="playingId == song.id" :class="$style.playingGif" :src="playingGif" />
+      <img v-if="song.id == currentSong.id" :class="$style.playingGif" :src="playingGif" />
       <span v-else :class="$style.index">{{ formatIndex(index + 1) }}</span>
       <div :class="$style.btn">
         <svg-icon v-if="!isLiked(song.id)" name="love" size="20" color="#909399" />
@@ -28,10 +28,10 @@
 
 <script>
 import * as utils from '@/utils/index.js';
-import { mapMutations, mapState } from '@/lib/lib.js';
 import useRouterMethods from '@/composables/router-methods';
 import playingGif from '@/assets/pictures/playing.gif';
 import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   name: 'SongTableListItem',
@@ -45,21 +45,24 @@ export default {
   },
   emits: ['play'],
   setup(props, { emit }) {
-    const { setCurrentSong, setPlayIndex, setPlayingState } = mapMutations();
-    const { currentSong } = mapState();
+    const store = useStore();
+
     const { toArtistDetail, toAlbumDetail } = useRouterMethods();
 
+    const currentSong = computed(() => store.getters['player/currentSong']);
+    const setPlaying = (flag) => store.commit('player/setPlaying', flag);
+    const setCurrentIndex = (index) => store.commit('player/setCurrentIndex', index);
+
     const play = () => {
-      setCurrentSong(props.song);
-      setPlayIndex(props.index);
-      setPlayingState(true);
+      setCurrentIndex(props.index);
+      setPlaying(true);
       emit('play');
     };
     return {
+      currentSong,
       play,
       toArtistDetail,
       toAlbumDetail,
-      playingId: computed(() => (currentSong.value ? currentSong.value.id : '')),
       playingGif,
     };
   },

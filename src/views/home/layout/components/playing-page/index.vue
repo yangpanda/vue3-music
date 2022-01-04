@@ -19,17 +19,7 @@
           />
         </div>
       </div>
-      <n-button
-        style="font-size: 24px"
-        circle
-        size="large"
-        :class="$style.down"
-        @click="
-          () => {
-            setShowPlayingPage(false);
-          }
-        "
-      >
+      <n-button style="font-size: 24px" circle size="large" :class="$style.down" @click="togglePlayingPage">
         <n-icon>
           <icon-arrow-down></icon-arrow-down>
         </n-icon>
@@ -39,9 +29,9 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from '@/lib/lib.js';
-import { ref, watch, reactive, toRefs } from 'vue';
+import { ref, watch, reactive, toRefs, computed } from 'vue';
 import api from '@/api/index.js';
+import { useStore } from 'vuex';
 
 import RotateCd from './RotateCd.vue';
 import Lyric from './Lyric.vue';
@@ -61,11 +51,11 @@ export default {
     NButton,
   },
   setup() {
+    const store = useStore();
     const commentPos = ref(null);
     const comments = ref([]);
-    const { currentSong } = mapState();
-    const { setShowPlayingPage } = mapMutations();
 
+    const currentSong = computed(() => store.getters['player/currentSong']);
     const state = reactive({
       total: 0,
       page: 1,
@@ -73,6 +63,7 @@ export default {
       pageCount: 0,
     });
 
+    const togglePlayingPage = () => store.commit('player/togglePlayingPage');
     const getComment = async (offset = 0) => {
       const res = await api.comment.ofSong({
         id: currentSong.value.id,
@@ -107,7 +98,7 @@ export default {
       commentPos,
       comments,
       ...toRefs(state),
-      setShowPlayingPage,
+      togglePlayingPage,
     };
   },
 };

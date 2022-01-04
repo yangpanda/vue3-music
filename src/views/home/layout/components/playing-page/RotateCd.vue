@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.container">
-    <img :class="[$style.needle, playingState ? $style.run : '']" :src="needlePic" alt="needle" />
-    <div :class="[$style.cd, !playingState ? $style.pause : '']">
+    <img :class="[$style.needle, playing ? $style.run : '']" :src="needlePic" alt="needle" />
+    <div :class="[$style.cd, !playing ? $style.pause : '']">
       <div
         :class="$style.bg"
         :style="{
@@ -17,8 +17,8 @@
 import discPic from '@/assets/pictures/cd.png';
 import needlePic from '@/assets/pictures/needle.png';
 import { picSizeUrl } from '@/utils/picture';
-import { reactive, toRefs, watch } from 'vue';
-import { mapState } from '@/lib/lib';
+import { reactive, toRefs, watch, computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   name: 'RotateCd',
@@ -27,7 +27,9 @@ export default {
       picUrl: '',
     });
 
-    const { currentSong, playingState } = mapState();
+    const store = useStore();
+    const playing = computed(() => store.state.player.playing);
+    const currentSong = computed(() => store.getters['player/currentSong']);
 
     watch(
       () => currentSong.value,
@@ -38,7 +40,7 @@ export default {
 
     return {
       ...toRefs(state),
-      playingState,
+      playing,
       discPic,
       needlePic,
     };

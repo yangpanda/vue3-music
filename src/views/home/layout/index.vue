@@ -6,7 +6,7 @@
       <div :class="$style.content">
         <router-view :key="key"></router-view>
       </div>
-      <div :class="[$style.playingPage, showPlayingPage ? $style.active : '']">
+      <div :class="[$style.playingPage, playingPageDisplayStatus ? $style.active : '']">
         <playing-page></playing-page>
       </div>
     </div>
@@ -21,7 +21,8 @@
 import PlayingPage from './components/playing-page/index.vue';
 import TheSidebar from './TheSidebar.vue';
 import ThePlayer from './components/ThePlayer.vue';
-import { mapState } from '@/lib/lib.js';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
   components: {
@@ -30,10 +31,11 @@ export default {
     ThePlayer,
   },
   setup() {
-    const { showPlayingPage } = mapState();
+    const store = useStore();
+    const playingPageDisplayStatus = computed(() => store.state.player.playingPageDisplayStatus);
 
     return {
-      showPlayingPage,
+      playingPageDisplayStatus,
     };
   },
   computed: {
