@@ -19,7 +19,7 @@ export default {
 };
 </script>
 <script setup>
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import useRouterMethods from '../composables/router-methods';
 import { useStore } from 'vuex';
 
@@ -29,7 +29,7 @@ const props = defineProps({
     type: Object,
   },
   index: {
-    type: Number | String,
+    type: Number,
   },
 });
 const { toArtistDetail } = useRouterMethods();
