@@ -11,9 +11,11 @@
       <div>
         <div class="text-base pointer ellipsis">{{ currentSong.name }}</div>
         <div>
-          <the-link v-for="artist in currentSong.singer" :params="{ name: 'ArtistDetail', id: artist.id }">{{
-            artist.name
-          }}</the-link>
+          <the-link
+            v-for="artist in currentSong.singer"
+            :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
+            >{{ artist.name }}</the-link
+          >
         </div>
       </div>
     </div>
@@ -83,7 +85,6 @@ import { formatTime } from '@/utils/index.js';
 import api from '@/api/index.js';
 import { ref, computed, watch, toRefs, reactive, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import useRouterMethods from '@/composables/router-methods.js';
 import { PlayMode } from '@/store/player.js';
 
 import { NDrawer, NDrawerContent, NSlider } from 'naive-ui';
@@ -116,7 +117,6 @@ export default {
     const playingPageDisplayStatus = computed(() => store.state.player.playingPageDisplayStatus);
 
     // methods
-    const { toArtistDetail } = useRouterMethods();
     const togglePlayMode = () => store.commit('player/togglePlayMode');
     const togglePlayingPage = () => store.commit('player/togglePlayingPage');
     const setPlaying = (flag) => store.commit('player/setPlaying', flag);
@@ -198,7 +198,6 @@ export default {
       playing,
       playMode,
       currentSong,
-      toArtistDetail,
       formatTime,
       playingPageDisplayStatus,
       play,

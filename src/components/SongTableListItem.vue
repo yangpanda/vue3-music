@@ -14,13 +14,13 @@
         :class="$style.artist"
         v-for="artist in song.singer"
         :key="artist.id"
-        :params="{ name: 'ArtistDetail', id: artist.id }"
+        :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
       >
         {{ artist.name }}
       </the-link>
     </div>
     <div class="ellipsis">
-      <the-link :params="{ name: 'AlbumDetail', id: song.album.id }">{{ song.album.name }}</the-link>
+      <the-link :to="{ name: 'AlbumDetail', params: { id: song.album.id } }">{{ song.album.name }}</the-link>
     </div>
     <div>{{ song.duration }}</div>
   </div>
@@ -28,7 +28,6 @@
 
 <script>
 import * as utils from '@/utils/index.js';
-import useRouterMethods from '@/composables/router-methods';
 import playingGif from '@/assets/pictures/playing.gif';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
@@ -47,8 +46,6 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
 
-    const { toArtistDetail, toAlbumDetail } = useRouterMethods();
-
     const currentSong = computed(() => store.getters['player/currentSong']);
     const setPlaying = (flag) => store.commit('player/setPlaying', flag);
     const setCurrentIndex = (index) => store.commit('player/setCurrentIndex', index);
@@ -61,8 +58,6 @@ export default {
     return {
       currentSong,
       play,
-      toArtistDetail,
-      toAlbumDetail,
       playingGif,
     };
   },

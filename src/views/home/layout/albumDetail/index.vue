@@ -16,7 +16,7 @@
             <the-link
               :class="$style.artistLink"
               v-for="artist in album.artists"
-              :params="{ name: 'ArtistDetail', id: artist.id }"
+              :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
               >{{ artist.name }}</the-link
             >
           </div>

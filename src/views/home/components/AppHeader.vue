@@ -41,7 +41,7 @@ import { NButton, NAvatar, NPopover } from 'naive-ui';
 import SearchBar from '@/components/SearchBar.vue';
 import api from '@/api/index.js';
 import { useStore } from 'vuex';
-import useRouterMethods from '@/composables/router-methods.js';
+import useRouterMethods from '@/composables/useRouterMethods.js';
 import { computed, onMounted } from 'vue';
 import Playlist from '@/model/Playlist.js';
 

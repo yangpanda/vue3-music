@@ -20,7 +20,7 @@ export default {
 </script>
 <script setup>
 import { computed } from 'vue';
-import useRouterMethods from '../composables/router-methods';
+import useRouterMethods from '../composables/useRouterMethods';
 import { useStore } from 'vuex';
 
 const store = useStore();

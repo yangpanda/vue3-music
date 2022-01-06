@@ -24,12 +24,14 @@
           <the-link
             :class="$style.artistLink"
             v-for="artist in item.singer"
-            :params="{ name: 'ArtistDetail', id: artist.id }"
+            :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
             >{{ artist.name }}</the-link
           >
         </div>
         <div class="ellipsis">
-          <the-link :params="{ name: 'AlbumDetail', id: item.album.id }">{{ item.album.name }}</the-link>
+          <the-link :to="{ name: 'AlbumDetail', params: { id: item.album.id } }">{{
+            item.album.name
+          }}</the-link>
         </div>
         <div :class="$style.duration">{{ item.duration }}</div>
       </div>

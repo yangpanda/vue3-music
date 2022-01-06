@@ -6,7 +6,7 @@
 
 <script setup>
 import CardBase from '@/components/CardBase.vue';
-import useRouterMethods from '../composables/router-methods';
+import useRouterMethods from '../composables/useRouterMethods';
 
 const props = defineProps({
   mv: Object,

@@ -1,44 +1,42 @@
 <template>
-  <span :class="[$style.link]" @click.stop="routeActive">
-    <slot></slot>
-  </span>
+  <a v-if="isExternalLink" v-bind="$attrs" :href="to" target="_blank">
+    <slot />
+  </a>
+  <router-link v-else v-bind="$props" custom v-slot="{ isActive, href, navigate }">
+    <a
+      v-bind="$attrs"
+      :href="href"
+      @click="navigate"
+      :class="[$style.link, isActive ? activeClass : inactiveClass]"
+    >
+      <slot />
+    </a>
+  </router-link>
 </template>
 
 <script>
-import useRouterMethods from '@/composables/router-methods.js';
-import { NButton } from 'naive-ui';
+import { RouterLink } from 'vue-router';
 
 export default {
   name: 'TheLink',
-  components: {
-    NButton,
-  },
+
   props: {
-    params: null,
+    ...RouterLink.props,
+    inactiveClass: String,
   },
-  setup({ params }) {
-    const { toAlbumDetail, toArtistDetail } = useRouterMethods();
-    const pageMap = new Map([
-      ['AlbumDetail', toAlbumDetail],
-      ['ArtistDetail', toArtistDetail],
-    ]);
 
-    const routeActive = () => {
-      const fun = pageMap.get(params.name);
-      fun(params.id);
-    };
-
-    return {
-      routeActive,
-    };
+  computed: {
+    isExternalLink() {
+      return typeof this.to === 'string' && this.to.startsWith('http');
+    },
   },
 };
 </script>
 
 <style module>
 .link {
-  color: #7c7a7a;
-  cursor: pointer;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.6);
 }
 .link:hover {
   color: #18a058;

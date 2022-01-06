@@ -4,11 +4,17 @@
       <div :class="$style.name">{{ songName }}</div>
       <div :class="$style.infoSub">
         <div>
-          <span>专辑：</span><the-link :params="albumRouteParams">{{ albumName }}</the-link>
+          <span>专辑：</span>
+          <the-link :to="{ name: 'AlbumDetail', params: { id: albumId } }">{{ albumName }}</the-link>
         </div>
         <div>
           <span>歌手：</span>
-          <the-link :class="$style.artist" v-for="item in artists" key="item.id" :params="item.routeParams">
+          <the-link
+            :class="$style.artist"
+            v-for="item in artists"
+            key="item.id"
+            :to="{ name: 'ArtistDetail', params: { id: item.id } }"
+          >
             {{ item.name }}
           </the-link>
         </div>
@@ -34,10 +40,7 @@ export default {
     NScrollbar,
   },
   setup() {
-    const store = useStore();
     const lyric = ref([]);
-    const currentSong = computed(() => store.getters['player/currentSong']);
-
     const state = reactive({
       albumName: '',
       songName: '',
@@ -45,10 +48,8 @@ export default {
       artists: [],
     });
 
-    const albumRouteParams = reactive({
-      name: 'AlbumDetail',
-      id: 0,
-    });
+    const store = useStore();
+    const currentSong = computed(() => store.getters['player/currentSong']);
 
     watch(
       () => currentSong.value,
@@ -57,15 +58,7 @@ export default {
           state.albumName = currentSong.value.album.name;
           state.songName = currentSong.value.name;
           state.artists = currentSong.value.singer;
-
-          state.artists.forEach((item) => {
-            item.routeParams = {
-              name: 'ArtistDetail',
-              id: item.id,
-            };
-          });
-
-          albumRouteParams.id = currentSong.value.album.id;
+          state.albumId = currentSong.value.album.id;
 
           api.song.getLyric(currentSong.value.id).then((response) => {
             if (response.code === 200) {
@@ -92,7 +85,6 @@ export default {
 
     return {
       lyric,
-      albumRouteParams,
       ...toRefs(state),
     };
   },

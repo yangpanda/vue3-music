@@ -19,7 +19,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import api from '@/api/index.js';
-import useRouterMethods from '@/composables/router-methods.js';
+import useRouterMethods from '@/composables/useRouterMethods.js';
 
 export default {
   name: 'TabArtist',

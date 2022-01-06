@@ -17,7 +17,7 @@
 
 <script>
 import Playlist from '../model/Playlist';
-import useRouterMethods from '../composables/router-methods';
+import useRouterMethods from '../composables/useRouterMethods';
 import usePlaylistMethods from '../composables/playlist-methods';
 import CardBase from '@/components/CardBase.vue';
 

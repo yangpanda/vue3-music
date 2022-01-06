@@ -39,7 +39,7 @@
 <script>
 import { NGrid, NGridItem, NSpin } from 'naive-ui';
 import { ref, toRefs, watchEffect, reactive } from '@vue/runtime-core';
-import useRouterMethods from '@/composables/router-methods';
+import useRouterMethods from '@/composables/useRouterMethods';
 import api from '@/api';
 
 const areaMap = new Map([

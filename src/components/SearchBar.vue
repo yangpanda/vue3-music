@@ -31,7 +31,7 @@
 import { NScrollbar, NPopover, NText, NInput, NCard } from 'naive-ui';
 import { ref } from 'vue';
 import api from '../api';
-import useRouterMethods from '../composables/router-methods';
+import useRouterMethods from '../composables/useRouterMethods';
 
 export default {
   name: 'SearchBar',

@@ -36,7 +36,7 @@
 import { NCard, NForm, NFormItem, NTabs, NTabPane, NButton, NInput, useMessage } from 'naive-ui';
 import api from '@/api/index.js';
 import { ref, onBeforeMount } from 'vue';
-import useRouterMethods from '../../composables/router-methods';
+import useRouterMethods from '../../composables/useRouterMethods';
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 

@@ -14,7 +14,7 @@
         <the-link
           :class="$style.link"
           v-for="artist in item.artists"
-          :params="{ name: 'ArtistDetail', id: artist.id }"
+          :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
           >{{ artist.name }}</the-link
         >
       </div>
@@ -26,7 +26,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import api from '@/api/index.js';
-import useRouterMethods from '@/composables/router-methods.js';
+import useRouterMethods from '@/composables/useRouterMethods.js';
 
 export default {
   name: 'TabAlbum',
