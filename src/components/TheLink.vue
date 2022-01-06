@@ -7,7 +7,7 @@
       v-bind="$attrs"
       :href="href"
       @click="navigate"
-      :class="[$style.link, isActive ? activeClass : inactiveClass]"
+      :class="[$style.link, isActive ? $style.activeClass : $style.inactiveClass]"
     >
       <slot />
     </a>
@@ -36,9 +36,14 @@ export default {
 <style module>
 .link {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.6);
 }
 .link:hover {
-  color: #18a058;
+  color: #18a058 !important;
+}
+.activeClass {
+  color: #18a058 !important;
+}
+.inactiveClass {
+  color: rgba(0, 0, 0, 0.6);
 }
 </style>

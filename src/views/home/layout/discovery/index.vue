@@ -1,7 +1,11 @@
 <template>
   <div :class="$style.discovery">
     <div :class="$style.nav">
-      <n-menu default-value="personal" mode="horizontal" :options="menuOptions" />
+      <the-link :to="{ name: 'Personal' }">个性推荐</the-link>
+      <the-link :to="{ name: 'Playlist' }">歌单</the-link>
+      <the-link :to="{ name: 'Rank' }">排行榜</the-link>
+      <the-link :to="{ name: 'Artist' }">歌手</the-link>
+      <the-link :to="{ name: 'Newsong' }">最新音乐</the-link>
     </div>
     <div :class="$style.content">
       <the-scrollbar>
@@ -15,88 +19,12 @@
 </template>
 
 <script>
-import { NScrollbar, NBackTop, NMenu } from 'naive-ui';
-import { h } from 'vue';
-import { RouterLink } from 'vue-router';
-
-const menuOptions = [
-  {
-    key: 'personal',
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'Personal',
-          },
-        },
-        { default: () => '个性推荐' },
-      ),
-  },
-  {
-    key: 'playlist',
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'Playlist',
-          },
-        },
-        { default: () => '歌单' },
-      ),
-  },
-  {
-    key: 'rank',
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'Rank',
-          },
-        },
-        { default: () => '排行榜' },
-      ),
-  },
-  {
-    key: 'artist',
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'Artist',
-          },
-        },
-        { default: () => '歌手' },
-      ),
-  },
-  {
-    key: 'newsong',
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'Newsong',
-          },
-        },
-        { default: () => '最新音乐' },
-      ),
-  },
-];
+import { NScrollbar, NBackTop } from 'naive-ui';
 
 export default {
   components: {
     NScrollbar,
     NBackTop,
-    NMenu,
-  },
-  setup() {
-    return {
-      menuOptions,
-    };
   },
 };
 </script>
@@ -112,6 +40,14 @@ export default {
   align-items: center;
   justify-content: center;
   height: 5rem;
+  font-size: 16px;
+  color: black;
+}
+.nav > :not(:first-child) {
+  margin-left: 30px;
+}
+.nav a {
+  color: #18191c;
 }
 .content {
   height: calc(100% - 3rem);
