@@ -17,12 +17,16 @@ export const phoneLogin = (model) =>
     },
   });
 
-export const getLoginStatus = () => request.get(`/login/status`, { params: { timestamp: Date.now() } });
-
-export const loginStatus = () =>
-  request.get(`/login/status`, {
+export const getLoginStatus = async () => {
+  const res = await request.get(`/login/status`, {
     params: { timestamp: Date.now() },
   });
+
+  return {
+    loginStatus: res.data.profile != null,
+    profile: res.data.profile,
+  };
+};
 
 export const getLikedSongs = (uid) => {
   if (uid === undefined) {
@@ -32,37 +36,14 @@ export const getLikedSongs = (uid) => {
   }
 };
 
-export const logout = () =>
-  request.get(`/logout`, {
+export const logout = async () => {
+  const res = await request.get(`/logout`, {
     params: {
       timestamp: Date.now(),
     },
   });
 
-export const qrKey = () => {
-  return request.get(`/login/qr/key`, {
-    params: {
-      timestamp: Date.now(),
-    },
-  });
-};
-
-export const qrCreate = (key) =>
-  request.get('/login/qr/create', {
-    params: {
-      key,
-      timestamp: Date.now(),
-      qrimg: true,
-    },
-  });
-
-export const qrCheck = (key) => {
-  return request.get('/login/qr/check', {
-    params: {
-      key,
-      timestamp: Date.now(),
-    },
-  });
+  return res.code === 200;
 };
 
 export const getPlayHistory = (uid) =>

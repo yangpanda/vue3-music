@@ -15,10 +15,8 @@
 <script>
 import { NMenu, NScrollbar, NIcon } from 'naive-ui';
 import { RouterLink } from 'vue-router';
-import { h, ref, computed, watchEffect } from 'vue';
-import { mapState, mapMutations } from '@/lib/lib.js';
-import api from '@/api/index.js';
-import Playlist from '@/model/Playlist.js';
+import { h, ref, computed } from 'vue';
+import { useStore } from 'vuex';
 
 import { QueueMusicRound as IconMusicList, AccessTimeFilled as IconHistory } from '@vicons/material';
 import { MdHeartEmpty as IconHeart } from '@vicons/ionicons4';
@@ -35,8 +33,9 @@ export default {
     NScrollbar,
   },
   setup() {
-    const { userinfo, userPlaylists, logined } = mapState();
-    const { setUserPlaylists } = mapMutations();
+    const store = useStore();
+    const collectedPlaylists = computed(() => store.state.user.collectedPlaylists);
+    const createdPlaylists = computed(() => store.state.user.createdPlaylists);
 
     function CreateMenuOption(playlist) {
       return {
@@ -85,19 +84,6 @@ export default {
           ),
         key: 'mv',
       },
-      // {
-      //   label: () =>
-      //     h(
-      //       RouterLink,
-      //       {
-      //         to: {
-      //           name: 'Fm',
-      //         },
-      //       },
-      //       { default: () => '私人FM' },
-      //     ),
-      //   key: 'fm',
-      // },
       {
         label: '我的音乐',
         type: 'group',
@@ -136,43 +122,19 @@ export default {
       {
         label: '创建的歌单',
         key: 'loveGroup',
-        children: computed(() => {
-          if (userPlaylists.value) {
-            const arr = userPlaylists.value.filter((item) => item.creator.userId == userinfo.value.id);
-            return arr.map((item) => ({ ...CreateMenuOption(item), icon: renderIcon(IconHeart) }));
-          } else {
-            return [];
-          }
-        }),
+        children: computed(() =>
+          createdPlaylists.value.map((item) => ({
+            ...CreateMenuOption(item),
+            icon: renderIcon(IconHeart),
+          })),
+        ),
       },
       {
         label: '收藏的歌单',
         key: 'subGroup',
-        children: computed(() => {
-          if (userPlaylists.value) {
-            const arr = userPlaylists.value.filter((item) => item.creator.userId != userinfo.value.id);
-            return arr.map((item) => CreateMenuOption(item));
-          } else {
-            return [];
-          }
-        }),
+        children: computed(() => collectedPlaylists.value.map((item) => CreateMenuOption(item))),
       },
     ]);
-
-    const getUserPlaylists = async () => {
-      const res = await api.playlist.getUserPlaylists(userinfo.value.id);
-      if (res.code === 200) {
-        setUserPlaylists(res.playlist.map((item) => new Playlist(item)));
-      }
-    };
-
-    watchEffect(() => {
-      if (logined.value) {
-        getUserPlaylists();
-      } else {
-        setUserPlaylists(null);
-      }
-    });
 
     return {
       options,

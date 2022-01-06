@@ -36,9 +36,9 @@
 import { NCard, NForm, NFormItem, NTabs, NTabPane, NButton, NInput, useMessage } from 'naive-ui';
 import api from '@/api/index.js';
 import { ref, onBeforeMount } from 'vue';
-import { mapState, mapMutations } from '@/lib/lib.js';
 import useRouterMethods from '../../composables/router-methods';
-import User from '@/model/User.js';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
   components: {
@@ -62,15 +62,14 @@ export default {
       password: null,
     });
     const { toHome } = useRouterMethods();
-    const { logined, userinfo } = mapState();
-    const { setUserinfo, setLogined } = mapMutations();
+
+    const store = useStore();
+    const loginStatus = computed(() => store.state.user.loginStatus);
 
     const login = () => {
       api.user.login(model.value).then((res) => {
         switch (res.code) {
           case 200:
-            setUserinfo(new User(res.profile));
-            setLogined(true);
             toHome();
             break;
           case 502:
@@ -85,11 +84,8 @@ export default {
 
     const phoneLogin = () => {
       api.user.phoneLogin(phoneModel.value).then((res) => {
-        console.log(res);
         switch (res.code) {
           case 200:
-            setUserinfo(new User(res.profile));
-            setLogined(true);
             toHome();
             break;
           case 502:
@@ -103,13 +99,11 @@ export default {
     };
 
     onBeforeMount(() => {
-      if (logined.value && userinfo.value) {
+      if (loginStatus.value) {
         toHome();
       } else {
-        api.user.loginStatus().then((res) => {
-          if (res.data.profile && res.data.account) {
-            setUserinfo(new User(res.data.profile));
-            setLogined(true);
+        api.user.getLoginStatus().then((res) => {
+          if (res.loginStatus) {
             toHome();
           }
         });

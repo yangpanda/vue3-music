@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.headerWrap">
+  <div :class="$style.header">
     <div :class="$style.homeBtn" @click="toHome">
       <svg width="32" height="32">
         <use xlink:href="#icon-logo" />
@@ -8,13 +8,13 @@
     </div>
     <search-bar />
     <div :class="$style.right">
-      <n-button text v-if="!logined" @click="toLogin">登录</n-button>
+      <n-button text v-if="!loginStatus" @click="toLogin">登录</n-button>
       <div v-else :class="$style.userInfo">
-        <n-avatar :size="30" round :src="userinfo.avatar" />
+        <n-avatar :size="30" round :src="profile.avatarUrl" />
         <n-popover trigger="click" placement="bottom-end" style="width: 300px">
           <template #trigger>
             <div :class="$style.userName">
-              {{ userinfo.nickname }}
+              {{ profile.nickname }}
               <svg-icon name="arrow-down" size="14" />
             </div>
           </template>
@@ -31,71 +31,55 @@
 </template>
 
 <script>
-import SearchBar from '@/components/SearchBar.vue';
-import { NButton, NAvatar, NPopover } from 'naive-ui';
-import useRouterMethods from '@/composables/router-methods.js';
-import { mapState, mapMutations } from '@/lib/lib.js';
-import { onMounted } from 'vue';
-import api from '@/api/index.js';
-import User from '@/model/User.js';
-import SvgIcon from '../../../components/SvgIcon.vue';
-
 export default {
   name: 'AppHeader',
-  components: {
-    SearchBar,
-    NButton,
-    NAvatar,
-    NPopover,
-    SvgIcon,
-  },
-  setup() {
-    const { userinfo, logined } = mapState();
-    const { setUserinfo, setLogined, setLikedSongs } = mapMutations();
-    const { toHome, toLogin } = useRouterMethods();
-
-    const getLikedSongs = async (id) => {
-      const res = await api.user.getLikedSongs(id);
-      setLikedSongs(new Set(res.ids));
-    };
-
-    const checkLoginStatus = () => {
-      api.user.loginStatus().then((res) => {
-        if (res.data.profile && res.data.account) {
-          setUserinfo(new User(res.data.profile));
-          setLogined(true);
-          getLikedSongs(userinfo.value.id);
-        }
-      });
-    };
-
-    const logout = async () => {
-      const res = await api.user.logout();
-      if (res.code === 200) {
-        setUserinfo(null);
-        setLogined(false);
-      }
-    };
-
-    onMounted(() => {
-      if (!logined.value) {
-        checkLoginStatus();
-      }
-    });
-
-    return {
-      userinfo,
-      logined,
-      toHome,
-      toLogin,
-      logout,
-    };
-  },
 };
 </script>
 
+<script setup>
+import { NButton, NAvatar, NPopover } from 'naive-ui';
+import SearchBar from '@/components/SearchBar.vue';
+import api from '@/api/index.js';
+import { useStore } from 'vuex';
+import useRouterMethods from '@/composables/router-methods.js';
+import { computed, onMounted } from 'vue';
+import Playlist from '@/model/Playlist.js';
+
+const store = useStore();
+const loginStatus = computed(() => store.state.user.loginStatus);
+const profile = computed(() => store.state.user.profile);
+const handleLogout = () => store.commit('user/HANDLE_LOGOUT');
+const handleLogin = (payload) => store.commit('user/HANDLE_LOGIN', payload);
+const setCreatedPlaylists = (playlists) => store.commit('user/SET_CREATED_PLAYLISTS', playlists);
+const setCollectedPlaylists = (playlists) => store.commit('user/SET_COLLECTED_PLAYLISTS', playlists);
+
+const { toHome, toLogin } = useRouterMethods();
+
+const logout = async () => {
+  const status = await api.user.logout();
+  console.log(status);
+  if (status) {
+    handleLogout();
+  }
+};
+
+onMounted(async () => {
+  const res = await api.user.getLoginStatus();
+  if (res.loginStatus) {
+    handleLogin(res.profile);
+
+    {
+      const res = await api.playlist.getUserPlaylists(profile.value.userId);
+      const playlists = res.playlist.map((item) => new Playlist(item));
+      setCollectedPlaylists(playlists.filter((item) => item.creator.userId != profile.value.userId));
+      setCreatedPlaylists(playlists.filter((item) => item.creator.userId === profile.value.userId));
+    }
+  }
+});
+</script>
+
 <style module>
-.headerWrap {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -106,30 +90,35 @@ export default {
 .homeBtn {
   display: flex;
   align-items: center;
-  column-gap: 6px;
   font-size: 18px;
   cursor: pointer;
+}
+.homeBtn > :last-child {
+  margin-left: 6px;
 }
 .userInfo {
   display: flex;
   align-items: center;
-  column-gap: var(--gap-sm);
+}
+.userInfo > :first-child {
+  margin-right: 6px;
 }
 .userName {
   display: flex;
   align-items: center;
-  column-gap: var(--gap-sm);
   cursor: pointer;
 }
-
+.userName > :first-child {
+  margin-left: 6px;
+}
 .right {
   display: flex;
   align-items: center;
-  column-gap: 10px;
 }
 .link {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 15px;
 }
 </style>

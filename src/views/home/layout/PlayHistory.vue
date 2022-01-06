@@ -16,13 +16,12 @@
 
 <script>
 import api from '@/api/index.js';
-import { watchEffect, ref } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { NButton, NResult } from 'naive-ui';
 import Song from '@/model/Song.js';
 import SongTableList from '@/components/SongTableList.vue';
 import SongTableListItem from '@/components/SongTableListItem.vue';
-import useLoginStatus from '@/composables/useLoginStatus.js';
-import { mapState } from '@/lib/lib.js';
+import { useStore } from 'vuex';
 
 export default {
   name: 'PlayHistory',
@@ -34,8 +33,9 @@ export default {
   },
   setup() {
     const history = ref([]);
-    const { loginStatus } = useLoginStatus();
-    const { userinfo } = mapState();
+    const store = useStore();
+    const loginStatus = computed(() => store.state.user.loginStatus);
+    const profile = computed(() => store.state.user.profile);
 
     const getPlayHistory = (id) => {
       api.user.getPlayHistory(id).then((res) => {
@@ -47,8 +47,7 @@ export default {
 
     watchEffect(() => {
       if (loginStatus.value) {
-        const userId = userinfo.value.id;
-        getPlayHistory(userId);
+        getPlayHistory(profile.value.userId);
       }
     });
 

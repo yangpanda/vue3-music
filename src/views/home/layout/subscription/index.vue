@@ -17,7 +17,8 @@
 <script>
 import { NScrollbar, NTabs, NTabPane, NResult } from 'naive-ui';
 import { defineAsyncComponent } from 'vue';
-import useLoginStatus from '@/composables/useLoginStatus.js';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 const tabs = [
   {
@@ -39,7 +40,8 @@ export default {
     NResult,
   },
   setup() {
-    const { loginStatus } = useLoginStatus();
+    const store = useStore();
+    const loginStatus = computed(() => store.state.user.loginStatus);
 
     return {
       tabs,
