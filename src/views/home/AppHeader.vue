@@ -1,9 +1,7 @@
 <template>
   <div :class="$style.header">
     <div :class="$style.homeBtn" @click="toHome">
-      <svg width="32" height="32">
-        <use xlink:href="#icon-logo" />
-      </svg>
+      <the-icon name="logo" size="32"></the-icon>
       <div>蜗牛音乐</div>
     </div>
     <search-bar />
@@ -15,7 +13,7 @@
           <template #trigger>
             <div :class="$style.userName">
               {{ profile.nickname }}
-              <svg-icon name="arrow-down" size="14" />
+              <the-icon name="arrow-down" size="14" />
             </div>
           </template>
           <div class="dropdown">
@@ -24,7 +22,7 @@
         </n-popover>
       </div>
       <a :class="$style.link" href="https://github.com/yangpanda/vue3-pc-netease-music" target="_blank">
-        <svg-icon name="github" size="32"></svg-icon>
+        <the-icon name="github" size="32"></the-icon>
       </a>
     </div>
   </div>

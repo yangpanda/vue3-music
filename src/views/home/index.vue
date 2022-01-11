@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue';
+import AppHeader from './AppHeader.vue';
 import { NLoadingBarProvider } from 'naive-ui';
 
 export default {

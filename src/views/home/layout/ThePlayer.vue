@@ -1,11 +1,12 @@
 <template>
-  <div :class="$style.playerWrap">
+  <div :class="$style.player">
+    <!-- 左边部分 -->
     <div :class="$style.left">
       <div :class="$style.cover">
         <the-image :src="currentSong.image + '?param=100y100'" size="50" round="normal" />
         <div :class="$style.toggle" @click="togglePlayingPage">
-          <svg-icon v-if="!playingPageDisplayStatus" name="arrow-up" color="#f3f3f3"></svg-icon>
-          <svg-icon v-else name="arrow-down" color="#f3f3f3"></svg-icon>
+          <the-icon v-if="!playingPageDisplayStatus" name="arrow-up" color="#f3f3f3" size="28"></the-icon>
+          <the-icon v-else name="arrow-down" color="#f3f3f3" size="28"></the-icon>
         </div>
       </div>
       <div>
@@ -19,18 +20,19 @@
         </div>
       </div>
     </div>
+    <!-- 中间部分 -->
     <div :class="$style.center">
       <div :class="$style.btns">
         <div :class="$style.mode" @click="togglePlayMode">
-          <svg-button v-if="playMode === PlayMode.sequence" name="play-mode-sequence" />
-          <svg-button v-else-if="playMode === PlayMode.random" name="play-mode-unorder" />
-          <svg-button v-else-if="playMode === PlayMode.listLoop" name="play-mode-order" />
-          <svg-button v-else="playMode === PlayMode.singleLoop" name="play-mode-loop" />
+          <the-icon v-if="playMode === PlayMode.sequence" name="sequence" />
+          <the-icon v-else-if="playMode === PlayMode.random" name="random" />
+          <the-icon v-else-if="playMode === PlayMode.listLoop" name="list-loop" />
+          <the-icon v-else="playMode === PlayMode.singleLoop" name="single-loop" />
         </div>
-        <svg-button @click="preTrack" name="pre" />
-        <svg-button v-if="!playing" @click="play" name="play" box />
-        <svg-button v-else @click="pause" name="pause" box />
-        <svg-button @click="nextTrack" name="next" />
+        <the-icon @click="preTrack" name="pre-track" />
+        <the-icon v-if="!playing" @click="play" name="play" size="28" />
+        <the-icon v-else @click="pause" name="pause" size="28" />
+        <the-icon @click="nextTrack" name="next-track" />
       </div>
       <div :class="$style.songSliderWrap">
         <div>{{ formatTime(currentTime) }}</div>
@@ -46,17 +48,18 @@
         <div>{{ formatTime(duration) }}</div>
       </div>
     </div>
+    <!-- 右边部分 -->
     <div :class="$style.right">
       <div :class="$style.volume">
         <div :class="$style.volumeBtnBox" @click="muted = !muted">
-          <svg-button v-if="!muted" name="volume" />
-          <svg-button v-else="muted" name="mute" />
+          <the-icon v-if="!muted" name="volume" />
+          <the-icon v-else="muted" name="mute" />
         </div>
         <div :class="$style.volumeSlider">
           <n-slider :tooltip="false" :min="0" :max="1" :step="0.1" v-model:value="volume" />
         </div>
       </div>
-      <svg-button name="menu" @click="() => (showPlaylist = !showPlaylist)" />
+      <the-icon name="menu" @click="() => (showPlaylist = !showPlaylist)" />
     </div>
     <n-drawer v-model:show="showPlaylist" placement="right" :width="600">
       <n-drawer-content title="播放列表" body-content-style="padding: 0;" :native-scrollbar="false">
@@ -216,7 +219,7 @@ export default {
 </script>
 
 <style module>
-.playerWrap {
+.player {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -265,7 +268,7 @@ export default {
 .btns {
   display: flex;
   align-items: center;
-  column-gap: 2rem;
+  column-gap: 30px;
 }
 .mode {
   display: flex;

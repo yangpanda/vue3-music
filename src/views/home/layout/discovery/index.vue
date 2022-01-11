@@ -14,18 +14,12 @@
         </div>
       </the-scrollbar>
     </div>
-    <div :class="$style.backtopContainer" ref="backtopRef"></div>
   </div>
 </template>
 
 <script>
-import { NScrollbar, NBackTop } from 'naive-ui';
-
 export default {
-  components: {
-    NScrollbar,
-    NBackTop,
-  },
+  name: 'Discovery',
 };
 </script>
 

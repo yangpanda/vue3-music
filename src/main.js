@@ -16,6 +16,7 @@ import TheImage from '@/components/TheImage.vue';
 import SvgButton from '@/components/SvgButton.vue';
 import TheLink from '@/components/TheLink.vue';
 import TheScrollbar from '@/components/TheScrollbar.vue';
+import TheIcon from '@/components/TheIcon.vue';
 
 const app = createApp(App);
 
@@ -25,6 +26,7 @@ const myComponents = {
   SvgButton: SvgButton,
   TheLink: TheLink,
   TheScrollbar: TheScrollbar,
+  TheIcon: TheIcon,
 };
 
 for (let key in myComponents) {

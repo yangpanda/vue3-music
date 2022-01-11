@@ -46,14 +46,9 @@ const routes = [
             ],
           },
           {
-            path: '/fm',
-            name: 'Fm',
-            component: () => import('@/views/home/layout/PersonalFm.vue'),
-          },
-          {
             path: '/history',
             name: 'History',
-            component: () => import('@/views/home/layout/PlayHistory.vue'),
+            component: () => import('@/views/home/layout/play-history/index.vue'),
           },
           {
             path: '/subscription',
@@ -64,24 +59,24 @@ const routes = [
             path: '/playlist-detail/:id',
             name: 'PlaylistDetail',
             props: true,
-            component: () => import('@/views/home/layout/PlaylistDetail/index.vue'),
+            component: () => import('@/views/home/layout/playList-detail/index.vue'),
           },
           {
             path: '/album-detail/:id',
             name: 'AlbumDetail',
             props: true,
-            component: () => import('@/views/home/layout/albumDetail/index.vue'),
+            component: () => import('@/views/home/layout/album-detail/index.vue'),
           },
           {
             path: '/artist-detail/:id',
             name: 'ArtistDetail',
             props: true,
-            component: () => import('@/views/home/layout/ArtistDetail/index.vue'),
+            component: () => import('@/views/home/layout/artist-detail/index.vue'),
           },
           {
             path: '/mv',
             name: 'Mv',
-            component: () => import('@/views/home/layout/MvPage.vue'),
+            component: () => import('@/views/home/layout/mv-page/index.vue'),
           },
           {
             path: '/search',
@@ -95,7 +90,7 @@ const routes = [
         path: '/mv-detail/:id',
         name: 'MvDetail',
         props: true,
-        component: () => import('@/views/home/MvDetail.vue'),
+        component: () => import('@/views/home/mv-detail/index.vue'),
       },
     ],
   },

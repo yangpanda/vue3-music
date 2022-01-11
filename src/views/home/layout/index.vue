@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import PlayingPage from './components/playing-page/index.vue';
+import PlayingPage from './PlayingPage/index.vue';
 import TheSidebar from './TheSidebar.vue';
-import ThePlayer from './components/ThePlayer.vue';
+import ThePlayer from './ThePlayer.vue';
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 

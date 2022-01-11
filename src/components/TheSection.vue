@@ -1,9 +1,9 @@
 <template>
   <section :class="$style.section">
     <div :class="$style.header">
-      <div :class="$style.titleBox">
+      <div :class="$style.titleBox" @click="toPage">
         <div class="text-lg cursor-pointer" :class="$style.title">{{ title }}</div>
-        <svg-icon name="arrow-right" size="14" color="#303133" />
+        <the-icon name="arrow-right" size="14" />
       </div>
       <slot name="nav"></slot>
     </div>
@@ -27,10 +27,23 @@
 
 <script>
 export default {
-  props: {
-    title: String,
-    cols: [Number, String],
-  },
+  name: 'TheSection',
+};
+</script>
+
+<script setup>
+import { useRouter } from 'vue-router';
+
+const props = defineProps({
+  title: String,
+  cols: [Number, String],
+  page: {},
+});
+
+const router = useRouter();
+
+const toPage = () => {
+  router.push(props.page);
 };
 </script>
 

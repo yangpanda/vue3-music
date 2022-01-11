@@ -20,9 +20,7 @@
         </div>
       </div>
       <n-button style="font-size: 24px" circle size="large" :class="$style.down" @click="togglePlayingPage">
-        <n-icon>
-          <icon-arrow-down></icon-arrow-down>
-        </n-icon>
+        <the-icon name="arrow-down" size="20"></the-icon>
       </n-button>
     </div>
   </the-scrollbar>
@@ -37,7 +35,6 @@ import RotateCd from './RotateCd.vue';
 import Lyric from './Lyric.vue';
 import CommentItem from '@/components/CommentItem.vue';
 import { NPagination, NIcon, NButton } from 'naive-ui';
-import { IosArrowDown as IconArrowDown } from '@vicons/ionicons4';
 
 export default {
   name: 'PlayingPage',
@@ -46,8 +43,6 @@ export default {
     Lyric,
     CommentItem,
     NPagination,
-    NIcon,
-    IconArrowDown,
     NButton,
   },
   setup() {

@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.personalWrap">
     <the-swiper :banners="banners" />
-    <the-section title="推荐歌单" cols="5">
+    <the-section title="推荐歌单" cols="5" :page="{ name: 'Playlist' }">
       <template #cards>
         <card-playlist v-for="(item, index) in playlists" :key="index" :playlist="item" />
       </template>
@@ -13,7 +13,7 @@
         </card-base>
       </template>
     </the-section>
-    <the-section title="最新音乐" cols="3">
+    <the-section title="最新音乐" cols="3" :page="{ name: 'Newsong' }">
       <template #cards>
         <card-song v-for="song in songs" :song="song"></card-song>
       </template>

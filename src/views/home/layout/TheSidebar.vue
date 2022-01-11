@@ -13,17 +13,22 @@
 </template>
 
 <script>
-import { NMenu, NScrollbar, NIcon } from 'naive-ui';
+import { NMenu, NScrollbar } from 'naive-ui';
 import { RouterLink } from 'vue-router';
 import { h, ref, computed } from 'vue';
 import { useStore } from 'vuex';
+import TheIcon from '@/components/TheIcon.vue';
 
-import { QueueMusicRound as IconMusicList, AccessTimeFilled as IconHistory } from '@vicons/material';
-import { MdHeartEmpty as IconHeart } from '@vicons/ionicons4';
-import { Collections24Regular as IconCollections } from '@vicons/fluent';
-
-function renderIcon(icon) {
-  return () => h(NIcon, null, { default: () => h(icon) });
+function renderIcon(name) {
+  return () =>
+    h(
+      TheIcon,
+      {
+        name,
+        size: 20,
+      },
+      null,
+    );
 }
 
 export default {
@@ -53,7 +58,7 @@ export default {
             { default: () => playlist.name },
           ),
         key: playlist.id,
-        icon: renderIcon(IconMusicList),
+        icon: renderIcon('playList'),
       };
     }
 
@@ -101,7 +106,7 @@ export default {
                 { default: () => '最近播放' },
               ),
             key: 'history',
-            icon: renderIcon(IconHistory),
+            icon: renderIcon('history'),
           },
           {
             label: () =>
@@ -115,7 +120,7 @@ export default {
                 { default: () => '我的收藏' },
               ),
             key: 'subscription',
-            icon: renderIcon(IconCollections),
+            icon: renderIcon('collections'),
           },
         ],
       },
@@ -125,7 +130,7 @@ export default {
         children: computed(() =>
           createdPlaylists.value.map((item) => ({
             ...CreateMenuOption(item),
-            icon: renderIcon(IconHeart),
+            icon: renderIcon('love'),
           })),
         ),
       },
