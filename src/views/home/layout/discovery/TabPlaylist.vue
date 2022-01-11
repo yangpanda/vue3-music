@@ -43,7 +43,7 @@
       </div>
     </div>
     <div v-if="loading" :class="$style.playlistContainer">
-      <card-playlist v-for="(item, index) in playlists" :key="index" :playlist="item" />
+      <card-playlist v-for="(item, index) in playlists" :key="index" :playList="item" />
     </div>
     <div :class="$style.spin" v-else="!loading">
       <n-spin size="large" />

@@ -1,9 +1,16 @@
 <template>
-  <div :class="$style.personalWrap">
+  <div :class="$style.personal">
     <the-swiper :banners="banners" />
     <the-section title="推荐歌单" cols="5" :page="{ name: 'Playlist' }">
       <template #cards>
-        <card-playlist v-for="(item, index) in playlists" :key="index" :playlist="item" />
+	<!-- 每日歌曲推荐 -->
+	<div :class="$style.daily" @click="toDailyMusic">
+	  <div :class="$style.dateBox">
+	    <span :class="$style.date" v-text="theDay"></span>
+	  </div>
+	  <div>每日歌曲推荐</div>
+	</div>
+        <card-playlist v-for="(item, index) in playLists" :key="item.id" :playList="item" />
       </template>
     </the-section>
     <the-section title="独家放送" cols="3">
@@ -36,7 +43,8 @@ import CardSong from './components/CardSong.vue';
 
 import Playlist from '@/model/Playlist';
 import api from '@/api/index.js';
-import { onMounted, reactive, toRefs } from 'vue';
+import useRouterMethods from '@/composables/useRouterMethods.js';
+import { onMounted, reactive, toRefs, computed } from 'vue';
 
 export default {
   components: {
@@ -50,11 +58,17 @@ export default {
   setup() {
     const state = reactive({
       banners: [],
-      playlists: [],
+      playLists: [],
       privateContents: [],
       songs: [],
       mvs: [],
     });
+
+    const theDay = computed(() => {
+      return new Date().getDate()
+    })
+
+    const { toDailyMusic } = useRouterMethods();
 
     const getBanners = () => {
       api.banner.getBanners(2).then((response) => {
@@ -73,9 +87,9 @@ export default {
     };
 
     const getPlaylists = () => {
-      api.playlist.getPersonalized(10).then((response) => {
+      api.playlist.getPersonalized(9).then((response) => {
         if (response.code === 200) {
-          state.playlists = response.result.map((item) => new Playlist(item));
+          state.playLists = response.result.map((item) => new Playlist(item));
         }
       });
     };
@@ -116,15 +130,41 @@ export default {
 
     return {
       ...toRefs(state),
+      theDay,
+      toDailyMusic,
     };
   },
 };
 </script>
 
 <style module>
-.personalWrap {
+.personal {
   display: flex;
   flex-direction: column;
   row-gap: 2rem;
+}
+.dateBox {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 4px 0 rgba(120, 120, 120, 0.5);
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.dateBox::after {
+  content: '';
+  display: block;
+  width: 0;
+  padding-bottom: 100%;
+}
+.date {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  font-weight: bold;
+  letter-spacing: 10px;
+  color: rgb(236, 65, 65);
 }
 </style>

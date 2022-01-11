@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.card">
+  <div>
     <slot></slot>
     <div :class="$style.title">{{ title }}</div>
   </div>
@@ -17,12 +17,8 @@ export default {
 </script>
 
 <style module>
-.card {
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--gap-sm);
-}
 .title {
+  margin-top: 10px;
   cursor: pointer;
 }
 </style>

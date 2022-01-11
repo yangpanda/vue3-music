@@ -50,6 +50,11 @@ const routes = [
             name: 'History',
             component: () => import('@/views/home/layout/play-history/index.vue'),
           },
+	  {
+	    path: '/daily-music',
+	    name: 'DailyMusic',
+            component: () => import('@/views/home/layout/daily-music/index.vue'),
+	  },
           {
             path: '/subscription',
             name: 'Subscription',

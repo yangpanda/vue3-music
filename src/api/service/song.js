@@ -17,3 +17,10 @@ export const getLyric = (id) => request.get(`/lyric?id=${id}`);
 export const getTopSong = (params) => request.get(`/top/song`, { params });
 
 export const getSimi = (id) => request.get(`/simi/song?id=${id}`);
+
+export const getRecommendSongs = async () => {
+  const res = await request.get('/recommend/songs')
+  if (res.code === 200) {
+    return res.data.dailySongs
+  }
+}

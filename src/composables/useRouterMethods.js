@@ -53,6 +53,11 @@ export default function useRouterMethods() {
       },
     });
   };
+  const toDailyMusic = () => {
+    router.push({
+      name: 'DailyMusic',
+    })
+  }
 
   return {
     toHome,
@@ -62,5 +67,6 @@ export default function useRouterMethods() {
     toArtistDetail,
     toSearch,
     toMvDetail,
+    toDailyMusic,
   };
 }
