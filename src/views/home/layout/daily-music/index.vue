@@ -14,8 +14,8 @@
 
 <script>
 export default {
-  name: 'DailyMusic'
-}
+  name: 'DailyMusic',
+};
 </script>
 
 <script setup>
@@ -29,19 +29,19 @@ import { useStore } from 'vuex';
 const songs = ref([]);
 
 const store = useStore();
-const loginStatus = computed(() => store.state.user.loginStatus)
+const loginStatus = computed(() => store.state.user.loginStatus);
 
 const getDailySongs = () => {
-  api.song.getRecommendSongs().then(res => {
-    songs.value = res.map(item => new Song(item))
-  })
-}
+  api.song.getRecommendSongs().then((res) => {
+    songs.value = res.map((item) => new Song(item));
+  });
+};
 
 onMounted(() => {
   if (loginStatus.value) {
-    getDailySongs()
+    getDailySongs();
   }
-})
+});
 </script>
 
 <style module>
