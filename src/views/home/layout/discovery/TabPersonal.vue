@@ -1,31 +1,24 @@
 <template>
   <div :class="$style.personal">
     <the-swiper :banners="banners" />
-    <the-section title="推荐歌单" cols="5" :page="{ name: 'Playlist' }">
+    <the-section title="推荐歌单" cols="5" :to="{ name: 'Playlist' }">
       <template #cards>
-	<!-- 每日歌曲推荐 -->
-	<div :class="$style.daily" @click="toDailyMusic">
-	  <div :class="$style.dateBox">
-	    <span :class="$style.date" v-text="theDay"></span>
-	  </div>
-	  <div>每日歌曲推荐</div>
-	</div>
-        <card-playlist v-for="(item, index) in playLists" :key="item.id" :playList="item" />
+        <!-- 每日歌曲推荐 -->
+        <div :class="$style.daily" @click="toDailyMusic">
+          <div :class="$style.dateBox">
+            <span :class="$style.date" v-text="theDay"></span>
+          </div>
+          <div>每日歌曲推荐</div>
+        </div>
+        <card-playlist v-for="item in playLists" :key="item.id" :playList="item" />
       </template>
     </the-section>
-    <the-section title="独家放送" cols="3">
-      <template #cards>
-        <card-base v-for="item in privateContents" :title="item.name">
-          <the-image :src="item.sPicUrl" ratio="16 / 9" round="middle" />
-        </card-base>
-      </template>
-    </the-section>
-    <the-section title="最新音乐" cols="3" :page="{ name: 'Newsong' }">
+    <the-section title="最新音乐" cols="3" :to="{ name: 'Newsong' }">
       <template #cards>
         <card-song v-for="song in songs" :song="song"></card-song>
       </template>
     </the-section>
-    <the-section title="推荐MV" cols="3">
+    <the-section title="推荐MV" cols="3" :to="{ name: 'Mv' }">
       <template #cards>
         <card-mv v-for="(item, index) in mvs" :key="index" :mv="item" />
       </template>
@@ -65,8 +58,8 @@ export default {
     });
 
     const theDay = computed(() => {
-      return new Date().getDate()
-    })
+      return new Date().getDate();
+    });
 
     const { toDailyMusic } = useRouterMethods();
 
@@ -162,7 +155,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 100px;
+  font-size: 80px;
   font-weight: bold;
   letter-spacing: 10px;
   color: rgb(236, 65, 65);

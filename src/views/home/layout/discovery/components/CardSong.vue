@@ -2,14 +2,7 @@
   <div :class="$style.cardSong">
     <div :class="$style.songCoverBox">
       <the-image :src="song.al.picUrl + '?param=50y50'" size="50" round="normal" />
-      <svg-button
-        :class="$style.btnPlay"
-        name="play-triangle"
-        color="#ec4141"
-        box
-        :triangle="true"
-        @click="playSong(song)"
-      />
+      <the-icon :class="$style.btnPlay" name="play-triangle" color="#ec4141" @click="playSong(song)" />
     </div>
     <div :class="$style.songInfoBox">
       <div class="cursor-pointer ellipsis">{{ song.name }}</div>

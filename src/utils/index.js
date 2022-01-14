@@ -8,7 +8,7 @@ export function formatNumber(num) {
   return ret;
 }
 
-function addZero(num) {
+export function addZero(num) {
   let ret = num;
   if (String(num).length === 1) {
     ret = '0' + num;

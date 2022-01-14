@@ -21,3 +21,5 @@ export const getMvDetail = (id) => {
 };
 
 export const getTop = (params) => request.get(`/top/mv`, { params });
+
+export const getAll = (params) => request.get('/mv/all', { params });

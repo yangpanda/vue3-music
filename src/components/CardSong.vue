@@ -2,14 +2,7 @@
   <div class="card-wrapper">
     <div class="relative">
       <the-image :src="song.al.picUrl + '?param=50y50'" size="50" round="normal" />
-      <svg-button
-        class="play-btn"
-        name="play-triangle"
-        color="#ec4141"
-        box
-        :triangle="true"
-        @click="play(song)"
-      />
+      <the-icon class="play-btn" name="play-triangle" color="#ec4141" @click="play(song)" />
     </div>
     <div class="info-wrapper">
       <div class="title">{{ song.name }}</div>

@@ -82,7 +82,7 @@ export default {
             RouterLink,
             {
               to: {
-                name: 'Mv',
+                name: 'MvRecommend',
               },
             },
             { default: () => 'MV' },

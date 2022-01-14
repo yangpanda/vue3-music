@@ -17,7 +17,7 @@
         <div :class="[$style.Index]">{{ index + 1 }}</div>
         <div :class="[$style.coverBox, 'cursor-pointer']" @click="play(item)">
           <the-image :src="item.album.picUrl + '?param=160y160'" size="60" round="normal" />
-          <svg-button :class="$style.btnPlay" name="play-triangle" box triangle color="#ec4141" />
+          <the-icon :class="$style.btnPlay" name="play-triangle" color="#ec4141" />
         </div>
         <div class="ellipsis">{{ item.name }}</div>
         <div class="ellipsis">

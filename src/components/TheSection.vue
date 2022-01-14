@@ -1,12 +1,13 @@
 <template>
-  <section :class="$style.section">
+  <section>
     <div :class="$style.header">
-      <div :class="$style.titleBox" @click="toPage">
+      <the-link :class="$style.titleBox" :to="to">
         <div class="text-lg cursor-pointer" :class="$style.title">{{ title }}</div>
         <the-icon name="arrow-right" size="14" />
-      </div>
+      </the-link>
       <slot name="nav"></slot>
     </div>
+    <slot></slot>
     <div
       :class="[
         $style.content,
@@ -32,36 +33,30 @@ export default {
 </script>
 
 <script setup>
-import { useRouter } from 'vue-router';
-
 const props = defineProps({
   title: String,
   cols: [Number, String],
-  page: {},
+  to: {
+    type: [Object, String],
+    default: {},
+  },
 });
-
-const router = useRouter();
-
-const toPage = () => {
-  router.push(props.page);
-};
 </script>
 
 <style module>
-.section {
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--gap-lg);
-}
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 .titleBox {
   display: flex;
   align-items: center;
-  column-gap: var(--gap-sm);
+  color: #424242;
+}
+.titleBox > :first-child {
+  margin-right: 6px;
 }
 .content {
   display: grid;

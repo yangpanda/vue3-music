@@ -50,11 +50,11 @@ const routes = [
             name: 'History',
             component: () => import('@/views/home/layout/play-history/index.vue'),
           },
-	  {
-	    path: '/daily-music',
-	    name: 'DailyMusic',
+          {
+            path: '/daily-music',
+            name: 'DailyMusic',
             component: () => import('@/views/home/layout/daily-music/index.vue'),
-	  },
+          },
           {
             path: '/subscription',
             name: 'Subscription',
@@ -79,9 +79,19 @@ const routes = [
             component: () => import('@/views/home/layout/artist-detail/index.vue'),
           },
           {
+            path: '/mv-recommend',
+            name: 'MvRecommend',
+            component: () => import('@/views/home/layout/mv-recommend/index.vue'),
+          },
+          {
             path: '/mv',
             name: 'Mv',
             component: () => import('@/views/home/layout/mv-page/index.vue'),
+          },
+          {
+            path: '/mv-rank',
+            name: 'MvRank',
+            component: () => import('@/views/home/layout/mv-rank/index.vue'),
           },
           {
             path: '/search',

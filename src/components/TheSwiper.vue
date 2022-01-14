@@ -23,7 +23,7 @@
           setTimer();
         "
       >
-        <svg-button name="arrow-left" color="#d8d8d8" :size="30" />
+        <the-icon name="arrow-left" color="#d8d8d8" :size="30" />
       </div>
       <div
         :class="[$style.btn, $style.btnNext]"
@@ -33,7 +33,7 @@
           setTimer();
         "
       >
-        <svg-button name="arrow-right" color="#d8d8d8" :size="30" />
+        <the-icon name="arrow-right" color="#d8d8d8" :size="30" />
       </div>
     </div>
     <div :class="$style.pointerBox">
