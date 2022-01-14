@@ -23,6 +23,18 @@ export const getPlaylist = (params) => {
 export const getPlaylistDetail = (id) => request.get(`/playlist/detail?id=${id}`);
 export const getSongs = (id) => request.get(`/playlist/track/all?id=${id}`);
 
+export const getDetail = async (id) => {
+  const res = await request.get('/playlist/detail', {
+    params: {
+      id,
+    },
+  });
+
+  if (res.code === 200) {
+    return res.playlist;
+  }
+};
+
 /**
  * @method 获取每日推荐歌曲（需登录）
  */

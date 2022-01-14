@@ -3,11 +3,13 @@
     <div :class="$style.imageBox">
       <the-image :src="picSizeUrl(playList.imgUrl, 400)" round="large" />
       <div :class="$style.iconBox">
-	<the-icon
-	  :class="$style.playIcon"
-	  name="play-triangle"
-	  color="#ec4141" size="28"
-	  @click.stop="playAll(playList.id)" />
+        <the-icon
+          :class="$style.playIcon"
+          name="play-triangle"
+          color="#ec4141"
+          size="28"
+          @click.stop="playAll"
+        />
       </div>
     </div>
   </card-base>
@@ -23,12 +25,40 @@ export default {
 import CardBase from '@/components/CardBase.vue';
 import useRouterMethods from '@/composables/useRouterMethods.js';
 import { picSizeUrl } from '@/utils/picture.js';
+import api from '@/api/index.js';
+import { chunk } from 'lodash';
+import { useStore } from 'vuex';
+import Song from '@/model/Song.js';
 
 const props = defineProps({
-  playList: {}
-})
+  playList: {},
+});
 
 const { toPlaylistDetail } = useRouterMethods();
+
+const store = useStore();
+const setPlayList = (list) => store.commit('player/setPlayList', list);
+const play = (list) => store.commit('player/play', list);
+
+const playAll = async () => {
+  const detail = await api.playlist.getDetail(props.playList.id);
+  const trackIds = detail.trackIds.map((item) => item.id);
+  const trackIdChunks = chunk(trackIds, 300);
+  const songs = [];
+
+  const getSongsDetail = async (i = 0) => {
+    const res = await api.song.getDetail(trackIdChunks[i].join(','));
+    songs.push(...res.map((item) => new Song(item)));
+
+    if (++i < trackIdChunks.length) {
+      await getSongsDetail(i);
+    }
+  };
+
+  await getSongsDetail();
+  setPlayList(songs);
+  play(0);
+};
 </script>
 
 <style module>
@@ -46,7 +76,7 @@ const { toPlaylistDetail } = useRouterMethods();
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, .6);
+  background-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0 2px 8px 0px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;

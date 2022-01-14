@@ -18,6 +18,10 @@ const player = {
     playingPageDisplayStatus: false,
   }),
   mutations: {
+    play(state, index) {
+      state.currentIndex = index;
+      state.playing = true;
+    },
     togglePlayMode(state) {
       if (state.playMode != PlayMode.random) {
         state.playMode += 1;
