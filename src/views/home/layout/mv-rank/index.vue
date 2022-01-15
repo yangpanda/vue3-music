@@ -75,6 +75,8 @@ watch(
 .container {
   max-width: 1100px;
   margin: 0 auto;
+  padding: 20px;
+  padding-top: 0;
 }
 .header {
   display: flex;
@@ -108,7 +110,6 @@ watch(
 .rank {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 20px;
 }
 .rankItem:nth-child(even) {
   padding-left: 10px;

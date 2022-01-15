@@ -1,23 +1,23 @@
 <template>
-  <div :class="$style.topSong">
+  <div :class="$style.container">
     <div :class="$style.nav">
-      <div :class="$style.navLeft">
+      <div :class="$style.left">
         <span
-          :class="[$style.navItem, type == value ? $style.active : '']"
+          :class="state.type === value ? $style.active : ''"
           v-for="(value, name) in Object.fromEntries(typeMap)"
-          @click="type = value"
+          @click="state.type = value"
         >
           {{ name }}
         </span>
       </div>
-      <n-button>播放全部</n-button>
+      <n-button @click="() => playTheList(state.songs)">播放全部</n-button>
     </div>
     <div>
-      <div :class="$style.songItem" v-for="(item, index) in songs" :key="item.id">
+      <div :class="$style.songItem" v-for="(item, index) in state.songs" :key="item.id">
         <div :class="[$style.Index]">{{ index + 1 }}</div>
-        <div :class="[$style.coverBox, 'cursor-pointer']" @click="play(item)">
+        <div :class="[$style.coverBox, 'cursor-pointer']">
           <the-image :src="item.album.picUrl + '?param=160y160'" size="60" round="normal" />
-          <the-icon :class="$style.btnPlay" name="play-triangle" color="#ec4141" />
+          <bg-play :class="$style.btn" @click="playSingleSong(item)"></bg-play>
         </div>
         <div class="ellipsis">{{ item.name }}</div>
         <div class="ellipsis">
@@ -40,11 +40,18 @@
 </template>
 
 <script>
-import { NButton } from 'naive-ui';
-import { ref, watchEffect } from '@vue/runtime-core';
+export default {
+  name: 'TopSong',
+};
+</script>
+
+<script setup>
+import { onMounted, watch, reactive } from 'vue';
 import api from '@/api/index.js';
-import { mapMutations } from '@/lib/lib.js';
 import Song from '@/model/Song.js';
+import { useStore } from 'vuex';
+import BgPlay from '@/components/button/BgPlay.vue';
+import { NButton } from 'naive-ui';
 
 const typeMap = new Map([
   ['全部', 0],
@@ -54,47 +61,34 @@ const typeMap = new Map([
   ['韩国', 16],
 ]);
 
-export default {
-  name: 'TopSong',
-  components: {
-    NButton,
-  },
-  setup() {
-    const type = ref(0);
-    const songs = ref([]);
-    const { setCurrentSong, insertSong, setPlayingState } = mapMutations();
+const state = reactive({
+  type: 0,
+  songs: [],
+});
 
-    const getTopSong = async (params) => {
-      const res = await api.song.getTopSong(params);
-      if (res.code === 200) {
-        songs.value = res.data.map((item) => new Song(item));
-      }
-    };
+const store = useStore();
+const playSingleSong = (song) => store.commit('player/playSingleSong', song);
+const playTheList = (list) => store.commit('player/playTheList', list);
 
-    function play(song) {
-      setCurrentSong(song);
-      insertSong(song);
-      setPlayingState(true);
-    }
-
-    watchEffect(() => {
-      getTopSong({
-        type: type.value,
-      });
-    });
-
-    return {
-      type,
-      songs,
-      typeMap,
-      play,
-    };
-  },
+const getTopSong = async () => {
+  const res = await api.song.getTopSong({
+    type: state.type,
+  });
+  if (res.code === 200) {
+    state.songs = res.data.map((item) => new Song(item));
+  }
 };
+
+onMounted(() => getTopSong());
+
+watch(
+  () => state.type,
+  () => getTopSong(),
+);
 </script>
 
 <style module>
-.topSong {
+.container {
   width: 100%;
 }
 .nav {
@@ -103,18 +97,20 @@ export default {
   align-items: center;
   margin-bottom: 20px;
 }
-.navLeft {
-  display: flex;
-  column-gap: var(--gap-lg);
-}
-.navItem {
+.left > * {
   cursor: pointer;
 }
-.navItem.active {
+.left > *:hover {
   color: #18a058;
 }
-.navItem:hover {
+.left > *.active {
   color: #18a058;
+}
+.left > :not(:first-child)::before {
+  content: '';
+  height: 0.8em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0 10px;
 }
 .songItem {
   display: grid;
@@ -134,11 +130,11 @@ export default {
   position: relative;
   flex-shrink: 0;
 }
-.btnPlay {
-  position: absolute;
+.btn {
+  position: absolute !important;
   top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translate(-50%, -50%);
 }
 .duration {
   text-align: end;

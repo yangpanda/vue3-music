@@ -1,68 +1,69 @@
 <template>
-  <div :class="$style.cardSong">
-    <div :class="$style.songCoverBox">
+  <div :class="$style.container">
+    <div :class="$style.cover">
       <the-image :src="song.al.picUrl + '?param=50y50'" size="50" round="normal" />
-      <the-icon :class="$style.btnPlay" name="play-triangle" color="#ec4141" @click="playSong(song)" />
+      <bg-play :class="$style.btn" @click="playSingleSong(new Song(song))"></bg-play>
     </div>
-    <div :class="$style.songInfoBox">
-      <div class="cursor-pointer ellipsis">{{ song.name }}</div>
-      <div :class="[$style.songArtistBox, 'text-sm ellipsis']">
-        <a class="cursor-pointer" v-for="artist in song.ar" @click="toArtistDetail(artist.id)">{{
+    <div :class="$style.info">
+      <div class="ellipsis">{{ song.name }}</div>
+      <div :class="[$style.artist, 'ellipsis']">
+        <the-link v-for="artist in song.ar" :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{
           artist.name
-        }}</a>
+        }}</the-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from '@/lib/lib';
-
 export default {
-  props: {
-    song: {},
-  },
-  setup() {
-    const { insertSong, setCurrentSong } = mapMutations();
-
-    const playSong = (song) => {
-      insertSong(song);
-      setCurrentSong(song);
-    };
-
-    return {
-      playSong,
-    };
-  },
+  name: 'CardSong',
 };
 </script>
 
+<script setup>
+import { useStore } from 'vuex';
+import Song from '@/model/Song.js';
+import BgPlay from '@/components/button/BgPlay.vue';
+
+const props = defineProps({
+  song: null,
+});
+
+const store = useStore();
+const playSingleSong = (song) => store.commit('player/playSingleSong', song);
+</script>
+
 <style module>
-.cardSong {
+.container {
   display: flex;
   align-items: center;
-  column-gap: var(--gap-sm);
 }
-.songCoverBox {
+.cover {
+  margin-right: 10px;
   position: relative;
+  cursor: pointer;
 }
-.btnPlay {
-  position: absolute;
-  left: 50%;
+.btn {
+  position: absolute !important;
   top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
-.songInfoBox {
+.info {
   width: 0;
   height: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  row-gap: 0.4rem;
 }
-.songArtistBox {
-  display: flex;
-  column-gap: var(--gap-sm);
+.artist {
+  font-size: 12px;
+}
+.artist > :not(:first-child)::before {
+  content: '';
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0 10px;
 }
 </style>

@@ -22,6 +22,16 @@ const player = {
       state.currentIndex = index;
       state.playing = true;
     },
+    playSingleSong(state, song) {
+      state.playList.splice(state.currentIndex + 1, 0, song);
+      state.currentIndex++;
+      state.playing = true;
+    },
+    playTheList(state, list) {
+      state.playList = list;
+      state.currentIndex = 0;
+      state.playing = true;
+    },
     togglePlayMode(state) {
       if (state.playMode != PlayMode.random) {
         state.playMode += 1;
