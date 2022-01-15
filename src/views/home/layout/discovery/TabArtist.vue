@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.tabArtist">
+  <div>
     <div :class="$style.header">
       <nav :class="$style.nav">
         <span :class="$style.navTitle">语种：</span>
@@ -142,19 +142,16 @@ export default {
 </script>
 
 <style module>
-.tabArtist {
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--gap-lg);
-}
 .header {
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--gap-sm);
+  margin-bottom: 45px;
 }
 .nav {
   display: flex;
-  column-gap: var(--gap-sm);
+}
+.nav:not(:first-child) {
+  margin-top: 10px;
+  height: 2em;
+  line-height: 2em;
 }
 .navTitle {
   white-space: nowrap;

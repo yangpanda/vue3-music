@@ -182,11 +182,14 @@ export default {
 .btnNext {
   right: 0;
 }
-
 .pointerBox {
-  display: flex;
-  justify-content: center;
-  column-gap: 15px;
+  text-align: center;
+}
+.pointerBox > * {
+  display: inline-block;
+}
+.pointerBox > :not(:first-child) {
+  margin-left: 15px;
 }
 .pointer {
   cursor: pointer;

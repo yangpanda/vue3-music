@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.container">
+  <div>
     <div ref="backTopPos" :class="$style.nav">
       <n-popover
         display-directive="show"
@@ -32,7 +32,7 @@
           </div>
         </div>
       </n-popover>
-      <div :class="$style.navRight">
+      <div>
         <span
           :class="[$style.hottag, tag.name == category.name ? $style.active : '']"
           v-for="tag in tags"
@@ -166,15 +166,11 @@ export default {
 </script>
 
 <style module>
-.container {
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--gap-lg);
-}
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 }
 .categorylist {
   display: flex;
@@ -191,12 +187,15 @@ export default {
   row-gap: 10px;
   column-gap: 10px;
 }
-.navRight {
-  display: flex;
-  column-gap: 20px;
-}
 .hottag {
   cursor: pointer;
+  display: inline-block;
+  text-align: right;
+}
+.hottag:not(:first-child)::before {
+  content: '';
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0 10px;
 }
 .hottag.active {
   color: #18a058;

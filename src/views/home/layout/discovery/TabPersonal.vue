@@ -132,10 +132,8 @@ export default {
 </script>
 
 <style module>
-.personal {
-  display: flex;
-  flex-direction: column;
-  row-gap: 2rem;
+.personal > :not(:first-child) {
+  margin-top: 20px;
 }
 .dateBox {
   display: flex;
