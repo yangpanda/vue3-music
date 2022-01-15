@@ -38,6 +38,7 @@ import Playlist from '@/model/Playlist';
 import api from '@/api/index.js';
 import useRouterMethods from '@/composables/useRouterMethods.js';
 import { onMounted, reactive, toRefs, computed } from 'vue';
+import Song from '@/model/Song';
 
 export default {
   components: {
@@ -99,7 +100,7 @@ export default {
         .then((songsId) => {
           api.song.getSongDetail(songsId.join(',')).then((response) => {
             if (response.code === 200) {
-              state.songs = response.songs;
+              state.songs = response.songs.map((item) => new Song(item));
             }
           });
         });

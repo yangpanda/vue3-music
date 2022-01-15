@@ -1,13 +1,13 @@
 <template>
   <div :class="$style.container">
     <div :class="$style.cover">
-      <the-image :src="song.al.picUrl + '?param=50y50'" size="50" round="normal" />
-      <bg-play :class="$style.btn" @click="playSingleSong(new Song(song))"></bg-play>
+      <the-image :src="song.image + '?param=50y50'" size="50" round="normal" />
+      <bg-play :class="$style.btn" @click="playSingleSong"></bg-play>
     </div>
     <div :class="$style.info">
       <div class="ellipsis">{{ song.name }}</div>
       <div :class="[$style.artist, 'ellipsis']">
-        <the-link v-for="artist in song.ar" :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{
+        <the-link v-for="artist in song.singer" :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{
           artist.name
         }}</the-link>
       </div>
@@ -23,7 +23,6 @@ export default {
 
 <script setup>
 import { useStore } from 'vuex';
-import Song from '@/model/Song.js';
 import BgPlay from '@/components/button/BgPlay.vue';
 
 const props = defineProps({
@@ -31,7 +30,7 @@ const props = defineProps({
 });
 
 const store = useStore();
-const playSingleSong = (song) => store.commit('player/playSingleSong', song);
+const playSingleSong = () => store.commit('player/playSingleSong', props.song);
 </script>
 
 <style module>
