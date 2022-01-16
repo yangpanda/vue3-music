@@ -14,7 +14,7 @@
               <div>{{ playlist.creatorName }}</div>
             </div>
             <div :class="[$style.layout]">
-              <n-button>播放全部</n-button>
+              <n-button @click="playTheList">播放全部</n-button>
             </div>
             <div :class="[$style.layout]">
               <div>标签:</div>
@@ -77,6 +77,7 @@ import { NTag, NSpin, NTabs, NTabPane, NResult, NButton, NBackTop } from 'naive-
 import SongTableList from '@/components/SongTableList.vue';
 import TheComment from './TheComments.vue';
 import { picSizeUrl } from '@/utils/picture.js';
+import { useStore } from 'vuex';
 
 export default {
   name: 'PlaylistDetail',
@@ -128,15 +129,6 @@ export default {
       }
     };
 
-    onMounted(() => {
-      getPlaylistDetail();
-    });
-
-    watch(
-      () => state.songsIdChunks,
-      () => getPlaylistSongs(state.songsIdChunks[0].join(',')),
-    );
-
     const loadMore = () => {
       if (state.loadmore < state.songsIdChunks.length) {
         getPlaylistSongs(state.songsIdChunks[state.loadmore].join(','));
@@ -146,10 +138,23 @@ export default {
       }
     };
 
+    const store = useStore();
+    const playTheList = () => store.commit('player/playTheList', state.songs);
+
+    onMounted(() => {
+      getPlaylistDetail();
+    });
+
+    watch(
+      () => state.songsIdChunks,
+      () => getPlaylistSongs(state.songsIdChunks[0].join(',')),
+    );
+
     return {
       container,
       picSizeUrl,
       loadMore,
+      playTheList,
       ...toRefs(state),
     };
   },

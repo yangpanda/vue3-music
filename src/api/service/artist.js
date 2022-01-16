@@ -9,3 +9,5 @@ export const getSimi = (id) => request.get('/simi/artist', { params: { id } });
 export const getAlbum = (params) => request.get('/artist/album', { params: params });
 
 export const getMv = (id) => request.get('/artist/mv', { params: { id } });
+
+export const getBrief = (id) => request.get('/artists/', { params: { id } });
