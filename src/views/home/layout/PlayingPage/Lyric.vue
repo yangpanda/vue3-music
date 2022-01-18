@@ -57,7 +57,7 @@ export default {
         if (currentSong.value) {
           state.albumName = currentSong.value.album.name;
           state.songName = currentSong.value.name;
-          state.artists = currentSong.value.singer;
+          state.artists = currentSong.value.artists;
           state.albumId = currentSong.value.album.id;
 
           api.song.getLyric(currentSong.value.id).then((response) => {

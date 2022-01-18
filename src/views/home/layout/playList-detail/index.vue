@@ -3,28 +3,28 @@
     <the-scrollbar>
       <div :class="$style.wrap">
         <div :class="$style.header">
-          <the-image class :src="playlist.imgUrl" size="180" round="large" />
+          <the-image class :src="state.playList.picUrl" size="180" round="large" />
           <div :class="$style.info">
             <div :class="[$style.title, $style.layout]">
               <n-tag size="small">歌单</n-tag>
-              <div class="text-lg">{{ playlist.name }}</div>
+              <div>{{ state.playList.name }}</div>
             </div>
             <div :class="[$style.layout]">
-              <the-image :src="playlist.avatarUrl" round="full" size="26" />
-              <div>{{ playlist.creatorName }}</div>
+              <the-image :src="state.playList.creator.avatarUrl" round="full" size="26" />
+              <div>{{ state.playList.creator.nickname }}</div>
             </div>
             <div :class="[$style.layout]">
-              <n-button @click="playTheList">播放全部</n-button>
+              <n-button @click="() => playTheList(state.songs)">播放全部</n-button>
             </div>
             <div :class="[$style.layout]">
               <div>标签:</div>
               <div>
-                <span v-for="tag in playlist.tags">{{ tag }}</span>
+                <span v-for="tag in state.playList.tags">{{ tag }}</span>
               </div>
             </div>
             <div :class="$style.description">
               <div>简介:</div>
-              <div>{{ playlist.description }}</div>
+              <div>{{ state.playList.description }}</div>
             </div>
           </div>
         </div>
@@ -33,10 +33,10 @@
             <song-table-list
               v-infinite-scroll="loadMore"
               infinite-scroll-distance="10"
-              :songs="songs"
+              :songs="state.songs"
             ></song-table-list>
             <div :class="$style.loading">
-              <n-spin v-if="loading" />
+              <n-spin v-if="state.loading" />
               <span v-else>没有更多了......</span>
             </div>
           </n-tab-pane>
@@ -45,15 +45,15 @@
           </n-tab-pane>
           <n-tab-pane name="subsciber" tab="收藏者">
             <n-result
-              v-if="subscribers.length === 0"
+              v-if="state.subscribers.length === 0"
               status="info"
               title="貌似，啥也没有！"
               description="生活总归带点荒谬"
               size="huge"
             ></n-result>
             <div v-else :class="$style.subscriberBox">
-              <div :class="$style.cardSubscriber" v-for="(item, index) in subscribers" :key="index">
-                <the-image round="full" size="88" :src="picSizeUrl(item.avatarUrl, 100)" />
+              <div :class="$style.cardSubscriber" v-for="item in state.subscribers" :key="item.id">
+                <the-image round="full" size="88" :src="item.avatarUrl" />
                 <div :class="$style.subscriberInfo">
                   <div class="ellipsis">{{ item.nickname }}</div>
                   <div class="ellipsis">{{ item.signature }}</div>
@@ -68,97 +68,76 @@
 </template>
 
 <script>
-import api from '@/api/index.js';
-import Playlist from '@/model/Playlist';
+export default {
+  name: 'PlayListDetail',
+};
+</script>
+
+<script setup>
 import Song from '@/model/Song';
+import PlayList from '@/model/PlayList';
+import api from '@/api/index.js';
 import { chunk } from 'lodash';
-import { ref, reactive, watch, onMounted, toRefs } from 'vue';
-import { NTag, NSpin, NTabs, NTabPane, NResult, NButton, NBackTop } from 'naive-ui';
+import { reactive, watch, onBeforeMount } from 'vue';
+import { NTag, NSpin, NTabs, NTabPane, NResult, NButton } from 'naive-ui';
 import SongTableList from '@/components/SongTableList.vue';
 import TheComment from './TheComments.vue';
 import { picSizeUrl } from '@/utils/picture.js';
-import { useStore } from 'vuex';
+import { useMapMutations } from '@/composables';
+import { User } from '@/model/User';
 
-export default {
-  name: 'PlaylistDetail',
-  components: {
-    NTag,
-    NSpin,
-    NTabs,
-    NTabPane,
-    NResult,
-    NButton,
-    NBackTop,
-    SongTableList,
-    TheComment,
-  },
-  props: {
-    id: Number | String,
-  },
-  setup({ id }) {
-    const container = ref(null);
-    const showSpin = ref(true);
-    const state = reactive({
-      loadmore: 1,
-      playlist: {},
-      songs: [],
-      songsIdChunks: [],
-      loading: true,
-      subscribers: [],
-    });
-    const chunkSize = 100;
+const props = defineProps({
+  id: '',
+});
 
-    const getPlaylistDetail = async () => {
-      const res = await api.playlist.getPlaylistDetail(id);
+const state = reactive({
+  playList: new PlayList(),
+  loading: true,
+  loadmore: 1,
+  songs: [],
+  songsIdChunks: [],
+  subscribers: [],
+});
 
-      if (res.code === 200) {
-        state.playlist = new Playlist(res.playlist);
-        state.subscribers = res.playlist.subscribers;
-        const songsId = state.playlist.trackIds.map((item) => item.id);
-        state.songsIdChunks = chunk(songsId, chunkSize);
-      }
-    };
+const { playTheList } = useMapMutations('player');
 
-    const getPlaylistSongs = async (ids) => {
-      const res = await api.song.getSongDetail(ids);
-      if (res.code === 200) {
-        state.songs.push(...res.songs.map((item) => new Song(item)));
-        if (state.loadmore === state.songsIdChunks.length) {
-          state.loading = false;
-        }
-      }
-    };
+const getPlaylistDetail = async () => {
+  const res = await api.playlist.getPlaylistDetail(props.id);
 
-    const loadMore = () => {
-      if (state.loadmore < state.songsIdChunks.length) {
-        getPlaylistSongs(state.songsIdChunks[state.loadmore].join(','));
-        state.loadmore += 1;
-      } else {
-        showSpin.value = false;
-      }
-    };
+  if (res.code === 200) {
+    state.playList = new PlayList(res.playlist);
+    state.subscribers = res.playlist.subscribers.map((item) => new User(item));
 
-    const store = useStore();
-    const playTheList = () => store.commit('player/playTheList', state.songs);
-
-    onMounted(() => {
-      getPlaylistDetail();
-    });
-
-    watch(
-      () => state.songsIdChunks,
-      () => getPlaylistSongs(state.songsIdChunks[0].join(',')),
-    );
-
-    return {
-      container,
-      picSizeUrl,
-      loadMore,
-      playTheList,
-      ...toRefs(state),
-    };
-  },
+    const songsId = res.playlist.trackIds.map((item) => item.id);
+    state.songsIdChunks = chunk(songsId, 100);
+  }
 };
+const getPlaylistSongs = async (ids) => {
+  const res = await api.song.getSongDetail(ids);
+  if (res.code === 200) {
+    state.songs.push(...res.songs.map((item) => new Song(item)));
+    if (state.loadmore === state.songsIdChunks.length) {
+      state.loading = false;
+    }
+  }
+};
+const loadMore = () => {
+  if (state.loadmore < state.songsIdChunks.length) {
+    getPlaylistSongs(state.songsIdChunks[state.loadmore].join(','));
+    state.loadmore += 1;
+  }
+};
+
+onBeforeMount(() => {
+  getPlaylistDetail();
+});
+
+watch(
+  () => state.songsIdChunks,
+  () => {
+    getPlaylistSongs(state.songsIdChunks[0].join(','));
+  },
+);
 </script>
 
 <style module>

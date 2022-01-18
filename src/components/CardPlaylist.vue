@@ -1,7 +1,7 @@
 <template>
   <card-base :title="playList.name" @click="toPlaylistDetail(playList.id)">
     <div :class="$style.imageBox">
-      <the-image :src="picSizeUrl(playList.imgUrl, 400)" round="large" />
+      <the-image :src="playList.picUrl" round="large" />
       <div :class="$style.iconBox">
         <the-icon
           :class="$style.playIcon"
@@ -23,22 +23,17 @@ export default {
 
 <script setup>
 import CardBase from '@/components/CardBase.vue';
-import useRouterMethods from '@/composables/useRouterMethods.js';
-import { picSizeUrl } from '@/utils/picture.js';
 import api from '@/api/index.js';
 import { chunk } from 'lodash';
-import { useStore } from 'vuex';
 import Song from '@/model/Song.js';
+import { useMapMutations, useRouterMethods } from '@/composables';
 
 const props = defineProps({
   playList: {},
 });
 
 const { toPlaylistDetail } = useRouterMethods();
-
-const store = useStore();
-const setPlayList = (list) => store.commit('player/setPlayList', list);
-const play = (list) => store.commit('player/play', list);
+const { setPlayList, play } = useMapMutations('player');
 
 const playAll = async () => {
   const detail = await api.playlist.getDetail(props.playList.id);

@@ -3,7 +3,7 @@
     <the-scrollbar>
       <div :class="$style.content">
         <div :class="$style.infoBox">
-          <the-image size="180" :src="artist.cover + '?param=180y180'" round="large" />
+          <the-image size="180" :src="artist.picUrl" round="large" />
           <div :class="$style.info">
             <div style="font-size: 24px">{{ artist.name }}</div>
             <div :class="$style.infoDetail">
@@ -31,44 +31,35 @@
 </template>
 
 <script>
+export default {
+  name: 'ArtistDetail',
+};
+</script>
+
+<script setup>
 import api from '@/api/index.js';
-import { ref, onMounted } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import Artist from '@/model/Artist.js';
 import { NTabs, NTabPane } from 'naive-ui';
 import AlbumList from './AlbumList.vue';
 import SimilarArtist from './SimilarArtist.vue';
 import MvList from './MvList.vue';
 
-export default {
-  props: {
-    id: [String, Number],
-  },
-  components: {
-    NTabs,
-    NTabPane,
-    AlbumList,
-    SimilarArtist,
-    MvList,
-  },
-  setup({ id }) {
-    const artist = ref(new Artist());
+const props = defineProps({
+  id: '',
+});
+const artist = ref(new Artist());
 
-    const getArtistDetail = async () => {
-      const res = await api.artist.getDetail(id);
-      if (res.code === 200) {
-        artist.value = new Artist(res.data.artist);
-      }
-    };
-
-    onMounted(() => {
-      getArtistDetail();
-    });
-
-    return {
-      artist,
-    };
-  },
+const getArtistDetail = async () => {
+  const res = await api.artist.getDetail(props.id);
+  if (res.code === 200) {
+    artist.value = new Artist(res.data.artist);
+  }
 };
+
+onBeforeMount(() => {
+  getArtistDetail();
+});
 </script>
 
 <style module>

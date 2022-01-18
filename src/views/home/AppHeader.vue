@@ -16,9 +16,7 @@
               <the-icon name="arrow-down" size="14" />
             </div>
           </template>
-          <div class="dropdown">
-            <n-button block @click="logout">退出登录</n-button>
-          </div>
+          <n-button block @click="logout">退出登录</n-button>
         </n-popover>
       </div>
       <a :class="$style.link" href="https://github.com/yangpanda/vue3-pc-netease-music" target="_blank">
@@ -38,19 +36,12 @@ export default {
 import { NButton, NAvatar, NPopover } from 'naive-ui';
 import SearchBar from '@/components/SearchBar.vue';
 import api from '@/api/index.js';
-import { useStore } from 'vuex';
-import useRouterMethods from '@/composables/useRouterMethods.js';
-import { computed, onMounted } from 'vue';
-import Playlist from '@/model/Playlist.js';
+import { onMounted } from 'vue';
+import PlayList from '@/model/PlayList.js';
+import { useMapState, useMapMutations, useRouterMethods } from '@/composables';
 
-const store = useStore();
-const loginStatus = computed(() => store.state.user.loginStatus);
-const profile = computed(() => store.state.user.profile);
-const handleLogout = () => store.commit('user/HANDLE_LOGOUT');
-const handleLogin = (payload) => store.commit('user/HANDLE_LOGIN', payload);
-const setCreatedPlaylists = (playlists) => store.commit('user/SET_CREATED_PLAYLISTS', playlists);
-const setCollectedPlaylists = (playlists) => store.commit('user/SET_COLLECTED_PLAYLISTS', playlists);
-
+const { loginStatus, profile } = useMapState('user');
+const { handleLogout, handleLogin, setCreatedPlayLists, setCollectedPlayLists } = useMapMutations('user');
 const { toHome, toLogin } = useRouterMethods();
 
 const logout = async () => {
@@ -68,9 +59,9 @@ onMounted(async () => {
 
     {
       const res = await api.playlist.getUserPlaylists(profile.value.userId);
-      const playlists = res.playlist.map((item) => new Playlist(item));
-      setCollectedPlaylists(playlists.filter((item) => item.creator.userId != profile.value.userId));
-      setCreatedPlaylists(playlists.filter((item) => item.creator.userId === profile.value.userId));
+      const playlists = res.playlist.map((item) => new PlayList(item));
+      setCollectedPlayLists(playlists.filter((item) => item.creator.userId != profile.value.userId));
+      setCreatedPlayLists(playlists.filter((item) => item.creator.userId === profile.value.userId));
     }
   }
 });
@@ -78,16 +69,20 @@ onMounted(async () => {
 
 <style module>
 .header {
-  display: flex;
+  composes: flexVCenter from '@/styles/mixin.css';
   justify-content: space-between;
-  align-items: center;
-  height: 100%;
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 50px;
   padding: 0 20px;
   background-color: #f5f5f5;
+  border-bottom: 1px solid lightgray;
 }
 .homeBtn {
-  display: flex;
-  align-items: center;
+  composes: flexVCenter from '@/styles/mixin.css';
   font-size: 18px;
   cursor: pointer;
 }
@@ -95,28 +90,23 @@ onMounted(async () => {
   margin-left: 6px;
 }
 .userInfo {
-  display: flex;
-  align-items: center;
+  composes: flexVCenter from '@/styles/mixin.css';
 }
 .userInfo > :first-child {
   margin-right: 6px;
 }
 .userName {
-  display: flex;
-  align-items: center;
+  composes: flexVCenter from '@/styles/mixin.css';
   cursor: pointer;
 }
 .userName > :first-child {
   margin-left: 6px;
 }
 .right {
-  display: flex;
-  align-items: center;
+  composes: flexVCenter from '@/styles/mixin.css';
 }
 .link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  composes: flexVHCenter from '@/styles/mixin.css';
   margin-left: 15px;
 }
 </style>

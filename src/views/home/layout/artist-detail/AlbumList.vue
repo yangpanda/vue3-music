@@ -7,9 +7,9 @@
       </div>
       <song-list title="热门50首" :songs="state.hotSongs"></song-list>
     </div>
-    <div :class="$style.albumItem" v-for="item in state.albums">
-      <the-image :src="item.picUrl + '?param=180y180'" size="180" round="normal" />
-      <song-list :title="item.name" :albumId="item.id"></song-list>
+    <div :class="$style.albumItem" v-for="album in state.albums" :key="album.id">
+      <the-image :src="album.picUrl + '?param=180y180'" size="180" round="normal" />
+      <song-list :title="album.name" :albumId="album.id"></song-list>
     </div>
   </div>
 </template>
@@ -21,40 +21,39 @@ export default {
 </script>
 
 <script setup>
-import api from '@/api/index.js';
-import { onMounted, reactive, ref } from 'vue';
-import Song from '@/model/Song';
 import SongList from './SongList.vue';
+import api from '@/api/index.js';
+import { onBeforeMount, reactive } from 'vue';
+import Song from '@/model/Song';
+import Album from '@/model/Album';
 
 const props = defineProps({
-  id: [Number, String],
+  id: '',
 });
 
 const state = reactive({
   albums: [],
   hotSongs: [],
+  limit: 10,
+  hasMore: false,
+  offset: 0,
 });
-
-const limit = ref(10);
-const hasMore = ref(false);
-const offset = ref(0);
 
 const getAlbums = async () => {
   const res = await api.artist.getAlbum({
     id: props.id,
-    limit: limit.value,
-    offset: offset.value * limit.value,
+    limit: state.limit,
+    offset: state.offset * state.limit,
   });
   if (res.code === 200) {
-    state.albums.push(...res.hotAlbums);
-    hasMore.value = res.more;
-    offset.value++;
+    state.albums.push(...res.hotAlbums.map((item) => new Album(item)));
+    state.hasMore = res.more;
+    state.offset++;
   }
-  console.log(res);
 };
 
 const loadMore = async () => {
-  if (hasMore.value) {
+  if (state.hasMore) {
     getAlbums();
   }
 };
@@ -64,10 +63,9 @@ const getBrief = async () => {
   if (res.code === 200) {
     state.hotSongs = res.hotSongs.map((item) => new Song(item));
   }
-  console.log(res);
 };
 
-onMounted(() => {
+onBeforeMount(() => {
   getAlbums();
   getBrief();
 });

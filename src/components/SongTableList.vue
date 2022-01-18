@@ -9,7 +9,7 @@
     </div>
     <song-table-list-item
       v-for="(item, index) in songs"
-      :key="index"
+      :key="item.id"
       :song="item"
       :index="index"
       @play="onPlay()"
@@ -19,8 +19,7 @@
 
 <script>
 import SongTableListItem from '@/components/SongTableListItem.vue';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { useMapMutations, useMapState } from '../composables';
 
 export default {
   name: 'SongTableList',
@@ -30,11 +29,8 @@ export default {
     },
   },
   setup(props) {
-    const store = useStore();
-    const playList = computed(() => store.state.player.playList);
-
-    const setPlayList = (list) => store.commit('player/setPlayList', list);
-    const setRandomPlayList = () => store.commit('player/setRandomPlayList');
+    const { playList } = useMapState('player');
+    const { setPlayList, setRandomPlayList } = useMapMutations('player');
 
     const onPlay = () => {
       if (!Object.is(playList, props.songs)) {

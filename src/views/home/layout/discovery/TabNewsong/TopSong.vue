@@ -23,7 +23,7 @@
         <div class="ellipsis">
           <the-link
             :class="$style.artistLink"
-            v-for="artist in item.singer"
+            v-for="artist in item.artists"
             :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
             >{{ artist.name }}</the-link
           >

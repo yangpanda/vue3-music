@@ -1,135 +1,120 @@
 <template>
   <div :class="$style.searchbar">
-    <n-input class="searchbar" placeholder="搜索" @click.stop="setListener" @focus="handleFocus"></n-input>
-    <div ref="drop" v-if="focused" :class="[$style.drop, 'shadow']">
+    <n-input :value="state.keyWords" type="text" placeholder="搜索" @focus="handleFocus">
+      <template #suffix><the-icon name="search"></the-icon></template>
+    </n-input>
+    <div ref="dropDownDom" :class="$style.dropDown" v-if="state.showDropDown">
       <n-scrollbar>
-        <n-card title="热搜榜" size="small" content-style="padding: 0;">
+        <div></div>
+        <div :class="$style.hotSearch">
           <div
-            :class="$style.resultItem"
-            v-for="(item, index) in hots"
-            @click="
-              toSearch(item.searchWord);
-              focused = false;
-            "
+            :class="$style.hotSearchItem"
+            v-for="(item, index) in state.hots"
+            @click="() => hadnleToSearch(item.searchWord)"
           >
-            <div :class="$style.resultItemIndex">{{ index + 1 }}</div>
-            <div :class="$style.resultItemRight">
-              <div :class="$style.infoTitle">
-                <n-text strong>{{ item.searchWord }}</n-text>
-                <span class="text-sm">{{ item.score }}</span>
+            <div :class="$style.index">{{ index + 1 }}</div>
+            <div :class="$style.info">
+              <div :class="$style.title">
+                <span>{{ item.searchWord }}</span>
+                <span>{{ item.score }}</span>
               </div>
-              <div :class="['ellipsis']">{{ item.content }}</div>
+              <div :class="$style.des">{{ item.content }}</div>
             </div>
           </div>
-        </n-card>
+        </div>
       </n-scrollbar>
     </div>
   </div>
 </template>
 
 <script>
-import { NScrollbar, NPopover, NText, NInput, NCard } from 'naive-ui';
-import { ref } from 'vue';
+export default {
+  name: 'SearchBar',
+};
+</script>
+
+<script setup>
+import { NScrollbar, NInput } from 'naive-ui';
+import { ref, reactive } from 'vue';
 import api from '../api';
 import useRouterMethods from '../composables/useRouterMethods';
 
-export default {
-  name: 'SearchBar',
-  components: {
-    NScrollbar,
-    NPopover,
-    NText,
-    NInput,
-    NCard,
-  },
-  setup() {
-    const focused = ref(false);
-    const hots = ref([]);
-    const drop = ref(null);
-    const { toSearch } = useRouterMethods();
+const dropDownDom = ref(null);
+const state = reactive({
+  keyWords: '',
+  hots: [],
+  showDropDown: false,
+});
 
-    const setListener = () => {
-      document.addEventListener('click', (e) => {
-        if (drop.value == e.target || drop.value.contains(e.target)) {
-        } else {
-          focused.value = false;
-        }
-      });
-    };
-
-    const handleFocus = () => {
-      api.search.hotDetail().then((res) => {
-        if (res.code === 200) {
-          hots.value = res.data;
-          focused.value = true;
-        }
-      });
-    };
-
-    const handleBlur = () => {
-      if (document.activeElement != drop) {
-        focused.value = false;
-      }
-    };
-
-    return {
-      hots,
-      focused,
-      drop,
-      setListener,
-      handleFocus,
-      handleBlur,
-      toSearch,
-    };
-  },
+const { toSearch } = useRouterMethods();
+const handleFocus = () => {
+  api.search.hotDetail().then((res) => {
+    if (res.code === 200) {
+      state.hots = res.data;
+      state.showDropDown = true;
+    }
+  });
+};
+const handleBlur = () => {
+  state.showDropDown = false;
+};
+const hadnleToSearch = (word) => {
+  state.showDropDown = false;
+  toSearch(word);
 };
 </script>
 
 <style module>
 .searchbar {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 40rem;
+  composes: flexVCenter from '@/styles/mixin.css';
+  width: 400px;
   position: relative;
 }
-.drop {
+.dropDown {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  width: 40rem;
-  height: 36rem;
+  width: 400px;
+  height: 360px;
   border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 1px 26px 6px rgba(0, 0, 0, 0.1);
+}
+.hotSearchItem {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 4em 1fr;
+  align-items: center;
+  padding: 10px 20px 10px 0;
   overflow: hidden;
 }
-.resultItem {
-  display: flex;
-  align-items: center;
-  column-gap: var(--gap-md);
-  padding: 4px 8px 4px 4px;
-  cursor: pointer;
+.hotSearchItem:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
-.resultItem:hover {
-  background-color: rgba(110, 110, 110, 0.1);
-}
-.resultItemIndex {
-  width: 2em;
+.index {
   text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 16px;
 }
-.resultItemIndex:nth-child(-n + 3) {
-  color: red;
+.hotSearchItem:nth-child(-n + 3) .index {
+  color: #c93c3c;
 }
-.resultItemRight {
-  display: flex;
-  flex-direction: column;
-  width: 0;
-  flex-grow: 1;
-  color: #919192;
+.info {
+  overflow: hidden;
 }
-.infoTitle {
-  display: flex;
-  align-items: center;
-  column-gap: var(--gap-md);
+.title {
+  composes: ellipsis from '@/styles/mixin.css';
+  font-weight: bold;
+}
+.title > :last-child {
+  font-size: 12px;
+  margin-left: 20px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.des {
+  composes: ellipsis from '@/styles/mixin.css';
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
 }
 </style>

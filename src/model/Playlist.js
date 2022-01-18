@@ -1,26 +1,32 @@
-class Playlist {
-  constructor(data) {
-    this.id = data ? data.id : '';
-    this.name = data ? data.name : '';
-    this.picUrl = data ? data.picUrl : '';
-    this.playCount = data ? data.playCount : '';
-    this.trackCount = data ? data.trackCount : '';
-    this.coverImgUrl = data ? data.coverImgUrl : '';
-    this.trackIds = data ? data.trackIds : [];
-    this.tags = data ? data.tags : [];
-    this.description = data ? data.description : '';
-    (this.creator = data ? data.creator : {}), (this.subscribed = data ? data.subscribed : null);
-  }
+import { setUser, User } from './User';
+import { picSizeUrl } from '@/utils/picture.js';
 
-  get imgUrl() {
-    return this.picUrl ?? this.coverImgUrl;
-  }
-  get avatarUrl() {
-    return this.creator.avatarUrl;
-  }
-  get creatorName() {
-    return this.creator.nickname;
+export default class PlayList {
+  constructor(data) {
+    this.id = '';
+    this.name = '';
+    this.picUrl = '';
+    this.playCount = 0;
+    this.trackCount = 0;
+    this.tags = [];
+    this.description = '';
+    this.creator = new User();
+
+    if (data) {
+      setPlayList(this, data);
+    }
   }
 }
 
-export default Playlist;
+function setPlayList(playList, data) {
+  playList.id = data.id;
+  playList.name = data.name;
+  playList.picUrl = picSizeUrl(data.picUrl ?? data.coverImgUrl, 180);
+  playList.playCount = data.playCount;
+  playList.trackCount = data.trackCount;
+  playList.tags = data.tags;
+  playList.description = data.description;
+  if (data.creator) {
+    setUser(playList.creator, data.creator);
+  }
+}

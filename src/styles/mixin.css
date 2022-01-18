@@ -1,0 +1,16 @@
+.flexVHCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexVCenter {
+  display: flex;
+  align-items: center;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

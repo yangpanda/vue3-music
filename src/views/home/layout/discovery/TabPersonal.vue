@@ -34,7 +34,7 @@ import CardMv from '@/components/CardMv.vue';
 import CardBase from '@/components/CardBase.vue';
 import CardSong from './components/CardSong.vue';
 
-import Playlist from '@/model/Playlist';
+import PlayList from '@/model/PlayList';
 import api from '@/api/index.js';
 import useRouterMethods from '@/composables/useRouterMethods.js';
 import { onMounted, reactive, toRefs, computed } from 'vue';
@@ -83,7 +83,7 @@ export default {
     const getPlaylists = () => {
       api.playlist.getPersonalized(9).then((response) => {
         if (response.code === 200) {
-          state.playLists = response.result.map((item) => new Playlist(item));
+          state.playLists = response.result.map((item) => new PlayList(item));
         }
       });
     };

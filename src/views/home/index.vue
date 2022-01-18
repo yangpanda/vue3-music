@@ -1,40 +1,27 @@
 <template>
   <n-loading-bar-provider>
-    <div :class="$style.wrap">
-      <div :class="$style.header">
-        <app-header />
-      </div>
+    <div :class="$style.container">
+      <app-header />
       <router-view></router-view>
     </div>
   </n-loading-bar-provider>
 </template>
 
 <script>
-import AppHeader from './AppHeader.vue';
-import { NLoadingBarProvider } from 'naive-ui';
-
 export default {
-  components: {
-    AppHeader,
-    NLoadingBarProvider,
-  },
+  name: 'Home',
 };
 </script>
 
+<script setup>
+import AppHeader from './AppHeader.vue';
+import { NLoadingBarProvider } from 'naive-ui';
+</script>
+
 <style module>
-.wrap {
+.container {
   position: relative;
   z-index: 0;
   height: 100%;
-}
-
-.header {
-  position: absolute;
-  z-index: 10;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 50px;
-  border-bottom: 1px solid lightgray;
 }
 </style>

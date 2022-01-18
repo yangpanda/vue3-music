@@ -4,7 +4,7 @@
     <div :class="[$style.artistBox, 'ellipsis']">
       <span
         :class="[$style.artist, 'cursor-pointer']"
-        v-for="singer in song.singer"
+        v-for="singer in song.artists"
         @click="toArtistDetail(singer.id)"
         >{{ singer.name }}</span
       >
@@ -20,10 +20,8 @@ export default {
 </script>
 <script setup>
 import { computed } from 'vue';
-import useRouterMethods from '../composables/useRouterMethods';
-import { useStore } from 'vuex';
+import { useRouterMethods, useMapState } from '../composables';
 
-const store = useStore();
 const props = defineProps({
   song: {
     type: Object,
@@ -33,7 +31,7 @@ const props = defineProps({
   },
 });
 const { toArtistDetail } = useRouterMethods();
-const currentIndex = computed(() => store.state.player.currentIndex);
+const { currentIndex } = useMapState('player');
 
 const playing = computed(() => props.index == currentIndex.value);
 </script>

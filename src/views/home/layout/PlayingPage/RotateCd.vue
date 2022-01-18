@@ -34,7 +34,7 @@ export default {
     watch(
       () => currentSong.value,
       () => {
-        state.picUrl = picSizeUrl(currentSong.value.image, 300);
+        state.picUrl = picSizeUrl(currentSong.value.picUrl, 300);
       },
     );
 

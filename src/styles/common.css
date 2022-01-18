@@ -65,23 +65,3 @@
 .rounded-full {
   border-radius: 100%;
 }
-
-.grid-cols-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.grid-cols-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.grid-cols-5 {
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.grid-cols-6 {
-  grid-template-columns: repeat(6, 1fr);
-}
-
-.grid-cols-7 {
-  grid-template-columns: repeat(7, 1fr);
-}

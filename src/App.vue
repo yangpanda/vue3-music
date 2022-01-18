@@ -6,14 +6,12 @@
 </template>
 
 <script>
-import TheStatement from './components/TheStatement.vue';
-import { NMessageProvider } from 'naive-ui';
-
 export default {
   name: 'App',
-  components: {
-    TheStatement,
-    NMessageProvider,
-  },
 };
+</script>
+
+<script setup>
+import TheStatement from '@/components/TheStatement.vue';
+import { NMessageProvider } from 'naive-ui';
 </script>

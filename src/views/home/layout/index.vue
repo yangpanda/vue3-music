@@ -4,48 +4,39 @@
     <div :class="$style.top">
       <the-sidebar></the-sidebar>
       <div :class="$style.content">
-        <router-view :key="key"></router-view>
+        <router-view :key="routeKey"></router-view>
       </div>
       <div :class="[$style.playingPage, playingPageDisplayStatus ? $style.active : '']">
         <playing-page></playing-page>
       </div>
     </div>
     <!-- 底部播放器 -->
-    <div :class="$style.player">
-      <the-player />
-    </div>
+    <the-player />
   </div>
 </template>
 
 <script>
+export default {
+  name: 'Layout',
+};
+</script>
+
+<script setup>
 import PlayingPage from './PlayingPage/index.vue';
 import TheSidebar from './TheSidebar.vue';
 import ThePlayer from './ThePlayer.vue';
-import { useStore } from 'vuex';
 import { computed } from 'vue';
+import { useMapState } from '@/composables';
+import { useRoute } from 'vue-router';
 
-export default {
-  components: {
-    PlayingPage,
-    TheSidebar,
-    ThePlayer,
-  },
-  setup() {
-    const store = useStore();
-    const playingPageDisplayStatus = computed(() => store.state.player.playingPageDisplayStatus);
+const { playingPageDisplayStatus } = useMapState('player');
 
-    return {
-      playingPageDisplayStatus,
-    };
-  },
-  computed: {
-    key() {
-      if (!(this.$route.path.indexOf('discovery') != -1)) {
-        return this.$route.path;
-      }
-    },
-  },
-};
+const route = useRoute();
+const routeKey = computed(() => {
+  if (!(route.path.indexOf('discovery') != -1)) {
+    return route.path;
+  }
+});
 </script>
 
 <style module>
@@ -79,13 +70,5 @@ export default {
 }
 .active {
   height: calc(100% - 80px);
-}
-
-.player {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 80px;
-  border-top: 1px solid lightgray;
 }
 </style>

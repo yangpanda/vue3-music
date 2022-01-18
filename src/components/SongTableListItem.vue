@@ -4,15 +4,15 @@
       <img v-if="song.id == currentSong.id" :class="$style.playingGif" :src="playingGif" />
       <span v-else :class="$style.index">{{ formatIndex(index + 1) }}</span>
       <div :class="$style.btn">
-        <svg-icon v-if="!isLiked(song.id)" name="love" size="20" color="#909399" />
-        <svg-icon v-else name="love-selected" size="20" color="#ec4141" />
+        <the-icon v-if="!isLiked(song.id)" name="love" size="20" color="#909399" />
+        <the-icon v-else name="love-selected" size="20" color="#ec4141" />
       </div>
     </div>
     <div :class="[$style.title, 'ellipsis']">{{ song.name }}</div>
     <div :class="['ellipsis', $style.artistBox]">
       <the-link
         :class="$style.artist"
-        v-for="artist in song.singer"
+        v-for="artist in song.artists"
         :key="artist.id"
         :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
       >

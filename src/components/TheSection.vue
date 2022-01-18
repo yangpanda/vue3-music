@@ -1,8 +1,8 @@
 <template>
   <section>
     <div :class="$style.header">
-      <the-link :class="$style.titleBox" :to="to">
-        <div class="text-lg cursor-pointer" :class="$style.title">{{ title }}</div>
+      <the-link :class="$style.title" :to="to">
+        <div class="cursor-pointer">{{ title }}</div>
         <the-icon name="arrow-right" size="14" />
       </the-link>
       <slot name="nav"></slot>
@@ -11,14 +11,12 @@
     <div
       :class="[
         $style.content,
-        {
-          'grid-cols-2': cols == 2,
-          'grid-cols-3': cols == 3,
-          'grid-cols-4': cols == 4,
-          'grid-cols-5': cols == 5,
-          'grid-cols-6': cols == 6,
-          'grid-cols-7': cols == 7,
-        },
+        cols == 2 ? $style.cols2 : '',
+        cols == 3 ? $style.cols3 : '',
+        cols == 4 ? $style.cols4 : '',
+        cols == 5 ? $style.cols5 : '',
+        cols == 6 ? $style.cols6 : '',
+        cols == 7 ? $style.cols7 : '',
       ]"
     >
       <slot name="cards"></slot>
@@ -45,22 +43,37 @@ const props = defineProps({
 
 <style module>
 .header {
-  display: flex;
+  composes: flexVCenter from '@/styles/mixin.css';
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
 }
-.titleBox {
-  display: flex;
-  align-items: center;
+.title {
+  composes: flexVCenter from '@/styles/mixin.css';
   color: #424242;
 }
-.titleBox > :first-child {
+.title > :first-child {
   margin-right: 6px;
+  font-size: 18px;
 }
 .content {
   display: grid;
-  column-gap: var(--gap-md);
-  row-gap: var(--gap-md);
+  column-gap: 20px;
+  row-gap: 20px;
+}
+.cols3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.cols4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.cols5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.cols6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+.cols7 {
+  grid-template-columns: repeat(7, 1fr);
 }
 </style>

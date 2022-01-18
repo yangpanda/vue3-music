@@ -1,40 +1,65 @@
 <template>
+  <song-table-list :songs="state.songs"></song-table-list>
   <div>
-    <song-table-list :songs="songs"></song-table-list>
+    <n-pagination
+      v-model:page="state.page"
+      :page-size="state.limit"
+      :page-count="Math.ceil(state.total / state.limit)"
+      @update:page="search"
+    ></n-pagination>
   </div>
 </template>
 
 <script>
-import api from '@/api/index.js';
-import { ref, watchEffect } from 'vue';
-import SongTableList from '../../../../../components/SongTableList.vue';
-import Song from '@/model/Song.js';
-
 export default {
-  props: {
-    keywords: null,
-  },
-  components: {
-    SongTableList,
-  },
-  setup(props) {
-    const results = ref(null);
-    const songs = ref([]);
-
-    watchEffect(() => {
-      api.search.search(1, props.keywords).then((res) => {
-        if (res.code === 200) {
-          songs.value = res.result.songs.map((item) => new Song(item));
-        }
-      });
-    });
-
-    return {
-      results,
-      songs,
-    };
-  },
+  name: 'TabSong',
 };
 </script>
+<script setup>
+import api from '@/api/index.js';
+import { onMounted, reactive, watch } from 'vue';
+import SongTableList from '@/components/SongTableList.vue';
+import { NPagination } from 'naive-ui';
+import Song from '@/model/Song.js';
 
-<style module></style>
+const props = defineProps({
+  keywords: '',
+});
+const state = reactive({
+  hasMore: false,
+  page: 1,
+  songs: [],
+  limit: 30,
+  total: 0,
+});
+
+const search = async () => {
+  const res = await api.search.search({
+    type: 1,
+    keywords: props.keywords,
+    offset: (state.page - 1) * state.limit,
+  });
+  console.log(res);
+  if (res.code === 200) {
+    state.hasMore = res.result.hasMore;
+    state.total = res.result.songCount;
+    const ids = res.result.songs.map((item) => item.id);
+    api.song.getDetail(ids.join(',')).then((res) => {
+      state.songs = res.map((item) => new Song(item));
+    });
+  }
+};
+
+onMounted(() => {
+  search();
+});
+
+watch(
+  () => props.keywords,
+  () => {
+    state.page = 1;
+    state.hasMore = false;
+    search();
+  },
+);
+</script>

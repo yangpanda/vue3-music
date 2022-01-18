@@ -1,13 +1,13 @@
 <template>
   <div :class="$style.container">
     <div :class="$style.cover">
-      <the-image :src="song.image + '?param=50y50'" size="50" round="normal" />
+      <the-image :src="song.picUrl + '?param=50y50'" size="50" round="normal" />
       <bg-play :class="$style.btn" @click="playSingleSong"></bg-play>
     </div>
     <div :class="$style.info">
       <div class="ellipsis">{{ song.name }}</div>
       <div :class="[$style.artist, 'ellipsis']">
-        <the-link v-for="artist in song.singer" :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{
+        <the-link v-for="artist in song.artists" :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{
           artist.name
         }}</the-link>
       </div>

@@ -13,6 +13,7 @@ const player = {
     playing: false,
     playMode: PlayMode.sequence,
     currentIndex: -1,
+    currentPlayList: null, // id
     playList: [],
     randomPlayList: [],
     playingPageDisplayStatus: false,
@@ -27,9 +28,9 @@ const player = {
       state.currentIndex++;
       state.playing = true;
     },
-    playTheList(state, list) {
+    playTheList(state, list, index = 0) {
       state.playList = list;
-      state.currentIndex = 0;
+      state.currentIndex = index;
       state.playing = true;
     },
     togglePlayMode(state) {
@@ -103,6 +104,11 @@ const player = {
           break;
         }
       }
+    },
+  },
+  actions: {
+    playSingleSong({ commit, state }, song) {
+      api.song.getUrl(song.id).then((res) => {});
     },
   },
   getters: {
