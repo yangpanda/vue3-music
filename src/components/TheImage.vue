@@ -1,21 +1,10 @@
 <template>
   <div
-    class="shadow"
-    :class="[
-      $style.imageWrap,
-      {
-        'rounded-none': round === 'none',
-        'rounded-sm': round === 'small',
-        rounded: round === 'normal',
-        'rounded-md': round === 'middle',
-        'rounded-lg': round === 'large',
-        'rounded-full': round === 'full',
-        [$style.w100]: !((width && height) || size),
-      },
-    ]"
+    :class="$style.imageWrap"
     :style="{
       width: imageWidth,
       height: imageHeight,
+      borderRadius: borderRadius,
     }"
   >
     <img :class="$style.image" v-lazy="src" />
@@ -24,54 +13,73 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
   src: String,
   ratio: {
     type: String,
     default: '1 / 1',
   },
-  width: String,
-  height: String,
-  size: String,
-  round: {
-    type: String,
-    default: 'none',
-  },
+  width: [String, Number],
+  height: [String, Number],
+  size: [String, Number],
+  radius: [String, Number],
 });
 
-let paddingHeight = `calc(100% / (${props.ratio}))`;
-let imageWidth = '';
-let imageHeight = '';
+const paddingHeight = computed(() => {
+  if (props.height) {
+    return props.height + 'px';
+  } else {
+    return `calc(100% / (${props.ratio}))`;
+  }
+});
 
-if (props.height) {
-  paddingHeight = props.height.indexOf('px') ? `${props.height}` : `${prop.height}px`;
-}
-
-if (props.width && props.height) {
-  imageWidth = props.width.indexOf('px') ? `${props.width}` : `${prop.width}px`;
-  imageHeight = props.height.indexOf('px') ? `${props.height}` : `${prop.height}px`;
-} else {
-  imageWidth = `${props.size}px`;
-  imageHeight = `${props.size}px`;
-}
+const imageWidth = computed(() => {
+  if (props.size) {
+    return props.size + 'px';
+  }
+  if (props.width) {
+    return props.width + 'px';
+  }
+});
+const imageHeight = computed(() => {
+  if (props.size) {
+    return props.size + 'px';
+  }
+  if (props.height) {
+    return props.height + 'px';
+  }
+});
+const borderRadius = computed(() => {
+  if (props.radius === 'full') {
+    return '50%';
+  } else {
+    return props.radius + 'px';
+  }
+});
 </script>
 
 <style module>
 .imageWrap {
-  display: flex;
   flex-shrink: 0;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   background-color: lightgray;
+  position: relative;
   overflow: hidden;
+  box-shadow: 1px 1px 20px 6px rgba(0, 0, 0, 0.1);
+}
+.image {
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 .image[lazy='loaded'] {
   width: 100%;
   animation: fadein 1s both;
-}
-.w-100 {
-  width: 100%;
 }
 @keyframes fadein {
   0% {

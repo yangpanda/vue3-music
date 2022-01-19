@@ -1,14 +1,16 @@
 <template>
-  <div :class="$style.tabNewsong">
-    <n-tabs type="line">
-      <n-tab-pane display-directive="show:lazy" name="oasis" tab="新歌速递">
-        <top-song></top-song>
-      </n-tab-pane>
-      <n-tab-pane name="the beatles" tab="新碟上架">
-        <top-album></top-album>
-      </n-tab-pane>
-    </n-tabs>
-  </div>
+  <the-scrollbar>
+    <div :class="$style.tabNewsong">
+      <n-tabs type="line">
+        <n-tab-pane display-directive="show:lazy" name="oasis" tab="新歌速递">
+          <top-song></top-song>
+        </n-tab-pane>
+        <n-tab-pane name="the beatles" tab="新碟上架">
+          <top-album></top-album>
+        </n-tab-pane>
+      </n-tabs>
+    </div>
+  </the-scrollbar>
 </template>
 
 <script>
@@ -29,7 +31,8 @@ export default {
 
 <style module>
 .tabNewsong {
-  width: 100%;
-  height: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
 }
 </style>

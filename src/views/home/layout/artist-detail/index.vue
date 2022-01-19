@@ -3,7 +3,7 @@
     <the-scrollbar>
       <div :class="$style.content">
         <div :class="$style.infoBox">
-          <the-image size="180" :src="artist.picUrl" round="large" />
+          <the-image size="180" :src="artist.picUrl" radius="8" />
           <div :class="$style.info">
             <div style="font-size: 24px">{{ artist.name }}</div>
             <div :class="$style.infoDetail">

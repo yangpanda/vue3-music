@@ -39,7 +39,6 @@ const search = async () => {
     keywords: props.keywords,
     offset: (state.page - 1) * state.limit,
   });
-  console.log(res);
   if (res.code === 200) {
     state.hasMore = res.result.hasMore;
     state.total = res.result.songCount;

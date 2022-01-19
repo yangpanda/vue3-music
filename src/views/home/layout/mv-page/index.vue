@@ -1,9 +1,9 @@
 <template>
   <the-scrollbar>
-    <div :class="$style.container">
+    <div class="container">
       <h2>全部MV</h2>
-      <div :class="$style.nav">
-        <div :class="$style.navItem" v-for="item in navs">
+      <div class="nav">
+        <div class="navItem" v-for="item in navs">
           <span>{{ item.name }}：</span>
           <span
             :class="{ active: child === state[item.type] }"
@@ -13,7 +13,12 @@
           >
         </div>
       </div>
-      <div :class="$style.content" v-infinite-scroll="loadMore" infinite-scroll-distance="10">
+      <div
+        class="content"
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="state.busy"
+        infinite-scroll-distance="10"
+      >
         <card-mv v-for="item in state.mvs" :key="item.id" :mv="item"></card-mv>
       </div>
     </div>
@@ -58,6 +63,7 @@ const state = reactive({
   offset: 0,
   mvs: [],
   hasMore: true,
+  busy: false,
 });
 
 const route = useRoute();
@@ -86,7 +92,9 @@ const getAll = async (offset = 0) => {
 
 const loadMore = () => {
   if (state.hasMore) {
+    state.busy = true;
     getAll(state.offset++ * state.limit);
+    state.busy = false;
   }
 };
 
@@ -97,16 +105,14 @@ watch([() => state.area, () => state.type, () => state.order], () => {
 });
 </script>
 
-<style>
+<style scoped>
 .active {
   color: #18a058;
 }
-</style>
-
-<style module>
 .container {
   max-width: 1000px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 .nav {
   margin-bottom: 20px;

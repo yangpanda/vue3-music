@@ -8,11 +8,7 @@
       <the-link :to="{ name: 'Newsong' }">最新音乐</the-link>
     </div>
     <div :class="$style.content">
-      <the-scrollbar>
-        <div :class="$style.viewBox">
-          <router-view></router-view>
-        </div>
-      </the-scrollbar>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -45,14 +41,5 @@ export default {
 }
 .content {
   height: calc(100% - 3rem);
-}
-.viewBox {
-  max-width: 110rem;
-  margin: 0 auto;
-  padding: 0 2rem 2rem;
-}
-.backtopContainer {
-  width: 0;
-  height: 0;
 }
 </style>

@@ -39,7 +39,6 @@ export const getMvDetail = async (id) => {
 
 export const getAllMv = async (params) => {
   const res = await request.get('/mv/all', { params });
-  console.log(res);
   if (res.code === 200) {
     return Promise.resolve({
       hasMore: res.hasMore,

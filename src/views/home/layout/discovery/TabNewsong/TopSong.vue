@@ -16,7 +16,7 @@
       <div :class="$style.songItem" v-for="(item, index) in state.songs" :key="item.id">
         <div :class="[$style.Index]">{{ index + 1 }}</div>
         <div :class="[$style.coverBox, 'cursor-pointer']">
-          <the-image :src="item.album.picUrl + '?param=160y160'" size="60" round="normal" />
+          <the-image :src="item.album.picUrl" size="60" radius="6" />
           <bg-play :class="$style.btn" @click="playSingleSong(item)"></bg-play>
         </div>
         <div class="ellipsis">{{ item.name }}</div>

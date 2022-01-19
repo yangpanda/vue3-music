@@ -1,29 +1,31 @@
 <template>
-  <div :class="$style.personal">
-    <the-swiper :banners="banners" />
-    <the-section title="推荐歌单" cols="5" :to="{ name: 'Playlist' }">
-      <template #cards>
-        <!-- 每日歌曲推荐 -->
-        <div :class="$style.daily" @click="toDailyMusic">
-          <div :class="$style.dateBox">
-            <span :class="$style.date" v-text="theDay"></span>
+  <the-scrollbar>
+    <div :class="$style.personal">
+      <the-swiper :banners="banners" />
+      <the-section title="推荐歌单" cols="5" :to="{ name: 'Playlist' }">
+        <template #cards>
+          <!-- 每日歌曲推荐 -->
+          <div :class="$style.daily" @click="toDailyMusic">
+            <div :class="$style.dateBox">
+              <span :class="$style.date" v-text="theDay"></span>
+            </div>
+            <div>每日歌曲推荐</div>
           </div>
-          <div>每日歌曲推荐</div>
-        </div>
-        <card-playlist v-for="item in playLists" :key="item.id" :playList="item" />
-      </template>
-    </the-section>
-    <the-section title="最新音乐" cols="3" :to="{ name: 'Newsong' }">
-      <template #cards>
-        <card-song v-for="song in songs" :song="song"></card-song>
-      </template>
-    </the-section>
-    <the-section title="推荐MV" cols="3" :to="{ name: 'Mv' }">
-      <template #cards>
-        <card-mv v-for="item in mvs" :key="item.id" :mv="item" />
-      </template>
-    </the-section>
-  </div>
+          <card-playlist v-for="item in playLists" :key="item.id" :playList="item" />
+        </template>
+      </the-section>
+      <the-section title="最新音乐" cols="3" :to="{ name: 'Newsong' }">
+        <template #cards>
+          <card-song v-for="song in songs" :song="song"></card-song>
+        </template>
+      </the-section>
+      <the-section title="推荐MV" cols="3" :to="{ name: 'Mv' }">
+        <template #cards>
+          <card-mv v-for="item in mvs" :key="item.id" :mv="item" />
+        </template>
+      </the-section>
+    </div>
+  </the-scrollbar>
 </template>
 
 <script>
@@ -116,6 +118,11 @@ export default {
 </script>
 
 <style module>
+.personal {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
 .personal > :not(:first-child) {
   margin-top: 20px;
 }

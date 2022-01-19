@@ -3,14 +3,14 @@
     <the-scrollbar>
       <div :class="$style.wrap">
         <div :class="$style.header">
-          <the-image class :src="state.playList.picUrl" size="180" round="large" />
+          <the-image class :src="state.playList.picUrl" size="180" radius="8" />
           <div :class="$style.info">
             <div :class="[$style.title, $style.layout]">
               <n-tag size="small">歌单</n-tag>
               <div>{{ state.playList.name }}</div>
             </div>
             <div :class="[$style.layout]">
-              <the-image :src="state.playList.creator.avatarUrl" round="full" size="26" />
+              <the-image :src="state.playList.creator.avatarUrl" radius="full" size="26" />
               <div>{{ state.playList.creator.nickname }}</div>
             </div>
             <div :class="[$style.layout]">
@@ -33,6 +33,7 @@
             <song-table-list
               v-infinite-scroll="loadMore"
               infinite-scroll-distance="10"
+              infinite-scroll-disabled="state.busy"
               :songs="state.songs"
             ></song-table-list>
             <div :class="$style.loading">
@@ -53,7 +54,7 @@
             ></n-result>
             <div v-else :class="$style.subscriberBox">
               <div :class="$style.cardSubscriber" v-for="item in state.subscribers" :key="item.id">
-                <the-image round="full" size="88" :src="item.avatarUrl" />
+                <the-image radius="full" size="88" :src="item.avatarUrl" />
                 <div :class="$style.subscriberInfo">
                   <div class="ellipsis">{{ item.nickname }}</div>
                   <div class="ellipsis">{{ item.signature }}</div>
@@ -82,9 +83,7 @@ import { reactive, watch, onBeforeMount } from 'vue';
 import { NTag, NSpin, NTabs, NTabPane, NResult, NButton } from 'naive-ui';
 import SongTableList from '@/components/SongTableList.vue';
 import TheComment from './TheComments.vue';
-import { picSizeUrl } from '@/utils/picture.js';
 import { useMapMutations } from '@/composables';
-import { User } from '@/model/User';
 import http from '@/api/http';
 
 const props = defineProps({
@@ -98,6 +97,7 @@ const state = reactive({
   songs: [],
   songsIdChunks: [],
   subscribers: [],
+  busy: false,
 });
 
 const { playTheList } = useMapMutations('player');
@@ -119,8 +119,10 @@ const getPlaylistSongs = async (ids) => {
 };
 const loadMore = () => {
   if (state.loadmore < state.songsIdChunks.length) {
+    state.busy = true;
     getPlaylistSongs(state.songsIdChunks[state.loadmore].join(','));
     state.loadmore += 1;
+    state.busy = false;
   }
 };
 

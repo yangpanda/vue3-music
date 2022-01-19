@@ -1,7 +1,7 @@
 <template>
   <card-base :title="playList.name" @click="toPlaylistDetail(playList.id)">
     <div :class="$style.imageBox">
-      <the-image :src="playList.picUrl" round="large" />
+      <the-image :src="playList.picUrl" radius="8" />
       <div :class="$style.iconBox">
         <the-icon
           :class="$style.playIcon"

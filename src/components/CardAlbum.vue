@@ -1,6 +1,6 @@
 <template>
   <card-base class="cursor-pointer" :title="album.name" @click="toAlbumDetail(album.id)">
-    <the-image :src="album.picUrl + '?param=180y180'" size="180" round="normal" />
+    <the-image :src="album.picUrl" size="180" radius="8" />
   </card-base>
 </template>
 

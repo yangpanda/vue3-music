@@ -28,7 +28,7 @@
     <n-grid v-else x-gap="20" y-gap="20" :cols="5">
       <n-grid-item v-for="(item, index) in monthAlbums" :key="item.id">
         <div :class="$style.albumCard" @click="toAlbumDetail(item.id)">
-          <the-image :src="item.picUrl + '?param=200y200'" round="large" />
+          <the-image :src="item.picUrl" radius="8" />
           <div>{{ item.name }}</div>
         </div>
       </n-grid-item>
@@ -77,7 +77,6 @@ export default {
       loading.value = true;
       const res = await api.playlist.getTopAlbum(params);
       if (res.code === 200) {
-        console.log(res);
         monthAlbums.value = res.monthData;
         loading.value = false;
       }

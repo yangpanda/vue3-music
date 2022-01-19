@@ -50,7 +50,6 @@ export const getArtist = async (params) => {
   const res = await request.get('/artist/list', {
     params,
   });
-  console.log(res);
   if (res.code === 200) {
     return Promise.resolve({
       more: res.more,

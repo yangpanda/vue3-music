@@ -46,7 +46,6 @@ const { toHome, toLogin } = useRouterMethods();
 
 const logout = async () => {
   const status = await api.user.logout();
-  console.log(status);
   if (status) {
     handleLogout();
   }

@@ -3,7 +3,7 @@
     <the-scrollbar>
       <div :class="$style.albumDetailHeader">
         <div :class="$style.albumCover">
-          <the-image :src="album.picUrl" size="180" round="large" />
+          <the-image :src="album.picUrl" size="180" radius="8" />
         </div>
         <n-space vertical>
           <div :class="$style.albumTitle">

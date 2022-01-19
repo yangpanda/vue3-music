@@ -1,62 +1,64 @@
 <template>
-  <div>
-    <div ref="backTopPos" :class="$style.nav">
-      <n-popover
-        display-directive="show"
-        trigger="focus"
-        placement="bottom-start"
-        style="width: 500px"
-        :to="backTopPos"
-      >
-        <template #trigger>
-          <n-button>{{ category.name }}</n-button>
-        </template>
-        <div :class="$style.categorylist">
-          <n-button @click="() => (category = categorylist.all)">
-            {{ categorylist.all.name }}
-          </n-button>
-          <div v-for="(value, key) in categorylist.categories" :key="value">
-            <div :class="$style.categoryName">{{ value }}</div>
-            <div :class="$style.subCategoryContainer">
-              <n-badge
-                v-for="item in categorylist.sub.filter((item) => item.category == key)"
-                :key="item.name"
-                value="火"
-                :show="item.hot"
-              >
-                <n-tag style="cursor: pointer" @mousedown="() => (category = item)" round>
-                  {{ item.name }}
-                </n-tag>
-              </n-badge>
+  <the-scrollbar>
+    <div :class="$style.container">
+      <div ref="backTopPos" :class="$style.nav">
+        <n-popover
+          display-directive="show"
+          trigger="focus"
+          placement="bottom-start"
+          style="width: 500px"
+          :to="backTopPos"
+        >
+          <template #trigger>
+            <n-button>{{ category.name }}</n-button>
+          </template>
+          <div :class="$style.categorylist">
+            <n-button @click="() => (category = categorylist.all)">
+              {{ categorylist.all.name }}
+            </n-button>
+            <div v-for="(value, key) in categorylist.categories" :key="value">
+              <div :class="$style.categoryName">{{ value }}</div>
+              <div :class="$style.subCategoryContainer">
+                <n-badge
+                  v-for="item in categorylist.sub.filter((item) => item.category == key)"
+                  :key="item.name"
+                  value="火"
+                  :show="item.hot"
+                >
+                  <n-tag style="cursor: pointer" @mousedown="() => (category = item)" round>
+                    {{ item.name }}
+                  </n-tag>
+                </n-badge>
+              </div>
             </div>
           </div>
+        </n-popover>
+        <div>
+          <span
+            :class="[$style.hottag, tag.name == category.name ? $style.active : '']"
+            v-for="tag in tags"
+            :key="tag.id"
+            @click="category = tag"
+            >{{ tag.name }}</span
+          >
         </div>
-      </n-popover>
-      <div>
-        <span
-          :class="[$style.hottag, tag.name == category.name ? $style.active : '']"
-          v-for="tag in tags"
-          :key="tag.id"
-          @click="category = tag"
-          >{{ tag.name }}</span
-        >
+      </div>
+      <div v-if="loading" :class="$style.playlistContainer">
+        <card-playlist v-for="(item, index) in playlists" :key="index" :playList="item" />
+      </div>
+      <div :class="$style.spin" v-else="!loading">
+        <n-spin size="large" />
+      </div>
+      <div :class="$style.paginationContainer">
+        <n-pagination
+          v-model:page="page"
+          :page-count="pageCount"
+          :page-size="pageSize"
+          @update-page="() => backTopPos.scrollIntoView(true)"
+        />
       </div>
     </div>
-    <div v-if="loading" :class="$style.playlistContainer">
-      <card-playlist v-for="(item, index) in playlists" :key="index" :playList="item" />
-    </div>
-    <div :class="$style.spin" v-else="!loading">
-      <n-spin size="large" />
-    </div>
-    <div :class="$style.paginationContainer">
-      <n-pagination
-        v-model:page="page"
-        :page-count="pageCount"
-        :page-size="pageSize"
-        @update-page="() => backTopPos.scrollIntoView(true)"
-      />
-    </div>
-  </div>
+  </the-scrollbar>
 </template>
 
 <script>
@@ -165,6 +167,11 @@ export default {
 </script>
 
 <style module>
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
 .nav {
   display: flex;
   justify-content: space-between;

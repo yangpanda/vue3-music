@@ -3,7 +3,7 @@
     <!-- 左边部分 -->
     <div :class="$style.left">
       <div :class="$style.cover">
-        <the-image :src="currentSong.picUrl + '?param=100y100'" size="50" round="normal" />
+        <the-image :src="currentSong.picUrl" size="50" radius="4" />
         <div :class="$style.toggle" @click="togglePlayingPage">
           <the-icon v-if="!playingPageDisplayStatus" name="arrow-up" color="#f3f3f3" size="28"></the-icon>
           <the-icon v-else name="arrow-down" color="#f3f3f3" size="28"></the-icon>

@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.card" @click="() => toArtistDetail(artist.id)">
-    <the-image class="cursor-pointer" :src="artist.picUrl" round="normal"></the-image>
+    <the-image class="cursor-pointer" :src="artist.picUrl" radius="8"></the-image>
     <div :class="$style.title">
       <span class="cursor-pointer">{{ artist.name }}</span>
       <span></span>

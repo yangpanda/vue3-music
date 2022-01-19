@@ -5,9 +5,9 @@
         v-for="(banner, index) in banners"
         :key="index"
         :src="banner.pic + '?param=540y208'"
-        width="540px"
-        height="208px"
-        round="large"
+        width="540"
+        height="208"
+        radius="8"
         :class="[
           $style.slideItem,
           index === pre ? $style.pre : '',

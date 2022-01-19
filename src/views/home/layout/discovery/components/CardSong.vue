@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.container">
     <div :class="$style.cover">
-      <the-image :src="song.picUrl + '?param=50y50'" size="50" round="normal" />
+      <the-image :src="song.picUrl" size="50" radius="4" />
       <bg-play :class="$style.btn" @click="playSingleSong"></bg-play>
     </div>
     <div :class="$style.info">

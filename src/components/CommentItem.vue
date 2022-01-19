@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.commentItem">
-    <the-image :src="comment.user.avatarUrl + '?param=50y50'" size="40" round="full" />
+    <the-image :src="comment.user.avatarUrl" size="40" radius="full" />
     <div :class="$style.info">
       <div>
         <span :class="$style.user">{{ comment.user.nickname }}：</span>

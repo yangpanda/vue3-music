@@ -7,7 +7,7 @@
       @click="toArtistDetail(item.id)"
     >
       <div :class="[$style.coverBox, 'cursor-pointer']">
-        <the-image :src="item.picUrl + '?param=160y160'" size="60" round="normal" />
+        <the-image :src="item.picUrl" size="60" radius="6" />
       </div>
       <div class="ellipsis">{{ item.name }}</div>
       <div class="ellipsis">专辑: {{ item.albumSize }}</div>

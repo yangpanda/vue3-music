@@ -1,12 +1,14 @@
 <template>
-  <div :class="$style.rank">
-    <div :class="$style.section" v-for="value in state">
-      <h2>{{ value.name }}</h2>
-      <div :class="$style.content">
-        <card-playlist v-for="(item, index) in value.list" :key="item.id" :playList="item" />
+  <the-scrollbar>
+    <div :class="$style.rank">
+      <div :class="$style.section" v-for="value in state">
+        <h2>{{ value.name }}</h2>
+        <div :class="$style.content">
+          <card-playlist v-for="(item, index) in value.list" :key="item.id" :playList="item" />
+        </div>
       </div>
     </div>
-  </div>
+  </the-scrollbar>
 </template>
 
 <script>
@@ -24,13 +26,13 @@ import api from '@/api/index.js';
 const state = reactive({
   official: {
     name: '官方榜',
-    list: []
+    list: [],
   },
   global: {
     name: '全球榜',
-    list: []
-  }
-})
+    list: [],
+  },
+});
 
 const getRankList = async () => {
   const res = await api.playlist.getRankList();
@@ -50,6 +52,11 @@ onMounted(getRankList);
 </script>
 
 <style module>
+.rank {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
 .section:last-child {
   margin-top: 20px;
 }

@@ -1,5 +1,10 @@
 <template>
-  <div :class="$style.container" v-infinite-scroll="loadMore" infinite-scroll-distance="10">
+  <div
+    :class="$style.container"
+    v-infinite-scroll="loadMore"
+    infinite-scroll-disabled="state.busy"
+    infinite-scroll-distance="10"
+  >
     <div :class="$style.albumItem">
       <div :class="$style.top50">
         <span>TOP</span>
@@ -8,7 +13,7 @@
       <song-list title="热门50首" :songs="state.hotSongs"></song-list>
     </div>
     <div :class="$style.albumItem" v-for="album in state.albums" :key="album.id">
-      <the-image :src="album.picUrl + '?param=180y180'" size="180" round="normal" />
+      <the-image :src="album.picUrl" size="180" radius="8" />
       <song-list :title="album.name" :albumId="album.id"></song-list>
     </div>
   </div>
@@ -35,6 +40,7 @@ const state = reactive({
   limit: 10,
   hasMore: false,
   offset: 0,
+  busy: false,
 });
 
 const getAlbums = async () => {
@@ -50,7 +56,9 @@ const getAlbums = async () => {
 
 const loadMore = async () => {
   if (state.hasMore) {
+    state.busy = true;
     getAlbums();
+    state.busy = false;
   }
 };
 

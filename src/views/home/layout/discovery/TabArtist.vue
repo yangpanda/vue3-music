@@ -1,55 +1,62 @@
 <template>
-  <div>
-    <div :class="$style.header">
-      <nav :class="$style.nav">
-        <span :class="$style.navTitle">语种：</span>
-        <span
-          v-for="item in areas"
-          :class="[$style.navItem, state.area == item.key ? $style.selected : '']"
-          @click="state.area = item.key"
-          >{{ item.name }}</span
-        >
-      </nav>
-      <nav :class="$style.nav">
-        <span :class="$style.navTitle">分类：</span>
-        <span
-          :class="[$style.navItem, state.type == item.key ? $style.selected : '']"
-          v-for="item in types"
-          @click="state.type = item.key"
-          >{{ item.name }}</span
-        >
-      </nav>
-      <nav :class="$style.nav">
-        <span :class="$style.navTitle">筛选：</span>
-        <div :class="$style.navItemBox">
+  <the-scrollbar>
+    <div :class="$style.container">
+      <div :class="$style.header">
+        <nav :class="$style.nav">
+          <span :class="$style.navTitle">语种：</span>
           <span
-            :class="[$style.navItem, state.initial == -1 ? $style.selected : '']"
-            @click="state.initial = -1"
-            >热门</span
+            v-for="item in areas"
+            :class="[$style.navItem, state.area == item.key ? $style.selected : '']"
+            @click="state.area = item.key"
+            >{{ item.name }}</span
           >
+        </nav>
+        <nav :class="$style.nav">
+          <span :class="$style.navTitle">分类：</span>
           <span
-            :class="[$style.navItem, state.initial === item ? $style.selected : '']"
-            v-for="item in initials"
-            :key="item"
-            @click="state.initial = item"
-            >{{ item }}</span
+            :class="[$style.navItem, state.type == item.key ? $style.selected : '']"
+            v-for="item in types"
+            @click="state.type = item.key"
+            >{{ item.name }}</span
           >
-          <span
-            :class="[$style.navItem, state.initial == 0 ? $style.selected : '']"
-            @click="state.initial = 0"
-            >#</span
-          >
-        </div>
-      </nav>
+        </nav>
+        <nav :class="$style.nav">
+          <span :class="$style.navTitle">筛选：</span>
+          <div :class="$style.navItemBox">
+            <span
+              :class="[$style.navItem, state.initial == -1 ? $style.selected : '']"
+              @click="state.initial = -1"
+              >热门</span
+            >
+            <span
+              :class="[$style.navItem, state.initial === item ? $style.selected : '']"
+              v-for="item in initials"
+              :key="item"
+              @click="state.initial = item"
+              >{{ item }}</span
+            >
+            <span
+              :class="[$style.navItem, state.initial == 0 ? $style.selected : '']"
+              @click="state.initial = 0"
+              >#</span
+            >
+          </div>
+        </nav>
+      </div>
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-distance="10"
+        infinite-scroll-disabled="state.busy"
+        :class="$style.content"
+      >
+        <card-artist v-for="item in state.artists" :key="item.id" :artist="item" />
+      </div>
+      <div :class="$style.loading">
+        <n-spin v-if="state.hasMore"></n-spin>
+        <span v-else>没有更多了。。。</span>
+      </div>
     </div>
-    <div v-infinite-scroll="loadMore" infinite-scroll-distance="10" :class="$style.content">
-      <card-artist v-for="item in state.artists" :key="item.id" :artist="item" />
-    </div>
-    <div :class="$style.loading">
-      <n-spin v-if="state.hasMore"></n-spin>
-      <span v-else>没有更多了。。。</span>
-    </div>
-  </div>
+  </the-scrollbar>
 </template>
 
 <script>
@@ -60,7 +67,7 @@ export default {
 
 <script setup>
 import http from '@/api/http.js';
-import { reactive, onMounted, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import CardArtist from '@/components/CardArtist.vue';
 import { generateBigAlphabet } from '@/utils/';
 import { NSpin } from 'naive-ui';
@@ -87,6 +94,7 @@ const state = reactive({
   type: -1,
   limit: 96,
   offset: 0,
+  busy: false,
 });
 
 const getArtist = async (
@@ -112,20 +120,21 @@ watch([() => state.area, () => state.type, () => state.initial], () => {
   });
 });
 
-onMounted(() => {
-  getArtist().then((res) => {
-    state.artists = res;
-  });
-});
-
 const loadMore = () => {
+  state.busy = true;
   getArtist().then((res) => {
     state.artists.push(...res);
+    state.busy = false;
   });
 };
 </script>
 
 <style module>
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
 .header {
   margin-bottom: 20px;
 }
