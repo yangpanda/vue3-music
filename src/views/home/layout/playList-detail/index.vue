@@ -85,6 +85,7 @@ import TheComment from './TheComments.vue';
 import { picSizeUrl } from '@/utils/picture.js';
 import { useMapMutations } from '@/composables';
 import { User } from '@/model/User';
+import http from '@/api/http';
 
 const props = defineProps({
   id: '',
@@ -102,15 +103,10 @@ const state = reactive({
 const { playTheList } = useMapMutations('player');
 
 const getPlaylistDetail = async () => {
-  const res = await api.playlist.getPlaylistDetail(props.id);
-
-  if (res.code === 200) {
-    state.playList = new PlayList(res.playlist);
-    state.subscribers = res.playlist.subscribers.map((item) => new User(item));
-
-    const songsId = res.playlist.trackIds.map((item) => item.id);
-    state.songsIdChunks = chunk(songsId, 100);
-  }
+  const playList = await http.getPlayListDetail(props.id);
+  state.playList = playList;
+  state.subscribers = playList.subscribers;
+  state.songsIdChunks = chunk(playList.trackIds, 100);
 };
 const getPlaylistSongs = async (ids) => {
   const res = await api.song.getSongDetail(ids);

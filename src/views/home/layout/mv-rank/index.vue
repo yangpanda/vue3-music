@@ -27,7 +27,7 @@
             <the-icon v-else name="transverse-line" size="16" color="black"></the-icon>
           </div>
           <the-link :to="{ name: 'MvDetail', params: { id: item.id } }">
-            <img :class="$style.picture" v-lazy="item.cover" />
+            <img :class="$style.picture" v-lazy="item.picUrl" />
           </the-link>
           <div :class="$style.info">
             <the-link :to="{ name: 'MvDetail', params: { id: item.id } }">{{ item.name }}</the-link>
@@ -44,7 +44,7 @@
 <script setup>
 import { addZero } from '@/utils/index.js';
 import { onMounted, reactive, watch } from 'vue';
-import api from '@/api/index.js';
+import http from '@/api/http';
 
 const areas = ['内地', '港台', '欧美', '日本', '韩国'];
 
@@ -54,11 +54,12 @@ const state = reactive({
 });
 
 const getTopMv = async () => {
-  const res = await api.mv.getTop({
-    area: state.area,
-    limit: 50,
-  });
-  state.mvs = res.data;
+  http
+    .getTopMvs({
+      area: state.area,
+      limit: 50,
+    })
+    .then((res) => (state.mvs = res));
 };
 
 onMounted(() => {

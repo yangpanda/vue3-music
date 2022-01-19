@@ -3,7 +3,7 @@
     <the-scrollbar>
       <div :class="$style.wrap">
         <div :class="$style.left">
-          <video controls :class="$style.video" :src="data.url"></video>
+          <video controls :class="$style.video" :src="url"></video>
         </div>
       </div>
     </the-scrollbar>
@@ -11,28 +11,24 @@
 </template>
 
 <script>
-import * as mv from '@/api/service/mv.js';
 import { onMounted, ref } from 'vue';
+import http from '@/api/http';
 
 export default {
   props: {
     id: null,
   },
   setup(props) {
-    let data = ref({});
+    let url = ref('');
 
-    const getMvData = async () => {
-      const res = await mv.getMvDetail(props.id);
-      console.log(res);
-      if (res.code === 200) {
-        data.value = res.data;
-      }
+    const getMvUrl = () => {
+      http.getMvDetail(props.id).then((res) => (url.value = res));
     };
 
-    onMounted(getMvData);
+    onMounted(getMvUrl);
 
     return {
-      data,
+      url,
     };
   },
 };

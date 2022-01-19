@@ -1,35 +1,28 @@
 <template>
   <div :class="$style.cardArtistBox">
-    <card-artist v-for="item in artists" :artist="item"></card-artist>
+    <card-artist v-for="item in artists" :artist="item" :key="item.id"></card-artist>
   </div>
 </template>
 
 <script>
+export default {
+  name: 'SimiArtist',
+};
+</script>
+<script setup>
 import CardArtist from '@/components/CardArtist.vue';
-import api from '@/api/index.js';
-import Artist from '@/model/Artist.js';
+import http from '@/api/http.js';
 import { ref } from 'vue';
 
-export default {
-  props: {
-    id: '',
-  },
-  components: {
-    CardArtist,
-  },
-  setup(props) {
-    const artists = ref([]);
-    api.artist.getSimi(props.id).then((response) => {
-      if (response.code === 200) {
-        artists.value = response.artists.map((item) => new Artist(item));
-      }
-    });
+const props = defineProps({
+  id: '',
+});
 
-    return {
-      artists,
-    };
-  },
-};
+const artists = ref([]);
+
+http.getSimiArtists(props.id).then((res) => {
+  artists.value = res;
+});
 </script>
 
 <style module>

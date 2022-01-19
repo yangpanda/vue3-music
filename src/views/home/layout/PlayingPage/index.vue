@@ -6,16 +6,16 @@
         <lyric />
       </div>
       <div :class="$style.commentContainer">
-        <h3 ref="commentPos">听友评论</h3>
+        <h3 ref="commentDom">听友评论</h3>
         <div :class="$style.commentItemContainer">
-          <comment-item v-for="item in comments" :key="item.commentId" :comment="item"></comment-item>
+          <comment-item v-for="item in state.comments" :key="item.commentId" :comment="item"></comment-item>
         </div>
         <div :class="$style.paginationContainer">
           <n-pagination
-            v-model:page="page"
-            :page-count="pageCount"
-            :page-size="pageSize"
-            @update-page="() => commentPos.scrollIntoView({ behavior: 'smooth' })"
+            v-model:page="state.page"
+            :page-count="state.pageCount"
+            :page-size="state.pageSize"
+            @update-page="() => commentDom.scrollIntoView({ behavior: 'smooth' })"
           />
         </div>
       </div>
@@ -27,76 +27,60 @@
 </template>
 
 <script>
-import { ref, watch, reactive, toRefs, computed } from 'vue';
-import api from '@/api/index.js';
-import { useStore } from 'vuex';
-
-import RotateCd from './RotateCd.vue';
-import Lyric from './Lyric.vue';
-import CommentItem from '@/components/CommentItem.vue';
-import { NPagination, NIcon, NButton } from 'naive-ui';
-
 export default {
   name: 'PlayingPage',
-  components: {
-    RotateCd,
-    Lyric,
-    CommentItem,
-    NPagination,
-    NButton,
-  },
-  setup() {
-    const store = useStore();
-    const commentPos = ref(null);
-    const comments = ref([]);
-
-    const currentSong = computed(() => store.getters['player/currentSong']);
-    const state = reactive({
-      total: 0,
-      page: 1,
-      pageSize: 20,
-      pageCount: 0,
-    });
-
-    const togglePlayingPage = () => store.commit('player/togglePlayingPage');
-    const getComment = async (offset = 0) => {
-      const res = await api.comment.ofSong({
-        id: currentSong.value.id,
-        limit: state.pageSize,
-        offset,
-      });
-
-      if (res.code == 200) {
-        state.total = res.total;
-        state.pageCount = Math.ceil(state.total / state.pageSize);
-
-        comments.value = res.comments;
-      }
-    };
-
-    watch(
-      () => currentSong.value,
-      () => {
-        state.page = 1;
-        getComment();
-      },
-    );
-
-    watch(
-      () => state.page,
-      () => {
-        getComment((state.page - 1) * state.pageSize);
-      },
-    );
-
-    return {
-      commentPos,
-      comments,
-      ...toRefs(state),
-      togglePlayingPage,
-    };
-  },
 };
+</script>
+
+<script setup>
+import { ref, watch, reactive } from 'vue';
+import { useMapGetters, useMapMutations } from '@/composables';
+import http from '@/api/http';
+import RotateCd from './RotateCd.vue';
+import Lyric from './Lyric.vue';
+import { NPagination, NButton } from 'naive-ui';
+import CommentItem from '@/components/CommentItem.vue';
+
+const commentDom = ref(null);
+const state = reactive({
+  total: 0,
+  page: 1,
+  pageSize: 20,
+  pageCount: 0,
+  comments: [],
+});
+
+const { currentSong } = useMapGetters('player');
+const { togglePlayingPage } = useMapMutations('player');
+
+const getComment = (offset = 0) => {
+  http
+    .getSongComments({
+      id: currentSong.value.id,
+      limit: state.pageSize,
+      offset,
+    })
+    .then((res) => {
+      state.comments = res.comments;
+      state.total = res.total;
+      state.pageCount = Math.ceil(state.total / state.pageSize);
+    });
+};
+
+watch(
+  () => currentSong.value,
+  () => {
+    state.page = 1;
+    getComment();
+  },
+);
+
+watch(
+  () => state.page,
+  () => {
+    getComment((state.page - 1) * state.pageSize);
+  },
+);
 </script>
 
 <style module>

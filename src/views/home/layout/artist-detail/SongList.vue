@@ -23,7 +23,7 @@ export default {
 <script setup>
 import { addZero } from '@/utils';
 import { ref, onMounted, computed } from 'vue';
-import api from '@/api';
+import http from '@/api/http';
 import Song from '@/model/Song';
 import { useStore } from 'vuex';
 
@@ -33,7 +33,7 @@ const props = defineProps({
     default: [],
   },
   title: '',
-  albumId: [Number, String],
+  albumId: [String, Number],
 });
 
 const showAll = ref(false);
@@ -48,7 +48,7 @@ const play = (index) => {
 
 const theSongs = computed(() => {
   if (props.songs.length) {
-    songarr.value.push(...props.songs);
+    songarr.value = props.songs;
   }
   if (showAll.value) {
     return songarr.value;
@@ -58,15 +58,12 @@ const theSongs = computed(() => {
 });
 
 const getSongs = async () => {
-  const res = await api.album.getAlbumDetail(props.albumId);
-
-  if (res.code === 200) {
-    songarr.value = [...res.songs.map((item) => new Song(item))];
-  }
+  const { songs } = await http.getAlbumDetail(props.albumId);
+  songarr.value = songs;
 };
 
 onMounted(() => {
-  if (!props.songs.length) {
+  if (props.albumId) {
     getSongs();
   }
 });

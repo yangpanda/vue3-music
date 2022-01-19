@@ -20,7 +20,7 @@
     </the-section>
     <the-section title="推荐MV" cols="3" :to="{ name: 'Mv' }">
       <template #cards>
-        <card-mv v-for="(item, index) in mvs" :key="index" :mv="item" />
+        <card-mv v-for="item in mvs" :key="item.id" :mv="item" />
       </template>
     </the-section>
   </div>
@@ -39,6 +39,7 @@ import api from '@/api/index.js';
 import useRouterMethods from '@/composables/useRouterMethods.js';
 import { onMounted, reactive, toRefs, computed } from 'vue';
 import Song from '@/model/Song';
+import http from '@/api/http';
 
 export default {
   components: {
@@ -65,27 +66,13 @@ export default {
     const { toDailyMusic } = useRouterMethods();
 
     const getBanners = () => {
-      api.banner.getBanners(2).then((response) => {
-        if (response.code === 200) {
-          state.banners = response.banners;
-        }
-      });
-    };
-
-    const getPrivateContents = () => {
-      api.mv.getPrivatecontent(3).then((response) => {
-        if (response.code === 200) {
-          state.privateContents = response.result;
-        }
+      http.getBanners(2).then((response) => {
+        state.banners = response;
       });
     };
 
     const getPlaylists = () => {
-      api.playlist.getPersonalized(9).then((response) => {
-        if (response.code === 200) {
-          state.playLists = response.result.map((item) => new PlayList(item));
-        }
-      });
+      http.getPersonalizedPlayLists(9).then((res) => (state.playLists = res));
     };
 
     const getSongs = () => {
@@ -107,16 +94,13 @@ export default {
     };
 
     const getMvs = () => {
-      api.mv.getPersonalized().then((response) => {
-        if (response.code === 200) {
-          state.mvs = response.result.slice(0, 3);
-        }
+      http.getPersonalizedMvs().then((res) => {
+        state.mvs = res;
       });
     };
 
     onMounted(() => {
       getBanners();
-      getPrivateContents();
       getPlaylists();
       getSongs();
       getMvs();

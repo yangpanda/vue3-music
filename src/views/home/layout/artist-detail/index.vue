@@ -37,29 +37,19 @@ export default {
 </script>
 
 <script setup>
-import api from '@/api/index.js';
-import { ref, onBeforeMount } from 'vue';
-import Artist from '@/model/Artist.js';
 import { NTabs, NTabPane } from 'naive-ui';
 import AlbumList from './AlbumList.vue';
 import SimilarArtist from './SimilarArtist.vue';
 import MvList from './MvList.vue';
+import http from '@/api/http';
+import { ref } from 'vue';
+import Artist from '@/model/Artist';
 
 const props = defineProps({
   id: '',
 });
 const artist = ref(new Artist());
-
-const getArtistDetail = async () => {
-  const res = await api.artist.getDetail(props.id);
-  if (res.code === 200) {
-    artist.value = new Artist(res.data.artist);
-  }
-};
-
-onBeforeMount(() => {
-  getArtistDetail();
-});
+http.getArtistDetail(props.id).then((res) => (artist.value = res));
 </script>
 
 <style module>

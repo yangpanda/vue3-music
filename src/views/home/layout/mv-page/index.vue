@@ -29,7 +29,7 @@ export default {
 <script setup>
 import { reactive, watch } from 'vue';
 import CardMv from '@/components/CardMv.vue';
-import api from '@/api/index.js';
+import http from '@/api/http.js';
 import { useRoute } from 'vue-router';
 
 const navs = [
@@ -69,17 +69,19 @@ for (const key in params) {
 }
 
 const getAll = async (offset = 0) => {
-  const res = await api.mv.getAll({
-    area: state.area,
-    order: state.order,
-    type: state.type,
-    limit: state.limit,
-    offset,
-  });
-  if (res.code === 200) {
-    state.mvs.push(...res.data);
-    state.hasMore = res.hasMore;
-  }
+  http
+    .getAllMv({
+      area: state.area,
+      order: state.order,
+      type: state.type,
+      limit: state.limit,
+      offset,
+    })
+    .then((res) => {
+      const { mvs, hasMore } = res;
+      state.mvs.push(...mvs);
+      state.hasMore = hasMore;
+    });
 };
 
 const loadMore = () => {

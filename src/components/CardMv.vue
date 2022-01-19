@@ -1,6 +1,6 @@
 <template>
   <card-base class="cursor-pointer" :title="mv.name ?? mv.title" @click="toMvDetail(mv.id ?? mv.vid)">
-    <the-image :src="picSrc() + '?param=640y360'" ratio="16 / 9" round="normal" />
+    <the-image :src="mv.picUrl" ratio="16 / 9" round="normal" />
   </card-base>
 </template>
 
@@ -13,8 +13,4 @@ const props = defineProps({
 });
 
 const { toMvDetail } = useRouterMethods();
-
-function picSrc() {
-  return props.mv.picUrl ?? props.mv.cover ?? props.mv.imgurl ?? props.mv.coverUrl;
-}
 </script>

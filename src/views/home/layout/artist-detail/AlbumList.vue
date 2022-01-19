@@ -22,10 +22,8 @@ export default {
 
 <script setup>
 import SongList from './SongList.vue';
-import api from '@/api/index.js';
 import { onBeforeMount, reactive } from 'vue';
-import Song from '@/model/Song';
-import Album from '@/model/Album';
+import http from '@/api/http';
 
 const props = defineProps({
   id: '',
@@ -40,16 +38,14 @@ const state = reactive({
 });
 
 const getAlbums = async () => {
-  const res = await api.artist.getAlbum({
+  const { more, albums } = await http.getArtistAlbums({
     id: props.id,
     limit: state.limit,
     offset: state.offset * state.limit,
   });
-  if (res.code === 200) {
-    state.albums.push(...res.hotAlbums.map((item) => new Album(item)));
-    state.hasMore = res.more;
-    state.offset++;
-  }
+  state.albums.push(...albums);
+  state.hasMore = more;
+  state.offset++;
 };
 
 const loadMore = async () => {
@@ -58,16 +54,9 @@ const loadMore = async () => {
   }
 };
 
-const getBrief = async () => {
-  const res = await api.artist.getBrief(props.id);
-  if (res.code === 200) {
-    state.hotSongs = res.hotSongs.map((item) => new Song(item));
-  }
-};
-
 onBeforeMount(() => {
   getAlbums();
-  getBrief();
+  http.getArtistHotSongs(props.id).then((res) => (state.hotSongs = res));
 });
 </script>
 

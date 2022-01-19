@@ -1,22 +1,27 @@
 <template>
-  <div :class="$style.container">
+  <div :class="$style.container" ref="commentDom">
     <n-result
-      v-if="isEmpty"
+      v-if="state.comments.length === 0"
       status="info"
       title="貌似，啥也没有！"
       description="生活总归带点荒谬"
       size="huge"
     ></n-result>
     <div v-else>
-      <div ref="commentPos" :class="$style.commentItemContainer">
-        <comment-item v-for="item in comments" :key="item.commentId" :comment="item"></comment-item>
+      <div :class="$style.commentItemContainer">
+        <comment-item v-for="item in state.comments" :key="item.commentId" :comment="item"></comment-item>
       </div>
       <div :class="$style.paginationContainer">
         <n-pagination
-          v-model:page="page"
-          :page-count="pageCount"
-          :page-size="pageSize"
-          @update-page="() => commentPos.scrollIntoView({ behavior: 'smooth' })"
+          v-model:page="state.offset"
+          :page-count="Math.ceil(state.total / state.limit)"
+          :page-size="state.limit"
+          @update-page="
+            () => {
+              getComment();
+              commentDom.scrollIntoView({ behavior: 'smooth' });
+            }
+          "
         />
       </div>
     </div>
@@ -24,69 +29,45 @@
 </template>
 
 <script>
-import api from '@/api/index.js';
-import CommentItem from '@/components/CommentItem.vue';
-import { NPagination, NResult } from 'naive-ui';
-import { ref, reactive, watch, onMounted, toRefs } from 'vue';
-
 export default {
   name: 'TheComment',
-  components: {
-    CommentItem,
-    NPagination,
-    NResult,
-  },
-  props: {
-    id: Number | String,
-  },
-  setup({ id }) {
-    const commentPos = ref(null);
-    const comments = ref([]);
-    const isEmpty = ref(false);
-    const state = reactive({
-      total: 0,
-      page: 1,
-      pageSize: 30,
-      pageCount: 0,
-    });
-
-    const getComment = async (offset = 0) => {
-      const res = await api.comment.ofPlaylist({
-        id,
-        limit: state.pageSize,
-        offset,
-      });
-
-      if (res.code == 200) {
-        state.total = res.total;
-        state.pageCount = Math.ceil(state.total / state.pageSize);
-
-        comments.value = res.comments;
-        if (comments.value.length === 0) {
-          isEmpty.value = true;
-        }
-      }
-    };
-
-    watch(
-      () => state.page,
-      () => {
-        getComment((state.page - 1) * state.pageSize);
-      },
-    );
-
-    onMounted(() => {
-      getComment();
-    });
-
-    return {
-      commentPos,
-      comments,
-      isEmpty,
-      ...toRefs(state),
-    };
-  },
 };
+</script>
+
+<script setup>
+import http from '@/api/http.js';
+import CommentItem from '@/components/CommentItem.vue';
+import { NPagination, NResult } from 'naive-ui';
+import { ref, reactive, onMounted, toRefs } from 'vue';
+
+const props = defineProps({
+  id: [Number, String],
+});
+
+const commentDom = ref(null);
+const state = reactive({
+  total: 0,
+  offset: 1,
+  limit: 20,
+  comments: [],
+});
+
+const getComment = () => {
+  http
+    .getPlayListComments({
+      id: props.id,
+      offset: (state.offset - 1) * state.limit,
+      limit: state.limit,
+    })
+    .then((res) => {
+      state.total = res.total;
+      state.comments = res.comments;
+    });
+};
+
+onMounted(() => {
+  getComment();
+});
 </script>
 
 <style module>

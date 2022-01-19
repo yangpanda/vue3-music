@@ -61,7 +61,7 @@
 
 <script>
 import api from '@/api/index.js';
-import Playlist from '@/model/Playlist.js';
+import http from '@/api/http';
 import { onMounted, reactive, toRefs, watch, ref } from 'vue';
 
 import CardPlaylist from '@/components/CardPlaylist.vue';
@@ -102,19 +102,18 @@ export default {
     const getPlaylist = async () => {
       state.loading = false;
 
-      const res = await api.playlist.getPlaylist({
-        order: state.order,
-        cat: state.category.name,
-        offset: (state.page - 1) * state.pageSize,
-      });
-
-      if (res.code === 200) {
-        state.total = res.total;
-        state.pageCount = Math.ceil(state.total / state.pageSize);
-        state.playlists = res.playlists.map((item) => new Playlist(item));
-
-        setTimeout(() => (state.loading = true), 600);
-      }
+      http
+        .getPlayLists({
+          order: state.order,
+          cat: state.category.name,
+          offset: (state.page - 1) * state.pageSize,
+        })
+        .then((res) => {
+          state.total = res.total;
+          state.pageCount = Math.ceil(state.total / state.pageSize);
+          state.playlists = res.playLists;
+          setTimeout(() => (state.loading = true), 600);
+        });
     };
 
     const getPlaylistHotTags = async () => {

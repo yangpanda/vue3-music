@@ -65,3 +65,11 @@ export const getScrollParent = (node) => {
   return scrollParent(node);
   /* eslint-enable consistent-return */
 };
+
+export function generateBigAlphabet() {
+  var arr = [];
+  for (var i = 65; i < 91; i++) {
+    arr.push(String.fromCharCode(i));
+  }
+  return arr;
+}

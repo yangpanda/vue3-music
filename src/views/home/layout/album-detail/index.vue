@@ -45,9 +45,7 @@
 </template>
 
 <script>
-import api from '@/api/index.js';
-import Song from '@/model/Song';
-import Album from '@/model/Album.js';
+import http from '@/api/http.js';
 import { ref, onMounted, reactive, toRefs } from 'vue';
 import { NTag, NButton, NSpace, NSpin, NTabs, NTabPane } from 'naive-ui';
 import SongTableList from '@/components/SongTableList.vue';
@@ -76,12 +74,10 @@ export default {
     });
 
     const getAlbumDetail = async () => {
-      const res = await api.album.getAlbumDetail(id);
-      if (res.code === 200) {
-        state.album = new Album(res.album);
-        state.songs = res.songs.map((item) => new Song(item));
-        loading.value = false;
-      }
+      const { album, songs } = await http.getAlbumDetail(id);
+      state.album = album;
+      state.songs = songs;
+      loading.value = false;
     };
 
     onMounted(() => {

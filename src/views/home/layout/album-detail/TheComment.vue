@@ -1,79 +1,75 @@
 <template>
-  <div :class="$style.comment">
-    <section v-if="hotComments.length != 0">
-      <h4>精彩评论</h4>
-      <n-space vertical size="large">
-        <comment-item v-for="comment in hotComments" :comment="comment" />
-      </n-space>
+  <div :class="$style.comment" ref="commentDom">
+    <section>
+      <h3>最新评论</h3>
+      <comment-item v-for="comment in state.comments" :comment="comment" />
     </section>
-    <section v-if="comments.length != 0">
-      <h4>最新评论</h4>
-      <n-space vertical size="large">
-        <comment-item v-for="comment in comments" :comment="comment" />
-      </n-space>
+    <div :class="$style.wrap">
       <n-pagination
-        v-model:page="pageSize"
-        :page-count="Math.ceil(total / pageSize)"
-        @update-page="loadMore(page)"
+        v-model:page="state.offset"
+        :page-count="Math.ceil(state.total / state.limit)"
+        @update:page="
+          () => {
+            getComment();
+            commentDom.scrollIntoView();
+          }
+        "
       />
-    </section>
+    </div>
   </div>
 </template>
 
 <script>
-import api from '@/api/index.js';
-import { onMounted, ref } from 'vue';
+export default {
+  name: 'AlbumComment',
+};
+</script>
+
+<script setup>
+import { onBeforeMount, reactive, ref } from 'vue';
 import CommentItem from '@/components/CommentItem.vue';
 import { NPagination } from 'naive-ui';
+import http from '@/api/http';
 
-export default {
-  name: 'Comment',
-  components: {
-    CommentItem,
-    NPagination,
+const props = defineProps({
+  id: {
+    type: [Number, String],
   },
-  props: {
-    id: {
-      type: [Number, String],
-    },
-  },
-  setup(props) {
-    const hotComments = ref([]);
-    const comments = ref([]);
-    const pageSize = ref(20);
-    const total = ref(0);
+});
 
-    const getComment = (id) => {
-      api.comment.ofAlbum(id).then((res) => {
-        if (res.code === 200) {
-          hotComments.value = res.hotComments;
-          comments.value = res.comments;
-          total.value = res.total;
-        }
-      });
-    };
+const commentDom = ref(null);
+const state = reactive({
+  comments: [],
+  total: 0,
+  offset: 1,
+  limit: 30,
+});
 
-    const loadMore = (offset) => {
-      api.comment.ofAlbum({ id: props.id, offset: offset }).then((res) => {});
-    };
-
-    onMounted(() => {
-      getComment(props.id);
+const getComment = () => {
+  http
+    .getAlbumComments({
+      id: props.id,
+      offset: (state.offset - 1) * state.limit,
+      limit: state.limit,
+    })
+    .then((res) => {
+      state.total = res.total;
+      state.comments = res.comments;
     });
-
-    return {
-      hotComments,
-      comments,
-      pageSize,
-      total,
-      loadMore,
-    };
-  },
 };
+
+onBeforeMount(() => {
+  getComment(props.id);
+});
 </script>
 
 <style module>
 .comment {
   padding: 0 20px;
+}
+.wrap {
+  display: flex;
+  padding-top: 20px;
+  justify-content: center;
 }
 </style>

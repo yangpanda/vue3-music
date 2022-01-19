@@ -6,11 +6,11 @@ const http2https = (url) => {
   return url;
 };
 
-const picSizeUrl = (url, size) => {
+const picSizeUrl = (url, x, y) => {
   if (url && url.length === 0) {
     return '';
   } else {
-    return http2https(`${url}?param=${size}y${size}`);
+    return http2https(`${url}?param=${x}y${y ?? x}`);
   }
 };
 

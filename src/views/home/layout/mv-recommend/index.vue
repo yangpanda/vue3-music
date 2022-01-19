@@ -36,7 +36,7 @@
               <the-icon v-else name="transverse-line" size="16" color="black"></the-icon>
             </div>
             <the-link :to="{ name: 'MvDetail', params: { id: item.id } }">
-              <img :class="$style.picture" v-lazy="item.cover" />
+              <img :class="$style.picture" v-lazy="item.picUrl" />
             </the-link>
             <div :class="$style.info">
               <the-link :to="{ name: 'MvDetail', params: { id: item.id } }">{{ item.name }}</the-link>
@@ -64,7 +64,7 @@
 <script setup>
 import TheSection from '@/components/TheSection.vue';
 import CardMv from '@/components/CardMv.vue';
-import api from '@/api/index.js';
+import http from '@/api/http.js';
 import { onMounted, reactive, watch } from 'vue';
 import { addZero } from '@/utils/index.js';
 
@@ -78,26 +78,29 @@ const state = reactive({
   topMvs: [],
 });
 
-const getNewMv = async () => {
-  const res = await api.mv.getNew({
-    area: state.newMvArea,
-    limit: 8,
-  });
-  state.newMvs = res.data;
+const getNewMv = () => {
+  http
+    .getNewMvs({
+      area: state.newMvArea,
+      limit: 8,
+    })
+    .then((res) => (state.newMvs = res));
 };
 
-const getTopMv = async () => {
-  const res = await api.mv.getTop({
-    area: state.topMvArea,
-    limit: 10,
-  });
-  state.topMvs = res.data;
+const getTopMv = () => {
+  http
+    .getTopMvs({
+      area: state.topMvArea,
+      limit: 10,
+    })
+    .then((res) => (state.topMvs = res));
 };
-const getNetease = async () => {
-  const res = await api.mv.getNetease({
-    limit: 8,
-  });
-  state.neteaseMvs = res.data;
+const getNetease = () => {
+  http
+    .getNeteaseMvs({
+      limit: 8,
+    })
+    .then((res) => (state.neteaseMvs = res));
 };
 
 onMounted(() => {

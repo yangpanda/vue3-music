@@ -11,6 +11,8 @@ export default class PlayList {
     this.tags = [];
     this.description = '';
     this.creator = new User();
+    this.trackIds = [];
+    this.subscribers = [];
 
     if (data) {
       setPlayList(this, data);
@@ -28,5 +30,11 @@ function setPlayList(playList, data) {
   playList.description = data.description;
   if (data.creator) {
     setUser(playList.creator, data.creator);
+  }
+  if (data.trackIds) {
+    playList.trackIds = data.trackIds.map((item) => item.id);
+  }
+  if (data.subscribers) {
+    playList.subscribers = data.subscribers.map((item) => new User(item));
   }
 }
