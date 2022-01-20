@@ -21,8 +21,7 @@ export default {
 <script setup>
 import SongTableList from '@/components/SongTableList.vue';
 import { NResult } from 'naive-ui';
-import Song from '@/model/Song.js';
-import api from '@/api/index.js';
+import http from '@/api/http';
 import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 
@@ -32,8 +31,8 @@ const store = useStore();
 const loginStatus = computed(() => store.state.user.loginStatus);
 
 const getDailySongs = () => {
-  api.song.getRecommendSongs().then((res) => {
-    songs.value = res.map((item) => new Song(item));
+  http.getRecommendSongs().then((res) => {
+    songs.value = res;
   });
 };
 

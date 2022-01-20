@@ -37,8 +37,8 @@ import { NButton, NAvatar, NPopover } from 'naive-ui';
 import SearchBar from '@/components/SearchBar.vue';
 import api from '@/api/index.js';
 import { onMounted } from 'vue';
-import PlayList from '@/model/PlayList.js';
 import { useMapState, useMapMutations, useRouterMethods } from '@/composables';
+import http from '../../api/http';
 
 const { loginStatus, profile } = useMapState('user');
 const { handleLogout, handleLogin, setCreatedPlayLists, setCollectedPlayLists } = useMapMutations('user');
@@ -57,14 +57,9 @@ onMounted(async () => {
     handleLogin(res.profile);
 
     {
-      const res = await api.playlist.getUserPlaylists(profile.value.userId);
-      const playlists = res.playlist.map((item) => new PlayList(item));
-      setCollectedPlayLists(playlists.filter((item) => item.creator.id != profile.value.userId));
-      setCreatedPlayLists(
-        playlists.filter((item) => {
-          return item.creator.id == profile.value.userId;
-        }),
-      );
+      const playLists = await http.getUserPlayLists(profile.value.userId);
+      setCollectedPlayLists(playLists.filter((item) => item.creator.id != profile.value.userId));
+      setCreatedPlayLists(playLists.filter((item) => item.creator.id == profile.value.userId));
     }
   }
 });

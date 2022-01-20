@@ -1,4 +1,5 @@
 import request from '../axios/index.js';
+import Song from '@/model/Song';
 
 export const getNewSongs = (limit) => {
   if (limit === undefined) {
@@ -18,7 +19,6 @@ export const getDetail = async (ids) => {
 
   return res.songs;
 };
-export const getSongsUrl = (ids) => request.get(`/song/url?id=${ids}`);
 
 export const getLyric = (id) => request.get(`/lyric?id=${id}`);
 
@@ -29,15 +29,15 @@ export const getSimi = (id) => request.get(`/simi/song?id=${id}`);
 export const getRecommendSongs = async () => {
   const res = await request.get('/recommend/songs');
   if (res.code === 200) {
-    return res.data.dailySongs;
+    return Promise.resolve(res.data.dailySongs.map((item) => new Song(item)));
   }
 };
 
 export const checkSong = async (id) => {
-  const res = await request.get('/check/music', {params: {id}})
+  const res = await request.get('/check/music', { params: { id } });
   if (res.success) {
-    return Promise.resolve(true)
+    return Promise.resolve(true);
   } else {
-    return Promise.reject(res.message)
+    return Promise.reject(res.message);
   }
-}
+};

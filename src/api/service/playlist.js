@@ -25,12 +25,12 @@ export const getPlayListDetail = async (id) => {
   }
 };
 
-/**
- * @method 获取每日推荐歌曲（需登录）
- */
-export const getDailySongs = () => request.get('/recommend/songs');
-
-export const getUserPlaylists = (uid) => request.get(`/user/playlist?uid=${uid}`);
+export const getUserPlayLists = async (uid) => {
+  const res = await request.get(`/user/playlist`, { params: { uid } });
+  if (res.code === 200) {
+    return Promise.resolve(res.playlist.map((item) => new PlayList(item)));
+  }
+};
 
 export const getRankList = () => request.get('/toplist');
 

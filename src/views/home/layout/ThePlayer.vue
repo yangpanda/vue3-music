@@ -75,7 +75,7 @@
     <audio
       autoplay
       ref="audioDom"
-      :src="state.url"
+      :src="currentSong.url"
       @timeupdate="getCurrentTime"
       @ended="ended"
       @durationchange="getDuration"
@@ -91,7 +91,6 @@ export default {
 
 <script setup>
 import { formatTime } from '@/utils';
-import api from '@/api';
 import { ref, watch, reactive, onMounted } from 'vue';
 import { PlayMode } from '@/store/player.js';
 import { NDrawer, NDrawerContent, NSlider } from 'naive-ui';
@@ -143,17 +142,6 @@ const ended = () => {
 onMounted(() => {
   audioDom.value.volume = state.volume;
 });
-
-watch(
-  () => currentSong.value,
-  () => {
-    api.song.getSongsUrl(currentSong.value.id).then((response) => {
-      if (response.code === 200) {
-        state.url = response.data[0].url;
-      }
-    });
-  },
-);
 
 watch(
   () => state.volume,
