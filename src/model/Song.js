@@ -12,6 +12,7 @@ export default class Song {
     this.picUrl = '';
     this.url = '';
     this.playCount = 0;
+    this.copyright = true
 
     if (data) {
       setSong(this, data);
@@ -27,6 +28,7 @@ function setSong(song, data) {
   song.duration = formatDuration(data.dt ?? data.duration);
   song.picUrl = picSizeUrl((data.al ?? data.album).picUrl, 180);
   song.url = `https://music.163.com/song/media/outer/url?id=${data.id}.mp3`;
+  song.copyright = Boolean(data.noCopyrightRcmd)
 }
 
 function createArtists(ars) {

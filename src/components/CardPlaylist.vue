@@ -6,8 +6,8 @@
         <the-icon
           :class="$style.playIcon"
           name="play-triangle"
-          color="#ec4141"
-          size="28"
+          color="#fff"
+          size="32"
           @click.stop="playAll"
         />
       </div>
@@ -66,16 +66,20 @@ const playAll = async () => {
   right: 1.2rem;
   bottom: 1.2rem;
   opacity: 0;
-  transition-property: opacity;
+  transition-property: all;
   transition-duration: 500ms;
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 2px 8px 0px rgba(0, 0, 0, 0.12);
+  background: hsla(0,0%,100%,.28);
+  border: 1px solid hsla(0,0%,100%,.08);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.iconBox:active {
+  transform: scale(.8);
 }
 .imageBox:hover .iconBox {
   opacity: 100;

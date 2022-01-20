@@ -77,8 +77,8 @@ onMounted(async () => {
   width: 100%;
   height: 50px;
   padding: 0 20px;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid lightgray;
+  background-color: hsla(0,0%,100%,0.86);
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 .homeBtn {
   composes: flexVCenter from '@/styles/mixin.css';

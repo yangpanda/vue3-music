@@ -1,27 +1,25 @@
 <template>
-  <div :class="$style.songListItem" @dblclick="play(index)">
-    <div :class="$style.front">
-      <img v-if="song.id == currentSong.id" :class="$style.playingGif" :src="playingGif" />
-      <span v-else :class="$style.index">{{ formatIndex(index + 1) }}</span>
-      <div :class="$style.btn">
+  <div class="container" :class="{ disable: song.copyright }" @dblclick="play(index)">
+    <div class="front">
+      <span class="index">{{ formatIndex(index + 1) }}</span>
+      <div class="btn">
         <the-icon v-if="!isLiked(song.id)" name="love" size="20" color="#909399" />
         <the-icon v-else name="love-selected" size="20" color="#ec4141" />
       </div>
+      <img class="gif" v-if="song.id == currentSong.id" :src="playingGif" />
     </div>
-    <div :class="[$style.title, 'ellipsis']">{{ song.name }}</div>
-    <div :class="['ellipsis', $style.artistBox]">
+    <the-image :src="song.picUrl" size="48" radius="6"></the-image>
+    <div class="title">{{ song.name }}</div>
+    <div class="artists">
       <the-link
-        :class="$style.artist"
         v-for="artist in song.artists"
         :key="artist.id"
         :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
-      >
-        {{ artist.name }}
-      </the-link>
+      >{{ artist.name }}</the-link>
     </div>
-    <div class="ellipsis">
-      <the-link :to="{ name: 'AlbumDetail', params: { id: song.album.id } }">{{ song.album.name }}</the-link>
-    </div>
+    <the-link
+      :to="{ name: 'AlbumDetail', params: { id: song.album.id } }"
+    >{{ song.album.name }}</the-link>
     <div>{{ song.duration }}</div>
   </div>
 </template>
@@ -73,51 +71,56 @@ export default {
 };
 </script>
 
-<style module>
-.songListItem {
-  height: 4rem;
-  display: grid;
-  grid-template-columns: 8rem 3fr 2fr 2fr 60px;
-  align-items: center;
-  column-gap: var(--gap-lg);
-  padding: 0 2rem;
+<style lang="scss" scoped>
+.container {
   cursor: default;
-  color: rgba(120, 120, 120, 1);
-}
-.songListItem:nth-of-type(odd) {
-  background-color: rgba(220, 220, 220, 0.4);
-}
-.songListItem:hover {
-  background-color: rgba(230, 230, 230, 1);
+  height: 60px;
+  padding: 0 20px;
+  margin: 0 20px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  display: grid;
+  grid-template-columns: 90px 48px 3fr 2fr 2fr 60px;
+  align-items: center;
+  column-gap: 10px;
+
+  &:hover {
+    background-color: #f5f5f7;
+  }
+  &.disable {
+    opacity: 0.2;
+    pointer-events: none;
+  }
 }
 .front {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  justify-content: space-between;
-}
-.index {
-  width: 32px;
-  text-align: center;
-}
-.playingGif {
-  width: 25px;
+  justify-content: center;
+  column-gap: 6px;
+  & .gif {
+    width: 22px;
+  }
+  & .btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
 }
 .title {
-  color: #18191c;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  @include ellipsis;
 }
-.btn {
+.artists {
   display: flex;
   align-items: center;
-  cursor: pointer;
-}
-
-.artistBox {
-  display: flex;
-  align-items: center;
-}
-.artist:not(:first-child)::before {
-  content: '';
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
-  margin: 0 var(--gap-sm);
+  overflow: hidden;
+  & > :not(:first-child)::before {
+    content: "";
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    margin: 0 6px;
+  }
 }
 </style>

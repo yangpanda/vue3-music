@@ -10,6 +10,7 @@ import infiniteScroll from 'vue3-infinite-scroll-good';
 
 import '@/styles/index.css';
 import '@/styles/common.css';
+import '@/styles/variables.scss'
 
 import TheImage from '@/components/TheImage.vue';
 import TheLink from '@/components/TheLink.vue';

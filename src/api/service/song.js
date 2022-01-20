@@ -32,3 +32,12 @@ export const getRecommendSongs = async () => {
     return res.data.dailySongs;
   }
 };
+
+export const checkSong = async (id) => {
+  const res = await request.get('/check/music', {params: {id}})
+  if (res.success) {
+    return Promise.resolve(true)
+  } else {
+    return Promise.reject(res.message)
+  }
+}

@@ -49,7 +49,8 @@ const props = defineProps({
 }
 .title {
   composes: flexVCenter from '@/styles/mixin.css';
-  color: #424242;
+  color: #000;
+  font-weight: 600;
 }
 .title > :first-child {
   margin-right: 6px;

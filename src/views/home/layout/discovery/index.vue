@@ -1,13 +1,13 @@
 <template>
-  <div :class="$style.discovery">
-    <div :class="$style.nav">
+  <div class="discovery">
+    <div class="nav">
       <the-link :to="{ name: 'Personal' }">个性推荐</the-link>
       <the-link :to="{ name: 'Playlist' }">歌单</the-link>
       <the-link :to="{ name: 'Rank' }">排行榜</the-link>
       <the-link :to="{ name: 'Artist' }">歌手</the-link>
       <the-link :to="{ name: 'Newsong' }">最新音乐</the-link>
     </div>
-    <div :class="$style.content">
+    <div class="content">
       <router-view></router-view>
     </div>
   </div>
@@ -19,27 +19,21 @@ export default {
 };
 </script>
 
-<style module>
+<style lang="scss" scoped>
 .discovery {
   width: 100%;
   height: 100%;
-  padding: 0 0 2rem 0;
-}
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 5rem;
-  font-size: 16px;
-  color: black;
-}
-.nav > :not(:first-child) {
-  margin-left: 30px;
-}
-.nav a {
-  color: #18191c;
-}
-.content {
-  height: calc(100% - 3rem);
+  padding: 0 0 20px 0;
+  & .nav {
+    @include flexVHCenter;
+    column-gap: 30px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  & .content {
+    height: 100%;
+    padding-bottom: 20px;
+  }
 }
 </style>

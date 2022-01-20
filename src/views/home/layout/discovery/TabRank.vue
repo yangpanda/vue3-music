@@ -20,7 +20,7 @@ export default {
 <script setup>
 import CardPlaylist from '@/components/CardPlaylist.vue';
 import { onMounted, reactive } from 'vue';
-import Playlist from '@/model/Playlist.js';
+import PlayList from '@/model/PlayList.js';
 import api from '@/api/index.js';
 
 const state = reactive({
@@ -40,9 +40,9 @@ const getRankList = async () => {
   if (res.code === 200) {
     res.list.map((item) => {
       if ('ToplistType' in item) {
-        state.official.list.push(new Playlist(item));
+        state.official.list.push(new PlayList(item));
       } else {
-        state.global.list.push(new Playlist(item));
+        state.global.list.push(new PlayList(item));
       }
     });
   }

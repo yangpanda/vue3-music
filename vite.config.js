@@ -36,4 +36,12 @@ export default defineConfig({
       },
     },
   },
+  css: {
+		//css预处理
+		preprocessorOptions: {
+			scss: {
+				additionalData: '@import "@/styles/mixins.scss";'
+			}
+		}
+	}
 });
