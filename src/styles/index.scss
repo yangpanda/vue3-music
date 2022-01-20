@@ -1,0 +1,14 @@
+@import url(./theme.scss);
+
+html {
+  font-size: 62.5%;
+
+  body {
+    font-family: v-sans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin: 0;
+  }
+}

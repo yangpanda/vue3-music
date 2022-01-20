@@ -1,8 +1,8 @@
 <template>
-  <n-message-provider>
+  <div class="site-container">
+    <SiteHeader></SiteHeader>
     <router-view></router-view>
-    <the-statement></the-statement>
-  </n-message-provider>
+  </div>
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default {
 </script>
 
 <script setup>
-import TheStatement from '@/components/TheStatement.vue';
-import { NMessageProvider } from 'naive-ui';
+import SiteHeader from '@/components/SiteHeader.vue';
 </script>
+
+<style lang="scss" scoped>
+.site-container {
+  min-width: $siteMinWidth;
+}
+</style>
