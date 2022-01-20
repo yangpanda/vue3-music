@@ -10,12 +10,13 @@ import infiniteScroll from 'vue3-infinite-scroll-good';
 
 import '@/styles/index.css';
 import '@/styles/common.css';
-import '@/styles/variables.scss'
+import '@/styles/variables.scss';
 
 import TheImage from '@/components/TheImage.vue';
 import TheLink from '@/components/TheLink.vue';
 import TheScrollbar from '@/components/TheScrollbar.vue';
 import TheIcon from '@/components/TheIcon.vue';
+import TheButton from '@/components/button/TheButton.vue';
 
 const app = createApp(App);
 
@@ -24,6 +25,7 @@ const myComponents = {
   TheLink: TheLink,
   TheScrollbar: TheScrollbar,
   TheIcon: TheIcon,
+  TheButton: TheButton,
 };
 
 for (let key in myComponents) {

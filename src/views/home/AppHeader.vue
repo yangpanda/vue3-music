@@ -59,8 +59,12 @@ onMounted(async () => {
     {
       const res = await api.playlist.getUserPlaylists(profile.value.userId);
       const playlists = res.playlist.map((item) => new PlayList(item));
-      setCollectedPlayLists(playlists.filter((item) => item.creator.userId != profile.value.userId));
-      setCreatedPlayLists(playlists.filter((item) => item.creator.userId === profile.value.userId));
+      setCollectedPlayLists(playlists.filter((item) => item.creator.id != profile.value.userId));
+      setCreatedPlayLists(
+        playlists.filter((item) => {
+          return item.creator.id == profile.value.userId;
+        }),
+      );
     }
   }
 });
@@ -77,12 +81,13 @@ onMounted(async () => {
   width: 100%;
   height: 50px;
   padding: 0 20px;
-  background-color: hsla(0,0%,100%,0.86);
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  background-color: hsla(0, 0%, 100%, 0.86);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .homeBtn {
   composes: flexVCenter from '@/styles/mixin.css';
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 600;
   cursor: pointer;
 }
 .homeBtn > :last-child {

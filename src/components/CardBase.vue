@@ -20,7 +20,7 @@ export default {
 .title {
   margin-top: 10px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #000;
 }

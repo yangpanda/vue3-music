@@ -23,7 +23,7 @@ export default {
 
 <script setup>
 import PlayingPage from './PlayingPage/index.vue';
-import TheSidebar from './TheSidebar.vue';
+import TheSidebar from './TheSidebar/index.vue';
 import ThePlayer from './ThePlayer.vue';
 import { computed } from 'vue';
 import { useMapState } from '@/composables';
