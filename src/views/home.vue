@@ -38,7 +38,7 @@ export default {
 import http from '@/http';
 import { onBeforeMount, reactive } from 'vue';
 import YCover from '@/components/YCover.vue';
-import TheBanner from '@/components/TheBanner.vue';
+import YBanner from '@/components/YBanner.vue';
 import SvgIcon from '@/components/SvgIcon.vue';
 
 const state = reactive({
