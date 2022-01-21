@@ -23,7 +23,7 @@ export default class PlayList {
 function setPlayList(playList, data) {
   playList.id = data.id;
   playList.name = data.name;
-  playList.picUrl = picSizeUrl(data.picUrl ?? data.coverImgUrl, 180);
+  playList.picUrl = picSizeUrl(data.picUrl ?? data.coverImgUrl, 512);
   playList.playCount = data.playCount;
   playList.trackCount = data.trackCount;
   playList.tags = data.tags;

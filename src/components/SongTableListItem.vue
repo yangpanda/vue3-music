@@ -15,11 +15,10 @@
         v-for="artist in song.artists"
         :key="artist.id"
         :to="{ name: 'ArtistDetail', params: { id: artist.id } }"
-      >{{ artist.name }}</the-link>
+        >{{ artist.name }}</the-link
+      >
     </div>
-    <the-link
-      :to="{ name: 'AlbumDetail', params: { id: song.album.id } }"
-    >{{ song.album.name }}</the-link>
+    <the-link :to="{ name: 'AlbumDetail', params: { id: song.album.id } }">{{ song.album.name }}</the-link>
     <div>{{ song.duration }}</div>
   </div>
 </template>
@@ -118,7 +117,7 @@ export default {
   align-items: center;
   overflow: hidden;
   & > :not(:first-child)::before {
-    content: "";
+    content: '';
     border-left: 1px solid rgba(0, 0, 0, 0.2);
     margin: 0 6px;
   }

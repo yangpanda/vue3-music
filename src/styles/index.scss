@@ -12,3 +12,31 @@ html {
     margin: 0;
   }
 }
+
+img {
+  user-select: none;
+}
+
+a {
+  user-select: none;
+}
+
+span {
+  user-select: none;
+}
+
+button {
+  @include flexVHCenter;
+  padding: 8px;
+  background: transparent;
+  border-radius: 20%;
+  transition: 0.2s;
+  border: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+
+  &:hover {
+    background: rgba(209, 209, 214, 0.28);
+  }
+}

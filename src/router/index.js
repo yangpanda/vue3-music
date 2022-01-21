@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import store from '../store';
 
 const routes = [
   {
@@ -7,17 +6,16 @@ const routes = [
     name: 'Home',
     component: () => import('@/views/home.vue'),
   },
+  {
+    path: '/playlist-detail',
+    name: 'PlayListDetail',
+    component: () => import('@/views/playListDetail.vue'),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory('/music/'),
   routes,
-});
-
-router.beforeEach(() => {
-  if (store.state.player.playingPageDisplayStatus) {
-    store.commit('player/hidePlayingPage');
-  }
 });
 
 export default router;

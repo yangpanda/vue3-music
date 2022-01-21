@@ -7,13 +7,9 @@ export default function useRouterMethods() {
     router.push('/');
   };
 
-  const toLogin = () => {
-    router.push('/login');
-  };
-
-  const toPlaylistDetail = (id) => {
+  const toPlayListDetail = (id) => {
     router.push({
-      name: 'PlaylistDetail',
+      name: 'PlayListDetail',
       params: {
         id,
       },
@@ -56,13 +52,12 @@ export default function useRouterMethods() {
   const toDailyMusic = () => {
     router.push({
       name: 'DailyMusic',
-    })
-  }
+    });
+  };
 
   return {
     toHome,
-    toLogin,
-    toPlaylistDetail,
+    toPlayListDetail,
     toAlbumDetail,
     toArtistDetail,
     toSearch,

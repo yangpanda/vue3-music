@@ -1,152 +1,154 @@
 <template>
-  <the-scrollbar>
-    <div :class="$style.personal">
-      <the-swiper :banners="banners" />
-      <the-section title="推荐歌单" cols="5" :to="{ name: 'Playlist' }">
-        <template #cards>
-          <!-- 每日歌曲推荐 -->
-          <div :class="$style.daily" @click="toDailyMusic">
-            <div :class="$style.dateBox">
-              <span :class="$style.date" v-text="theDay"></span>
-            </div>
-            <div>每日歌曲推荐</div>
+  <div class="home">
+    <teleport to="#banner">
+      <YBanner></YBanner>
+    </teleport>
+    <section>
+      <div class="header">
+        <div class="title">推荐歌单</div>
+        <div class="all">查看全部</div>
+      </div>
+      <div class="playList">
+        <div class="daily-recommend">
+          <img
+            class="img"
+            src="https://p1.music.126.net/AhYP9TET8l-VSGOpWAKZXw==/109951165134386387.jpg?param=1024y1024"
+          />
+          <div class="title">每日推荐</div>
+          <div class="play-icon-container">
+            <svg-icon class="icon" name="play" color="#fff" size="36%" />
           </div>
-          <card-playlist v-for="item in playLists" :key="item.id" :playList="item" />
-        </template>
-      </the-section>
-      <the-section title="最新音乐" cols="3" :to="{ name: 'Newsong' }">
-        <template #cards>
-          <card-song v-for="song in songs" :song="song"></card-song>
-        </template>
-      </the-section>
-      <the-section title="推荐MV" cols="3" :to="{ name: 'Mv' }">
-        <template #cards>
-          <card-mv v-for="item in mvs" :key="item.id" :mv="item" />
-        </template>
-      </the-section>
-    </div>
-  </the-scrollbar>
+        </div>
+        <div v-for="item in state.playLists">
+          <YCover :picUrl="item.picUrl"></YCover>
+          <div class="name">{{ item.name }}</div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
-import TheSwiper from '@/components/TheSwiper.vue';
-import TheSection from '@/components/TheSection.vue';
-import CardPlaylist from '@/components/CardPlaylist.vue';
-import CardMv from '@/components/CardMv.vue';
-import CardBase from '@/components/CardBase.vue';
-import CardSong from '@/components/CardSong.vue';
-
-import api from '@/api/index.js';
-import useRouterMethods from '@/composables/useRouterMethods.js';
-import { onMounted, reactive, toRefs, computed } from 'vue';
-import Song from '@/model/Song';
-import http from '@/api/http';
-
 export default {
-  components: {
-    TheSwiper,
-    TheSection,
-    CardPlaylist,
-    CardMv,
-    CardBase,
-    CardSong,
-  },
-  setup() {
-    const state = reactive({
-      banners: [],
-      playLists: [],
-      privateContents: [],
-      songs: [],
-      mvs: [],
-    });
-
-    const theDay = computed(() => {
-      return new Date().getDate();
-    });
-
-    const { toDailyMusic } = useRouterMethods();
-
-    const getBanners = () => {
-      http.getBanners(2).then((response) => {
-        state.banners = response;
-      });
-    };
-
-    const getPlaylists = () => {
-      http.getPersonalizedPlayLists(9).then((res) => (state.playLists = res));
-    };
-
-    const getSongs = () => {
-      api.song
-        .getNewSongs(15)
-        .then((response) => {
-          if (response.code === 200) {
-            const songsId = response.result.map((item) => item.id);
-            return songsId;
-          }
-        })
-        .then((songsId) => {
-          api.song.getSongDetail(songsId.join(',')).then((response) => {
-            if (response.code === 200) {
-              state.songs = response.songs.map((item) => new Song(item));
-            }
-          });
-        });
-    };
-
-    const getMvs = () => {
-      http.getPersonalizedMvs().then((res) => {
-        state.mvs = res;
-      });
-    };
-
-    onMounted(() => {
-      getBanners();
-      getPlaylists();
-      getSongs();
-      getMvs();
-    });
-
-    return {
-      ...toRefs(state),
-      theDay,
-      toDailyMusic,
-    };
-  },
+  name: 'Home',
 };
 </script>
 
-<style module>
-.personal {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 20px;
+<script setup>
+import http from '@/http';
+import { onBeforeMount, reactive } from 'vue';
+import YCover from '@/components/YCover.vue';
+import TheBanner from '@/components/TheBanner.vue';
+import SvgIcon from '@/components/SvgIcon.vue';
+
+const state = reactive({
+  playLists: [],
+  focus: false,
+});
+
+onBeforeMount(async () => {
+  state.playLists = await http.getPersonalizedPlayLists(8);
+});
+</script>
+
+<style lang="scss" scoped>
+@keyframes upDown {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-25%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
-.personal > :not(:first-child) {
-  margin-top: 20px;
-}
-.dateBox {
-  display: flex;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 4px 0 rgba(120, 120, 120, 0.5);
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-.dateBox::after {
-  content: '';
-  display: block;
-  width: 0;
-  padding-bottom: 100%;
-}
-.date {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 80px;
-  font-weight: bold;
-  letter-spacing: 10px;
-  color: rgb(236, 65, 65);
+.home {
+  margin-top: 10px;
+
+  .header {
+    @include flexVHCenter;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      cursor: default;
+    }
+    .all {
+      font-weight: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .playList {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+
+    .daily-recommend {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      background-color: lightgray;
+      border-radius: 8px;
+      position: relative;
+      z-index: 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      cursor: pointer;
+      .title {
+        color: white;
+        font-weight: 600;
+        font-size: 42px;
+        writing-mode: vertical-rl;
+        letter-spacing: 8px;
+      }
+      .img {
+        @include absInset0;
+        width: 100%;
+        z-index: -1;
+        animation: upDown 28s infinite;
+      }
+      .play-icon-container {
+        position: absolute;
+        right: 15px;
+        bottom: 15px;
+        transition: all 0.2s;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: hsla(0, 0%, 100%, 0.28);
+        border: 1px solid hsla(0, 0%, 100%, 0.08);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:active {
+          filter: brightness(0.8);
+        }
+        .icon {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 8px;
+      user-select: none;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
 }
 </style>
